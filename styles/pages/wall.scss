@@ -1,0 +1,17 @@
+.games-showcase-wall-page {
+    background: rgb(39, 39, 39);
+    color: white;
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+
+        .grid-item {
+            border: 1px solid #555;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+    }
+
+}

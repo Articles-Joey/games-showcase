@@ -17,7 +17,7 @@ export default function SettingsModal({
 
     const [lightboxData, setLightboxData] = useState(null)
 
-    const [tab, setTab] = useState('Controls')
+    const [tab, setTab] = useState('Audio')
 
     const socketServerHost = useStore((state) => state.socketServerHost);
     const setSocketServerHost = useStore((state) => state.setSocketServerHost);
@@ -65,28 +65,28 @@ export default function SettingsModal({
                     <ArticlesButton
                         variant="warning"
                         onClick={() => {
-    
+
                             setControlSettings({
                                 ...controlSettings,
                                 [listenForKey.action]: false,
                             })
-    
+
                             setListenForKey(false)
-    
+
                         }}
                     >
                         <i className="fas fa-undo me-2"></i>
                         Cancel
                     </ArticlesButton>
                     <ArticlesButton onClick={() => {
-    
+
                         setControlSettings({
                             ...controlSettings,
                             [listenForKey.action]: listenForKey.lastKey,
                         })
-    
+
                         setListenForKey(false)
-    
+
                     }}>
                         Confirm
                     </ArticlesButton>
@@ -139,7 +139,7 @@ export default function SettingsModal({
 
                     <div className='p-2'>
                         {[
-                            'Controls',
+                            // 'Controls',
                             'Audio',
                             // 'Multiplayer',
                             // 'Chat',
@@ -221,9 +221,43 @@ export default function SettingsModal({
                                 </div>
                             </div>
                         }
+
                         {tab == 'Audio' &&
                             <>
-                                <Form.Label className="mb-0">Game Volume</Form.Label>
+
+                                <div className='d-flex m-2 mb-3'>
+
+                                    <ArticlesButton
+                                        small
+                                        className="w-50"
+                                        active={!audioSettings?.enabled}
+                                        onClick={() => {
+                                            setAudioSettings({
+                                                ...audioSettings,
+                                                enabled: false
+                                            })
+                                        }}
+                                    >
+                                        Off
+                                    </ArticlesButton>
+
+                                    <ArticlesButton
+                                        small
+                                        className="w-50"
+                                        active={audioSettings?.enabled}
+                                        onClick={() => {
+                                            setAudioSettings({
+                                                ...audioSettings,
+                                                enabled: true
+                                            })
+                                        }}
+                                    >
+                                        On
+                                    </ArticlesButton>
+
+                                </div>
+
+                                <Form.Label className="mb-0">Sound Effects</Form.Label>
                                 <Form.Range
                                     value={audioSettings?.game_volume}
                                     onChange={(value) => {
@@ -247,7 +281,8 @@ export default function SettingsModal({
                                     }}
                                 />
                             </>
-                        }                       
+                        }
+                        
                         {tab == 'Other' &&
                             <div className="mx-4 pt-3">
 

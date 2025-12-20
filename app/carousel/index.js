@@ -13,6 +13,7 @@ import useFullscreen from '@/components/hooks/useFullScreen';
 
 // import LeftPanelContent from '@/components/UI/LeftPanel';
 import LeftPanelContent from '@/components/UI/GameMenu';
+// import GameControllerKeyboard from '@/components/GameControllerKeyboard';
 
 // import { useSocketStore } from '@/hooks/useSocketStore';
 // import { useCannonStore } from '@/hooks/useCannonStore';
@@ -65,7 +66,11 @@ export default function PageContent() {
 
     // }, [server, socket.connected]);
 
+    const [mounted, setMounted] = useState(false);
+
     useEffect(() => {
+
+        setMounted(true);
 
         // resetPlayerRotation()
         // setGoalLocation([
@@ -116,8 +121,8 @@ export default function PageContent() {
     return (
 
         <div
-            className={`games-showcase-carousel-page cannon-game-page ${isFullscreen && 'fullscreen'}`}
-            id="cannon-game-page"
+            className={`games-showcase-carousel-page carousel-game-page ${isFullscreen && 'fullscreen'}`}
+            
         >
 
             <div className="menu-bar card card-articles p-1 justify-content-center">
@@ -176,13 +181,30 @@ export default function PageContent() {
 
             <div className='canvas-wrap'>
 
-                <GameCanvas
+                <div className='controls-helper'>
+
+                    <img id={"controls-helper-dpad-left"} src="img/Xbox UI/DpadL.svg" alt="Control Keys"></img>
+                    <img id={"controls-helper-dpad-right"} src="img/Xbox UI/DpadR.svg" alt="Control Keys"></img>
+
+                    <div className='bubble'>
+                        <img className='me-2' height={30} width={30} src="img/Xbox UI/A.svg" alt="Control Keys"></img>
+                        <strong>Select</strong>
+                    </div>
+
+                    <div className='bubble'>
+                        <img className='me-2' height={30} width={30} src="img/Xbox UI/X.svg" alt="Control Keys"></img>
+                        <strong>Details</strong>
+                    </div>
+
+                </div>
+
+                {mounted && <GameCanvas
                     key={sceneKey}
-                    // gameState={gameState}
-                    // playerData={playerData}
-                    // setPlayerData={setPlayerData}
-                    // players={players}
-                />
+                // gameState={gameState}
+                // playerData={playerData}
+                // setPlayerData={setPlayerData}
+                // players={players}
+                />}
 
             </div>
 

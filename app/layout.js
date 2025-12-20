@@ -55,12 +55,13 @@ export default function RootLayout({ children }) {
       </head>
 
       <body
+        id="carousel-game-page"
       // className={`${geistSans.variable} ${geistMono.variable}`}
       >
 
         {/* <SocketLogicHandler /> */}
         {/* <PeerHandler /> */}
-        {/* <PeerHandlerTest /> */}        
+        {/* <PeerHandlerTest /> */}
         {/* <CustomControlsLogic /> */}
 
         <Suspense>

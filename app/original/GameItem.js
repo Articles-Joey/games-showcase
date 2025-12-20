@@ -14,7 +14,7 @@ import { Textfit } from '@/components/UI/Textfit';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const InfoModal = dynamic(
-    () => import('@/components/Games/InfoModal'),
+    () => import('@/components/UI/InfoModal'),
     { ssr: false }
 )
 

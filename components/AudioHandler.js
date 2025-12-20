@@ -1,40 +1,51 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useStore } from "./hooks/useStore";
 
 export default function AudioHandler() {
 
     const audioSettings = useStore((state) => state?.audioSettings);
-    const setAudioSettings = useStore((state) => state?.setAudioSettings);
+    const musicRef = useRef(null);
 
-    let music
-
-    if (typeof window !== 'undefined') {
-
-        // music = new Audio(`${process.env.NEXT_PUBLIC_CDN}games/Race Game/race-game-audio-loop.mp3`);
-        music = new Audio(`audio/game-music-loop.mp3`);
-
-        music.volume = audioSettings?.enabled ? (audioSettings?.game_volume / 100) : 0; // Set volume based on initial state
-    }
-
+    // Initialize Audio once
     useEffect(() => {
-
-        if (audioSettings?.enabled) {
-            music.currentTime = 0;
-            music.play();
-
-            music.onended = function () {
-                console.log('audio ended');
-                music.currentTime = 0;
-                music.play();
-            };
+        if (typeof window !== 'undefined' && !musicRef.current) {
+            musicRef.current = new Audio(`audio/game-music-loop.mp3`);
+            musicRef.current.loop = true;
         }
 
         return () => {
-            music.pause();
+            if (musicRef.current) {
+                musicRef.current.pause();
+                musicRef.current = null;
+            }
         };
-    }, [audioSettings]);
+    }, []);
+
+    // Handle Volume Changes independently
+    useEffect(() => {
+        if (musicRef.current) {
+            musicRef.current.volume = audioSettings?.enabled ? (audioSettings?.music_volume / 100) : 0;
+        }
+    }, [audioSettings?.music_volume, audioSettings?.enabled]);
+
+    // Handle Play/Pause State independently
+    useEffect(() => {
+        const music = musicRef.current;
+        if (!music) return;
+
+        if (audioSettings?.enabled) {
+            if (music.paused) {
+                music.play().catch((e) => {
+                    // Auto-play policies might block this
+                    console.warn("Audio play failed:", e);
+                });
+            }
+        } else {
+            music.pause();
+        }
+    }, [audioSettings?.enabled]);
 
     return null;
 

@@ -21,6 +21,8 @@ import useCameraStore from '../hooks/useCameraStore';
 // import GameChat from './GameChat';
 import classNames from 'classnames';
 import useGames from '../hooks/useGames';
+import { Article } from '@mui/icons-material';
+import useAllGames from '../hooks/useAllGames';
 
 function GameMenu({
     reloadScene,
@@ -30,6 +32,10 @@ function GameMenu({
 }) {
 
     const { games, publicGames } = useGames();
+
+    const { games: allGames } = useAllGames();
+
+    // const { games } = useBulkGames();
 
     const { isFullscreen, requestFullscreen, exitFullscreen } = useFullscreen();
 
@@ -51,14 +57,17 @@ function GameMenu({
     const showMenu = useStore((state) => state?.showMenu);
     const setShowMenu = useStore((state) => state?.setShowMenu);
 
-    const gameState = useStore((state) => state?.gameState);
-    const setGameState = useStore((state) => state?.setGameState);
+    const search = useStore((state) => state.search);
+    const setSearch = useStore((state) => state.setSearch);
 
-    const audioSettings = useStore((state) => state?.audioSettings);
-    const setAudioSettings = useStore((state) => state?.setAudioSettings);
+    // const gameState = useStore((state) => state?.gameState);
+    // const setGameState = useStore((state) => state?.setGameState);
 
-    const renderMode = useStore((state) => state?.renderMode);
-    const setRenderMode = useStore((state) => state?.setRenderMode)
+    // const audioSettings = useStore((state) => state?.audioSettings);
+    // const setAudioSettings = useStore((state) => state?.setAudioSettings);
+
+    // const renderMode = useStore((state) => state?.renderMode);
+    // const setRenderMode = useStore((state) => state?.setRenderMode)
 
     const setInfoModal = useStore((state) => state.setInfoModal)
 
@@ -73,14 +82,14 @@ function GameMenu({
     // const peerId = usePeerConnection((state) => state?.peerId);
 
     // const [players, setPlayers] = useState([]);
-    const connections = useGameStore((state) => state.connections);
+    // const connections = useGameStore((state) => state.connections);
 
-    const broadcastGameState = useGameStore((state) => state.broadcastGameState);
-    const startGame = useGameStore((state) => state.startGame);
-    const myId = useGameStore((state) => state.myId);
-    const isHost = useGameStore((state) => state.isHost);
+    // const broadcastGameState = useGameStore((state) => state.broadcastGameState);
+    // const startGame = useGameStore((state) => state.startGame);
+    // const myId = useGameStore((state) => state.myId);
+    // const isHost = useGameStore((state) => state.isHost);
 
-    const [peerId, setPeerId] = useState(false);
+    // const [peerId, setPeerId] = useState(false);
 
     // const shareLink = `/play?server_id=${peerId}&server_type=${server_type || 'error'}`
 
@@ -98,9 +107,9 @@ function GameMenu({
     //     console.log("peerId:", peerId)
     // }, [peerId])
 
-    useEffect(() => {
-        setPeerId(myId)
-    }, [myId])
+    // useEffect(() => {
+    //     setPeerId(myId)
+    // }, [myId])
 
     useEffect(() => {
         console.log("remount")
@@ -157,6 +166,64 @@ function GameMenu({
 
                     <div className='d-flex flex-column mb-2 mt-auto'>
 
+                        <div className='search-bar-'>
+                            <input
+                                type="text"
+                                className='form-control form-control-sm'
+                                placeholder='Search Games...'
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                        </div>
+
+                        <div className='border p-1'>
+
+                            <div className='flex-header mb-1'>
+
+                                <span>Presets</span>
+
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                >
+                                    <i className='fad fa-eraser me-0'></i>
+                                </ArticlesButton>
+
+                            </div>
+
+                            <div>
+                                <ArticlesButton
+                                    className={`w-50`}
+                                    small
+                                >
+                                    Articles
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={`w-50`}
+                                    small
+                                >
+                                    Steam
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={`w-50`}
+                                    small
+                                >
+                                    Epic Games
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={`w-50`}
+                                    small
+                                >
+                                    Custom
+                                </ArticlesButton>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            Filters
+                        </div>
+
                         <div className='mb-2'>
 
                             <Link
@@ -180,7 +247,7 @@ function GameMenu({
                                     if (isFullscreen) {
                                         exitFullscreen()
                                     } else {
-                                        requestFullscreen('race-game-game-page')
+                                        requestFullscreen('carousel-game-page')
                                     }
                                 }}
                             >
@@ -265,18 +332,18 @@ function GameMenu({
                                 }}
                             >
                                 <i className="fad fa-arrow-circle-down"></i>
-                                
+
                             </ArticlesButton>
                             <ArticlesButton
                                 className={``}
                                 small
                                 // active={devDebug}
                                 onClick={() => {
-                                    
+
                                 }}
                                 disabled
                             >
-                                {activeGameIndex}/{publicGames?.length || 0}
+                                {activeGameIndex}/{(allGames?.length - 1) || 0}
                             </ArticlesButton>
                             <ArticlesButton
                                 className={``}
@@ -293,158 +360,6 @@ function GameMenu({
                     </div>
 
                     <hr className='my-2' />
-
-                    <div className='d-flex'>
-
-                        {/* Audio */}
-                        <div className='w-50 m-lg-1'>
-
-                            <div className="small text-center">
-                                Audio
-                            </div>
-
-                            <div className='d-flex'>
-
-                                <ArticlesButton
-                                    small
-                                    className="w-50"
-                                    active={!audioSettings?.enabled}
-                                    onClick={() => {
-                                        setAudioSettings({
-                                            ...audioSettings,
-                                            enabled: false
-                                        })
-                                    }}
-                                >
-                                    Off
-                                </ArticlesButton>
-
-                                <ArticlesButton
-                                    small
-                                    className="w-50"
-                                    active={audioSettings?.enabled}
-                                    onClick={() => {
-                                        setAudioSettings({
-                                            ...audioSettings,
-                                            enabled: true
-                                        })
-                                    }}
-                                >
-                                    On
-                                </ArticlesButton>
-
-                            </div>
-
-                        </div>
-
-                        {/* Rendering */}
-                        <div className="w-50 m-lg-1">
-
-                            <div className="small text-center">
-                                Game Style
-                            </div>
-
-                            <div className='d-flex'>
-
-                                <ArticlesButton
-                                    small
-                                    className="w-50 mb-2"
-                                    active={renderMode == "2D"}
-                                    onClick={() => {
-                                        setRenderMode("2D")
-                                    }}
-                                >
-                                    2D
-                                </ArticlesButton>
-
-                                <ArticlesButton
-                                    small
-                                    className="w-50 mb-2"
-                                    active={renderMode == "3D"}
-                                    onClick={() => {
-                                        setRenderMode("3D")
-                                    }}
-                                >
-                                    3D
-                                </ArticlesButton>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    {audioSettings?.enabled && <div className="volume-control card-body text-center border p-1 py-2">
-                        <Form.Label className="small mb-0">Volume: {(+audioSettings?.game_volume || 0).toFixed()}%</Form.Label>
-                        <Form.Range
-                            className="mb-0"
-                            value={(audioSettings?.game_volume)}
-                            onChange={(e) => {
-
-                                console.log("Change", e.target.value)
-                                const newVolume = parseFloat(e.target.value);
-                                console.log(newVolume)
-
-                                setAudioSettings({
-                                    ...audioSettings,
-                                    game_volume: +newVolume
-                                })
-
-                            }}
-                        />
-                    </div>}
-
-                    {/* <hr className='my-4' /> */}
-
-                    <IsDev>
-                        <hr className='my-2' />
-
-                        <div className="small text-center">
-                            Dev Debug
-                        </div>
-
-                        <div className='d-flex flex-column mb-2'>
-
-                            <ArticlesButton
-                                small
-                                variant="warning"
-                                className="mb-2"
-                                // active={renderMode == "2D"}
-                                onClick={() => {
-                                    // setRenderMode("2D")
-                                }}
-                            >
-                                Reset Room
-                            </ArticlesButton>
-
-                            <ArticlesButton
-                                small
-                                variant="warning"
-                                className="mb-2"
-                                // active={renderMode == "2D"}
-                                onClick={() => {
-                                    // setRenderMode("2D")
-                                    startGame()
-                                }}
-                            >
-                                Force Start
-                            </ArticlesButton>
-
-                            <ArticlesButton
-                                small
-                                variant="warning"
-                                className="mb-2"
-                                // active={renderMode == "2D"}
-                                onClick={() => {
-                                    // setRenderMode("2D")
-                                    generateMysterySpots()
-                                }}
-                            >
-                                Generate Mystery Spots
-                            </ArticlesButton>
-
-                        </div>
-                    </IsDev>
 
                     <Dropdown className="d-flex w-100 text-center">
 

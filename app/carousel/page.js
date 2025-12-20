@@ -1,3 +1,4 @@
+import GameControllerKeyboard from "@/components/GameControllerKeyboard"
 import PageContent from "."
 
 export const metadata = {
@@ -8,6 +9,7 @@ export default function Home() {
 
   return (
     <>
+      <GameControllerKeyboard />
       <PageContent />
     </>
   )

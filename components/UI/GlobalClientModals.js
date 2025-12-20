@@ -19,6 +19,11 @@ const InfoModal = dynamic(
     { ssr: false }
 )
 
+// const GameControllerKeyboard = dynamic(
+//     () => import('@/components/GameControllerKeyboard'),
+//     { ssr: false }
+// )
+
 export default function GlobalClientModals() {
 
     const infoModal = useStore((state) => state.infoModal)
@@ -53,6 +58,8 @@ export default function GlobalClientModals() {
                     setShow={setShowSettingsModal}
                 />
             }
+
+            {/* <GameControllerKeyboard onFinish={(text) => console.log("Keyboard finished:", text)} /> */}
 
         </>
     )

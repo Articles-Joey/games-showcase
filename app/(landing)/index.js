@@ -56,7 +56,7 @@ const Witch = dynamic(
 // import SingleInput from '@/components/Articles/SingleInput';
 import IsDev from '@/components/UI/IsDev';
 import { useSocketStore } from '@/components/hooks/useSocketStore';
-import ArticlesAd from '@/components/ArticlesAd';
+// import ArticlesAd from '@/components/ArticlesAd';
 import CreditsModal from '@/components/UI/CreditsModal';
 import { Settings } from '@mui/icons-material';
 
@@ -192,7 +192,8 @@ export default function RaceGameLandingPage() {
 
             <div className='background-wrap'>
                 <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN}games/Race Game/background.jpg`}
+                    // src={`${process.env.NEXT_PUBLIC_CDN}games/Race Game/background.jpg`}
+                    src={`/img/preview.webp`}
                     fill
                     alt=""
                     style={{
@@ -361,6 +362,17 @@ export default function RaceGameLandingPage() {
                         >
                             <i className="fad fa-users"></i>
                             Credits
+                        </ArticlesButton>
+
+                        <ArticlesButton
+                            className={`w-50`}
+                            small
+                            onClick={() => {
+                                setShowSettingsModal(true)
+                            }}
+                        >
+                            <i className="fad fa-users"></i>
+                            Settings
                         </ArticlesButton>
 
                     </div>

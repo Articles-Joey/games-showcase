@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from "react";
+import { memo, useMemo, useRef, useEffect } from "react";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, Sky, Text, useDetectGPU, useTexture } from "@react-three/drei";
@@ -14,15 +14,43 @@ import Ocean from "./Ocean"
 import GrassPlane from "./Grass";
 import CameraControls from "./CameraControls";
 
-import { useSocketStore } from "@/components/hooks/useSocketStore";
-import useCameraStore from "../hooks/useCameraStore";
-import useGameStore from "../hooks/useGameStore";
+// import { useSocketStore } from "@/components/hooks/useSocketStore";
+// import useCameraStore from "../hooks/useCameraStore";
+// import useGameStore from "../hooks/useGameStore";
 import { useStore } from "../hooks/useStore";
 // import { useSearchParams } from "next/navigation";
-import useGames from "@/hooks/useGames";
+// import useGames from "@/hooks/useGames";
 
-import CarouselGameItem from "./CarouselGameItem";
+// import CarouselGameItem from "./CarouselGameItem";
 import ControllerManager from "./ControllerManager";
+import Carousel from "./Carousel/Carousel";
+
+const ContextListeners = () => {
+    const { gl } = useThree();
+    useEffect(() => {
+        const handleContextLost = (event) => {
+            event.preventDefault();
+            console.error('CUSTOM THREE.WebGLRenderer: Context Lost');
+            setTimeout(() => {
+                console.log('Attempting to restore WebGL context...');
+                // gl.forceContextRestore();
+            }, 2000);
+        };
+        const handleContextRestored = () => {
+            console.log('CUSTOM THREE.WebGLRenderer: Context Restored');
+        };
+
+        const canvas = gl.domElement;
+        canvas.addEventListener('webglcontextlost', handleContextLost);
+        canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+        return () => {
+            canvas.removeEventListener('webglcontextlost', handleContextLost);
+            canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+        };
+    }, [gl]);
+    return null;
+};
 
 function GameCanvas(props) {
 
@@ -62,35 +90,24 @@ function GameCanvas(props) {
     //     socket: state.socket,
     // }));
 
-    const { games, publicGames } = useGames();
-
-    // const clientPlayerLookup = useMemo(() => {
-
-    //     if (server_type == "online-socket" && players) {
-    //         return players.find(player => player.id == socket.id)
-    //     }
-
-    //     if (server_type == "online-peer" && players) {
-    //         return players.find(player => player.peer == myId)
-    //     }
-
-    // }, [server_type, players, socket.id, myId]);
-
-    // const activeGame = useMemo(() => {
-
-    //     if (!games) return null
-
-    //     return games[activeGameIndex]
-
-    // }, [games, activeGameIndex]);
-
     return (
         <Canvas
             camera={{
                 position: [14, 10, 20],
                 // fov: 50 
             }}
+            onCreated={({ gl }) => {
+                gl.domElement.addEventListener('webglcontextlost', (event) => {
+                    event.preventDefault();
+                    console.error('THREE.WebGLRenderer: Context Lost');
+                });
+                gl.domElement.addEventListener('webglcontextrestored', () => {
+                    console.log('THREE.WebGLRenderer: Context Restored');
+                });
+            }}
         >
+
+            <ContextListeners />
 
             <ControllerManager />
 
@@ -106,7 +123,7 @@ function GameCanvas(props) {
             // {...props} 
             />
 
-            <GrassPlane />
+            {/* <GrassPlane /> */}
 
             {/* <ambientLight intensity={darkMode ? 0.2 : 1.4} /> */}
 
@@ -115,17 +132,8 @@ function GameCanvas(props) {
             {/* <spotLight position={[70, 100, 0]} angle={0.5} penumbra={1} intensity={darkMode ? 10000 : 20000} />
             {!darkMode && <pointLight position={[-10, -10, -10]} intensity={10000} />} */}
 
-            {publicGames?.map((game, i) => {
-
-                return (
-                    <CarouselGameItem
-                        key={game.name}
-                        game={game}
-                        game_index={i}
-                    />
-                )
-
-            })}
+            {/* Actual Game Carousel */}
+            <Carousel />
 
         </Canvas>
     )

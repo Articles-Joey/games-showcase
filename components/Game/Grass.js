@@ -1,6 +1,6 @@
 import { NearestFilter, RepeatWrapping, TextureLoader } from "three";
 
-const texture = new TextureLoader().load(`${process.env.NEXT_PUBLIC_CDN}games/Race Game/grass.jpg`)
+const texture = new TextureLoader().load(`img/grass.webp`)
 
 const GrassPlane = () => {
 

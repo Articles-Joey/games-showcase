@@ -59,7 +59,11 @@
             align-items: center;
         }
 
-        .fire-button, .up-button, .down-button, .left-button, .right-button {
+        .fire-button,
+        .up-button,
+        .down-button,
+        .left-button,
+        .right-button {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -169,6 +173,40 @@
         width: 100vw;
         height: calc(100vh - 0px);
 
+        .controls-helper {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .bubble {
+                border-radius: 8px;
+                margin: 0 0.25rem;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                padding: 0.5rem 1rem;
+            }
+
+            #controls-helper-dpad-left,
+            #controls-helper-dpad-right {
+                position: absolute;
+                margin: 0 0.5rem;
+            }
+
+            #controls-helper-dpad-left {
+                left: -80px;
+            }
+
+            #controls-helper-dpad-right {
+                right: -80px;
+            }
+        }
+
         canvas {
             position: absolute;
             width: 100%;
@@ -188,7 +226,8 @@
         // padding: 1rem;
     }
 
-    .panel-left, .panel-right {        
+    .panel-left,
+    .panel-right {
         width: 300px;
         height: calc(100vh - 0px);
         flex-shrink: 0;

@@ -18,10 +18,15 @@ import { useHotkeys } from 'react-hotkeys-hook';
 // import ArticlesAlert from '@/components/Articles/ArticlesAlert';
 import GameItem from './GameItem';
 import useGames from '@/components/hooks/useGames';
+import { Box, CircularProgress } from '@mui/material';
 
 export default function GamesPage(props) {
 
-    const { games } = useGames();
+    const {
+        games,
+        isLoading: isLoadingGames,
+        isRemote
+    } = useGames();
 
     const ROUTES = {};
 
@@ -130,7 +135,7 @@ export default function GamesPage(props) {
                 </div>
 
                 <div className='text'>
-                    <h1 className="">Games - {games?.filter(obj => !obj.preview).length}</h1>
+                    <h1 className="">Games - {games?.filter(obj => !obj.preview)?.length || 0}</h1>
                     <p className='mb-0'>Play some games with your friends or other users.</p>
                 </div>
 
@@ -269,7 +274,7 @@ export default function GamesPage(props) {
                             value={search}
                             id='games-search'
                             onChange={e => setSearch(e.target.value)}
-                            style={{ 
+                            style={{
                                 maxWidth: '160px',
                                 fontSize: '0.75rem!important'
                             }}
@@ -298,6 +303,16 @@ export default function GamesPage(props) {
                 >
 
                 </ArticlesAlert> */}
+
+                {
+                    isLoadingGames
+                    // true
+                    &&
+                    <div className={`alert ${isRemote ? 'alert-danger' : 'alert-warning'} d-flex justify-content-center align-items-center my-3`}>
+                        <CircularProgress />
+                        <Box sx={{ ml: 2 }}>Loading games...</Box>
+                    </div>
+                }
 
                 <div className="games mb-5">
 

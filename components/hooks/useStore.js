@@ -5,6 +5,9 @@ export const useStore = create()(
   persist(
     (set, get, store) => ({
 
+      search: "",
+      setSearch: (search) => set({ search }),
+
       activeGameIndex: 0,
       setActiveGameIndex: (index) => set({ activeGameIndex: index }),
 

@@ -7,7 +7,7 @@ export default function CustomControlsLogic() {
     const controlSettings = useStore((state) => state.controlSettings);
     // const setControlSettings = useStore((state) => state.setControlSettings);
 
-    const actionsCount = Object.values(controlSettings).filter((value) => value).length;
+    const actionsCount = Object.values(controlSettings).filter((value) => value)?.length;
 
     useEffect(() => {
         console.log("Control Settings changed, need to set key listeners for ", actionsCount, `actions`);

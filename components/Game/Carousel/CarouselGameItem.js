@@ -2,12 +2,13 @@ import { memo, useMemo, useRef, useState, useEffect } from "react";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Html, Image, OrbitControls, Sky, Text, useDetectGPU, useTexture } from "@react-three/drei";
-import BleacherBox from "./Carousel/Games/Race Game/BleacherBox";
-import { useStore } from "../hooks/useStore";
+// import BleacherBox from "./Games/Race Game/BleacherBox";
+import { useStore } from "../../hooks/useStore";
 import { degToRad, MathUtils } from "three/src/math/MathUtils";
-import RenderUniqueGameScene from "./Carousel/RenderUniqueGameScene";
-import Tree from "./Tree";
-import GrassPlane from "./Carousel/Ground";
+import RenderUniqueGameScene from "./RenderUniqueGameScene";
+import Tree from "../Tree";
+import Rock from "@/components/Models/Rock";
+import GrassPlane from "./Ground";
 
 export default function CarouselGameItem({
     game,
@@ -15,6 +16,8 @@ export default function CarouselGameItem({
 }) {
 
     const activeGameIndex = useStore((state) => state?.activeGameIndex);
+    const renderUniqueGameSceneRange = useStore((state) => state?.renderUniqueGameSceneRange);
+
     const isActive = activeGameIndex == i;
 
     const [showActiveImage, setShowActiveImage] = useState(false);
@@ -22,9 +25,13 @@ export default function CarouselGameItem({
     useEffect(() => {
         let timer;
         if (isActive) {
+
+            console.log("Activating game image for:", game);
+
             timer = setTimeout(() => {
                 setShowActiveImage(true);
             }, 1000);
+
         } else {
             setShowActiveImage(false);
         }
@@ -63,7 +70,7 @@ export default function CarouselGameItem({
 
     const gameImage = useMemo(() => {
         if (!game?.image) return null;
-        
+
         const imageSrc = (showActiveImage && game?.active_image) ? game.active_image : game.image;
 
         return (
@@ -89,6 +96,8 @@ export default function CarouselGameItem({
         )
     }, [game?.image, game?.active_image, showActiveImage])
 
+    if (Math.abs(activeGameIndex - i) >= 15) return null;
+
     return (
         <group
             key={game?.name}
@@ -113,10 +122,20 @@ export default function CarouselGameItem({
             }
 
             {Math.abs(activeGameIndex - i) <= 10 &&
-                <TreeWrappedRandomizer 
+                <TreeWrappedRandomizer
                     position={[-20, 0, 0.25]}
                 />
             }
+
+            {/* {Math.abs(activeGameIndex - i) <= 20 &&
+                <RockWrappedRandomizer
+                    position={[-200, 5, 0.25]}
+                />
+            } */}
+
+            <RockWrappedRandomizer
+                position={[-80, 1, 0.25]}
+            />
 
             <group
                 ref={groupRef}
@@ -229,7 +248,7 @@ export default function CarouselGameItem({
                 </group>
 
 
-                {Math.abs(activeGameIndex - i) <= 1 &&
+                {Math.abs(activeGameIndex - i) <= renderUniqueGameSceneRange &&
                     <RenderUniqueGameScene
                         game={game}
                     />
@@ -240,6 +259,31 @@ export default function CarouselGameItem({
         </group>
     )
 
+}
+
+function RockWrappedRandomizer({
+    position,
+    scale
+}) {
+    const group = useRef()
+    const { randomScale, randomRotation } = useMemo(() => ({
+        randomScale: 18 + Math.random() * 20,
+        randomRotation: [
+            Math.random() * Math.PI * 2,
+            Math.random() * Math.PI * 2,
+            Math.random() * Math.PI * 2
+        ]
+    }), [])
+
+    return (
+        <group ref={group}>
+            <Rock
+                position={position}
+                rotation={randomRotation}
+                scale={scale ? (Array.isArray(scale) ? scale.map(s => s * randomScale) : scale * randomScale) : randomScale}
+            />
+        </group>
+    )
 }
 
 function TreeWrappedRandomizer({

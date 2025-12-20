@@ -21,6 +21,7 @@ const HaloScene = dynamic(() => import("./Games/Halo"), { ssr: false });
 const FortniteScene = dynamic(() => import("./Games/Fortnite"), { ssr: false });
 const MazeScene = dynamic(() => import("./Games/Maze"), { ssr: false });
 const MinecraftScene = dynamic(() => import("./Games/Minecraft"), { ssr: false });
+const Battlefield4Scene = dynamic(() => import("./Games/Battlefield 4/Battlefield4Scene"), { ssr: false });
 
 function RenderUniqueGameScene({
     game
@@ -133,6 +134,11 @@ function RenderUniqueGameScene({
         case "Maze":
             return (
                 <MazeScene />
+            );
+
+            case "Battlefield 4":
+            return (
+                <Battlefield4Scene />
             );
 
         // case "Eager Eagle":

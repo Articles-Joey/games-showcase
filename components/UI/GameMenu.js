@@ -1,6 +1,6 @@
 "use client"
 
-import { QRCodeCanvas } from 'qrcode.react';
+// import { QRCodeCanvas } from 'qrcode.react';
 
 import Link from 'next/link';
 
@@ -8,20 +8,20 @@ import ArticlesButton from '@/components/UI/Button';
 
 import { Dropdown, Form } from 'react-bootstrap';
 
-import IsDev from '@/components/UI/IsDev';
+// import IsDev from '@/components/UI/IsDev';
 import { useStore } from '../hooks/useStore';
 // import { useSearchParams } from 'next/navigation';
 // import usePeerConnection from '../hooks/usePeerConnection';
 import { memo, Suspense, useEffect, useState } from 'react';
 // import { connect } from 'socket.io-client';
 // import PeerLogic from '../PeerLogic';
-import useGameStore from '../hooks/useGameStore';
+// import useGameStore from '../hooks/useGameStore';
 import useFullscreen from '../hooks/useFullScreen';
 import useCameraStore from '../hooks/useCameraStore';
 // import GameChat from './GameChat';
 import classNames from 'classnames';
 import useGames from '../hooks/useGames';
-import { Article } from '@mui/icons-material';
+// import { Article } from '@mui/icons-material';
 import useAllGames from '../hooks/useAllGames';
 
 function GameMenu({
@@ -53,6 +53,9 @@ function GameMenu({
 
     const activeGameIndex = useStore((state) => state?.activeGameIndex);
     const setActiveGameIndex = useStore((state) => state?.setActiveGameIndex);
+
+    const zoomLevel = useStore((state) => state?.zoomLevel);
+    const setZoomLevel = useStore((state) => state?.setZoomLevel);
 
     const showMenu = useStore((state) => state?.showMenu);
     const setShowMenu = useStore((state) => state?.setShowMenu);
@@ -351,6 +354,39 @@ function GameMenu({
                                 // active={devDebug}
                                 onClick={() => {
                                     setActiveGameIndex(activeGameIndex + 1)
+                                }}
+                            >
+                                <i className="fad fa-arrow-circle-up"></i>
+                            </ArticlesButton>
+                        </div>
+
+                        <div>
+                            <ArticlesButton
+                                className={``}
+                                small
+                                // active={devDebug}
+                                onClick={() => {
+                                    setZoomLevel(zoomLevel - 1)
+                                }}
+                            >
+                                <i className="fad fa-arrow-circle-down"></i>
+
+                            </ArticlesButton>
+                            <ArticlesButton
+                                className={``}
+                                small
+                                disabled
+                                onClick={() => {
+
+                                }}
+                            >
+                                {zoomLevel}
+                            </ArticlesButton>
+                            <ArticlesButton
+                                className={``}
+                                small
+                                onClick={() => {
+                                    setZoomLevel(zoomLevel + 1)
                                 }}
                             >
                                 <i className="fad fa-arrow-circle-up"></i>

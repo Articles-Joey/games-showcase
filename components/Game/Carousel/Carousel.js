@@ -1,5 +1,5 @@
 import useAllGames from "@/components/hooks/useAllGames";
-import CarouselGameItem from "../CarouselGameItem"
+import CarouselGameItem from "./CarouselGameItem"
 
 export default function Carousel() {
 

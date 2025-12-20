@@ -4,6 +4,7 @@ import useUserGames from "@/components/hooks/useUserGames";
 import useGames from "@/components/hooks/useGames";
 
 import { useStore } from "@/hooks/useStore";
+// import useUserGameInjections from "./useUserGameInjections";
 
 export default function useAllGames() {
 
@@ -26,6 +27,10 @@ export default function useAllGames() {
         games: userGames
     } = useUserGames();
 
+    // const {
+    //     games: userGameInjections
+    // } = useUserGameInjections();
+
     const filtered = (games) => {
         if (!search || search.trim() === "") return games;
         return games.filter(game => 
@@ -46,6 +51,7 @@ export default function useAllGames() {
             ...epicGames || [],
             ...publicGames || [],
         ]),
+        // userGameInjections,
     });
 
 }

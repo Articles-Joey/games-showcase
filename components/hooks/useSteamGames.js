@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 import { useState } from 'react';
+import useUserGameInjections from './useUserGameInjections';
 
 const useSteamGames = () => {
 
@@ -19,8 +20,16 @@ const useSteamGames = () => {
 
     // const publicGames = data?.filter(game => game.public !== false);
 
+    const {
+        games: userGameInjections
+    } = useUserGameInjections();
+
     return {
-        games: data?.games,
+        games: data?.games.map(game => ({
+            ...game,
+            game_launcher: "Steam",
+            ...userGameInjections.find(injection => injection.id === game.id) || {}
+        })),
         // publicGames,
         isLoading,
         isError: error,

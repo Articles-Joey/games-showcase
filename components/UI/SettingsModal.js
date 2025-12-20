@@ -17,7 +17,7 @@ export default function SettingsModal({
 
     const [lightboxData, setLightboxData] = useState(null)
 
-    const [tab, setTab] = useState('Audio')
+    const [tab, setTab] = useState('Graphics')
 
     const socketServerHost = useStore((state) => state.socketServerHost);
     const setSocketServerHost = useStore((state) => state.setSocketServerHost);
@@ -25,6 +25,9 @@ export default function SettingsModal({
 
     const controlSettings = useStore((state) => state.controlSettings);
     const setControlSettings = useStore((state) => state.setControlSettings);
+
+    const renderUniqueGameSceneRange = useStore((state) => state.renderUniqueGameSceneRange);
+    const setRenderUniqueGameSceneRange = useStore((state) => state.setRenderUniqueGameSceneRange);
 
     const enabled = useChatStore((state) => state.enabled);
     const speechBubblesEnabled = useChatStore((state) => state.speechBubblesEnabled);
@@ -140,6 +143,7 @@ export default function SettingsModal({
                     <div className='p-2'>
                         {[
                             // 'Controls',
+                            'Graphics',
                             'Audio',
                             // 'Multiplayer',
                             // 'Chat',
@@ -158,6 +162,52 @@ export default function SettingsModal({
                     <hr className="my-0" />
 
                     <div className="p-2">
+
+                        {tab == 'Graphics' &&
+                            <>
+                                <div className="mx-2">Render Unique Game Scene Range</div>
+
+                                <div className='d-flex m-2 mb-3'>
+
+                                    <ArticlesButton
+                                        small
+                                        className="w-50"
+                                        // active={!audioSettings?.enabled}
+                                        onClick={() => {
+                                            setRenderUniqueGameSceneRange(renderUniqueGameSceneRange - 1)
+                                        }}
+                                    >
+                                        <i className="fad fa-arrow-down"></i>
+                                    </ArticlesButton>
+
+                                    <ArticlesButton
+                                        small
+                                        className="w-50"
+                                        // active={audioSettings?.enabled}
+                                        onClick={() => {
+                                            // setAudioSettings({
+                                            //     ...audioSettings,
+                                            //     enabled: true
+                                            // })
+                                        }}
+                                    >
+                                        {renderUniqueGameSceneRange}
+                                    </ArticlesButton>
+
+                                    <ArticlesButton
+                                        small
+                                        className="w-50"
+                                        // active={audioSettings?.enabled}
+                                        onClick={() => {
+                                            setRenderUniqueGameSceneRange(renderUniqueGameSceneRange + 1)
+                                        }}
+                                    >
+                                        <i className="fad fa-arrow-up"></i>
+                                    </ArticlesButton>
+
+                                </div>
+                            </>
+                        }
 
                         {tab == 'Controls' &&
                             <div>
@@ -304,7 +354,7 @@ export default function SettingsModal({
                                     </div>
                                 </div>
 
-                                <hr />
+                                {/* <hr />
 
                                 <div className="mb-3">
                                     <div className="d-flex align-items-center">
@@ -320,7 +370,7 @@ export default function SettingsModal({
                                         />
                                     </div>
                                     <div className="small mt-2">Arcade Mode automates the end of game and starting new ones for hands off arcade fun.</div>
-                                </div>
+                                </div> */}
 
                             </div>
                         }

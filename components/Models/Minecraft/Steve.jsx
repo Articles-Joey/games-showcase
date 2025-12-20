@@ -20,7 +20,7 @@ export function ModelMinecraftSteve(props) {
   const { nodes, materials } = useGraph(clone)
   const { actions } = useAnimations(animations, group)
 
-  console.log("Available animations for Steve:", Object.keys(actions));
+  // console.log("Available animations for Steve:", Object.keys(actions));
 
   useEffect(() => {
     if (actions['Armature.001|Walk']) {

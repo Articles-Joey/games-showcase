@@ -34,6 +34,12 @@ export const useStore = create()(
       renderMode: '3D',
       setRenderMode: (mode) => set({ renderMode: mode }),
 
+      zoomLevel: 0,
+      setZoomLevel: (level) => set({ zoomLevel: level }),
+
+      renderUniqueGameSceneRange: 2,
+      setRenderUniqueGameSceneRange: (range) => set({ renderUniqueGameSceneRange: range }),
+
       devDebug: false,
       setDevDebug: (value) => set({ devDebug: value }),
       toggleDevDebug: () => set({ devDebug: !get().devDebug }),
@@ -94,7 +100,7 @@ export const useStore = create()(
 
     }),
     {
-      name: 'race-game-storage', // name of the item in the storage (must be unique)
+      name: 'games-showcase-storage', // name of the item in the storage (must be unique)
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ),

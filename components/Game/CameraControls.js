@@ -15,6 +15,8 @@ const CameraControls = (props) => {
 
     const activeGameIndex = useStore((state) => state?.activeGameIndex);
 
+    const zoomLevel = useStore((state) => state?.zoomLevel);
+
     const {
         // onCameraChange, 
         // cameraUpdate, 
@@ -30,6 +32,9 @@ const CameraControls = (props) => {
     const controls = useRef();
     const targetPosition = useRef(new Vector3(14 + (activeGameIndex * 10), 10, 20));
     const targetLookAt = useRef(new Vector3(14 + (activeGameIndex * 10), 0, 0));
+
+    // Base camera offset when zoomLevel is 0
+    const baseOffset = new Vector3(0, 10, 20);
 
     useFrame((state, delta) => {
         state.camera.position.lerp(targetPosition.current, 3 * delta)
@@ -68,13 +73,18 @@ const CameraControls = (props) => {
             );
         }
 
+        // Calculate zoom factor. 
+        // Positive zoomLevel zooms in (smaller distance), Negative zooms out (larger distance).
+        // Example: zoomLevel 1 -> 0.8x distance, zoomLevel -1 -> 1.2x distance
+        const zoomFactor = Math.max(0.1, 1 - (zoomLevel * 0.2)); 
+
         targetPosition.current.set(
-            14 + (activeGameIndex * 10),
-            10,
-            20
+            14 + (activeGameIndex * 10) + (baseOffset.x * zoomFactor),
+            baseOffset.y * zoomFactor,
+            baseOffset.z * zoomFactor
         );
 
-    }, [activeGameIndex])
+    }, [activeGameIndex, zoomLevel])
 
     return (
         <OrbitControls

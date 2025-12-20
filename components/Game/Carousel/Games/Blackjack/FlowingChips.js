@@ -40,7 +40,7 @@ const Floor = () => {
 const ChipSpawner = () => {
     const [chips, setChips] = useState([]);
 
-    const maxChips = 50;
+    const maxChips = 150;
 
     useEffect(() => {
         const interval = setInterval(() => {

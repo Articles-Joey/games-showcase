@@ -11,7 +11,7 @@ const useEpicGames = () => {
         return await res.json();
     }
 
-    const { data, error, isLoading } = useSWR('http://localhost:3048/api/games/epic', fetcher, {
+    const { data, error, isLoading } = useSWR(process.env.NODE_ENV === 'development' ? 'http://localhost:3048/api/games/epic' : null, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false
@@ -20,7 +20,11 @@ const useEpicGames = () => {
     // const publicGames = data?.filter(game => game.public !== false);
 
     return {
-        games: data?.games,
+        games: data?.games?.map(game => ({
+            ...game,
+            game_launcher: "Epic Games",
+            ...userGameInjections.find(injection => injection.id === game.id) || {}
+        })) || [],
         // publicGames,
         isLoading,
         isError: error,

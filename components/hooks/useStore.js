@@ -8,6 +8,19 @@ export const useStore = create()(
       search: "",
       setSearch: (search) => set({ search }),
 
+      filters: {
+        launchers: {
+          'Articles': true,
+          'Steam': process.env.NODE_ENV === 'development' ? true : false,
+          'Epic Games': process.env.NODE_ENV === 'development' ? true : false,
+          'Itch.io': process.env.NODE_ENV === 'development' ? true : false,
+          'GOG': process.env.NODE_ENV === 'development' ? true : false,
+          // 'Custom': true,
+          'User': true,
+        },
+      },
+      setFilters: (filters) => set({ filters }),
+
       activeGameIndex: 0,
       setActiveGameIndex: (index) => set({ activeGameIndex: index }),
 
@@ -101,6 +114,7 @@ export const useStore = create()(
     }),
     {
       name: 'games-showcase-storage', // name of the item in the storage (must be unique)
+      version: 1,
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ),

@@ -1,6 +1,8 @@
 import dynamic from "next/dynamic";
 import { memo } from "react";
 import { degToRad, radToDeg } from "three/src/math/MathUtils";
+import EagerEagleScene from "./Games/Eager Eagle";
+import PinballScene from "./Games/Pinball";
 
 // import BleacherBox from "./Games/Race Game/BleacherBox";
 // import GameGrid from "./Games/Race Game/GameGrid";
@@ -17,9 +19,15 @@ const GameGrid = dynamic(() => import("./Games/Race Game/GameGrid"), { ssr: fals
 const FourFrogsDemo = dynamic(() => import("./Games/Four Frogs/index"), { ssr: false });
 const ModelTrafficCone = dynamic(() => import("../Traffic Cone").then(mod => mod.ModelTrafficCone), { ssr: false });
 const FlowingChips = dynamic(() => import("./Games/Blackjack/FlowingChips"), { ssr: false });
+const AssetsGalleryScene = dynamic(() => import("./Games/Assets Gallery"), { ssr: false });
+const TowerBlocksScene = dynamic(() => import("./Games/Tower Blocks"), { ssr: false });
+const CarouselOfProgressScene = dynamic(() => import("./Games/Carousel of Progress"), { ssr: false });
+const MazeScene = dynamic(() => import("./Games/Maze"), { ssr: false });
+const EightBallPoolScene = dynamic(() => import("./Games/8 Ball Pool"), { ssr: false });
+const SpleefScene = dynamic(() => import("./Games/Spleef"), { ssr: false });
+
 const HaloScene = dynamic(() => import("./Games/Halo"), { ssr: false });
 const FortniteScene = dynamic(() => import("./Games/Fortnite"), { ssr: false });
-const MazeScene = dynamic(() => import("./Games/Maze"), { ssr: false });
 const MinecraftScene = dynamic(() => import("./Games/Minecraft"), { ssr: false });
 const Battlefield4Scene = dynamic(() => import("./Games/Battlefield 4/Battlefield4Scene"), { ssr: false });
 
@@ -69,18 +77,6 @@ function RenderUniqueGameScene({
                     </group>
                 </>
             )
-        // case "Battle Trap":
-        //     return (
-        //         <>
-
-        //         </>
-        //     );
-        // case "Plinko":
-        //     return (
-        //         <>
-
-        //         </>
-        //     );
         case "Blackjack":
             return (
                 <>
@@ -95,7 +91,53 @@ function RenderUniqueGameScene({
                     </group>
                 </>
             );
+        case "Assets Gallery":
+            return (
+                <AssetsGalleryScene />
+            );
+        case "Tower Blocks":
+            return (
+                <TowerBlocksScene />
+            );
+        case "Eager Eagle":
+            return (
+                <EagerEagleScene />
+            );
+        case "Carousel of Progress":
+            return (
+                <CarouselOfProgressScene />
+            );
+        case "Pinball":
+            return (
+                <PinballScene />
+            );
+        case "8 Ball Pool":
+            return (
+                <EightBallPoolScene />
+            );
+        case "Maze":
+            return (
+                <MazeScene />
+            );
+            case "Spleef":
+            return (
+                <SpleefScene />
+            );
+        // case "Battle Trap":
+        //     return (
+        //         <>
 
+        //         </>
+        //     );
+        // case "Plinko":
+        //     return (
+        //         <>
+
+        //         </>
+        //     );
+
+        // Other Games
+        // TODO - Create a way to dynamically add these?
         case "Halo 3":
             return (
                 <>
@@ -110,12 +152,10 @@ function RenderUniqueGameScene({
                     </group>
                 </>
             );
-
-            case "Minecraft":
+        case "Minecraft":
             return (
                 <MinecraftScene />
             );
-
         case "Fortnite":
             return (
                 <>
@@ -130,23 +170,15 @@ function RenderUniqueGameScene({
                     </group>
                 </>
             );
-
-        case "Maze":
+        case "Battlefield 4":
             return (
-                <MazeScene />
+                <Battlefield4Scene />
             );
-
-            case "Battlefield 4":
+        case "Battlefield 4":
             return (
                 <Battlefield4Scene />
             );
 
-        // case "Eager Eagle":
-        //     return (
-        //         <>
-
-        //         </>
-        //     );
         default:
             return <>
                 <ModelTrafficCone

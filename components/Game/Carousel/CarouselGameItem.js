@@ -20,6 +20,8 @@ export default function CarouselGameItem({
 
     const isActive = activeGameIndex == i;
 
+    const [nameLineCount, setNameLineCount] = useState(1);
+
     const [showActiveImage, setShowActiveImage] = useState(false);
 
     useEffect(() => {
@@ -40,10 +42,12 @@ export default function CarouselGameItem({
 
     const materialRef = useRef();
     const groupRef = useRef();
+    const uniqueGameSceneRef = useRef();
 
     useFrame((state, delta) => {
         const targetOpacity = isActive ? 0.9 : 0.3;
         const targetScale = isActive ? 1 : 0.5;
+        const targetSceneOpacity = isActive ? 1 : 0.2;
 
         if (materialRef.current) {
             materialRef.current.opacity = MathUtils.lerp(materialRef.current.opacity, targetOpacity, 5 * delta)
@@ -53,6 +57,22 @@ export default function CarouselGameItem({
             const s = MathUtils.lerp(groupRef.current.scale.x, targetScale, 5 * delta)
             groupRef.current.scale.set(s, s, s)
         }
+
+        // Needs to not affect the <Tree /> and <Rock /> opacity
+        // if (uniqueGameSceneRef.current) {
+        //     uniqueGameSceneRef.current.traverse((child) => {
+        //         if (child.isMesh) {
+        //             const materials = Array.isArray(child.material) ? child.material : [child.material];
+        //             materials.forEach(mat => {
+        //                 if (mat) {
+        //                     mat.transparent = true;
+        //                     mat.opacity = MathUtils.lerp(mat.opacity, targetSceneOpacity, 5 * delta);
+        //                 }
+        //             });
+        //         }
+        //     })
+        // }
+
     })
 
     // This crashes the app for some reason
@@ -76,17 +96,21 @@ export default function CarouselGameItem({
         return (
             <Html
                 transform
-                position={[0, 11.5, 0]}
+                position={[-0.25, 11.5, 0]}
                 rotation={[0, degToRad(90), 0]}
-                scale={4}
-                zIndexRange={1000}
+                scale={1}
+                occlude
+                // zIndexRange={1000}
+                // zIndexRange={-1} 
+                distanceFactor={10}
+
             >
                 <img
                     src={imageSrc}
                     alt={game?.name}
                     style={{
-                        width: '70px',
-                        height: '40px',
+                        width: '300px',
+                        height: '175px',
                         borderRadius: "4px",
                         objectFit: "cover",
                         zIndex: -1,
@@ -121,11 +145,15 @@ export default function CarouselGameItem({
                 </group>
             }
 
-            {Math.abs(activeGameIndex - i) <= 10 &&
+            {/* {Math.abs(activeGameIndex - i) <= 10 &&
                 <TreeWrappedRandomizer
                     position={[-20, 0, 0.25]}
                 />
-            }
+            } */}
+
+            <TreeWrappedRandomizer
+                position={[-20, 0, 0.25]}
+            />
 
             {/* {Math.abs(activeGameIndex - i) <= 20 &&
                 <RockWrappedRandomizer
@@ -154,7 +182,9 @@ export default function CarouselGameItem({
                     />
                 </mesh>
 
-                {Math.abs(activeGameIndex - i) <= 10 && gameImage}
+                {Math.abs(activeGameIndex - i) <= 10 &&
+                    gameImage
+                }
 
                 <Text
                     position={[0, 9.2, 3.5]}
@@ -163,12 +193,16 @@ export default function CarouselGameItem({
                     lineHeight={0.85}
                     anchorX={"left"}
                     anchorY={"top"}
+                // onSync={(text) => {
+                //     console.log("Game name lines:", text.lines.length);
+                //     setNameLineCount(text.lines.length)
+                // }}
                 >
                     {game?.name}
                 </Text>
 
                 <Text
-                    position={[0, 8, 3.5]}
+                    position={[0, nameLineCount > 1 ? 8 : 7.25, 3.5]}
                     rotation={[0, Math.PI / 2, 0]}
                     maxWidth={17}
                     scale={0.4}
@@ -249,9 +283,11 @@ export default function CarouselGameItem({
 
 
                 {Math.abs(activeGameIndex - i) <= renderUniqueGameSceneRange &&
-                    <RenderUniqueGameScene
-                        game={game}
-                    />
+                    <group ref={uniqueGameSceneRef}>
+                        <RenderUniqueGameScene
+                            game={game}
+                        />
+                    </group>
                 }
 
             </group>

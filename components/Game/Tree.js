@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 export default function Tree(props) {
-  const { nodes, materials } = useGLTF(`${process.env.NEXT_PUBLIC_CDN}games/Death Race/Tree.gltf`);
+  const { nodes, materials } = useGLTF(`models/Tree-transformed.glb`);
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -19,4 +19,4 @@ export default function Tree(props) {
   );
 }
 
-useGLTF.preload(`${process.env.NEXT_PUBLIC_CDN}games/Death Race/Tree.gltf`);
+useGLTF.preload(`models/Tree-transformed.glb`);

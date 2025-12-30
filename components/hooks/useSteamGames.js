@@ -12,7 +12,7 @@ const useSteamGames = () => {
         return await res.json();
     }
 
-    const { data, error, isLoading } = useSWR('http://localhost:3048/api/games/steam', fetcher, {
+    const { data, error, isLoading } = useSWR(process.env.NODE_ENV === 'development' ? 'http://localhost:3048/api/games/steam' : null, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false
@@ -25,11 +25,11 @@ const useSteamGames = () => {
     } = useUserGameInjections();
 
     return {
-        games: data?.games.map(game => ({
+        games: data?.games?.map(game => ({
             ...game,
             game_launcher: "Steam",
             ...userGameInjections.find(injection => injection.id === game.id) || {}
-        })),
+        })) || [],
         // publicGames,
         isLoading,
         isError: error,

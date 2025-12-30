@@ -43,4 +43,6 @@ One of the features on top of just a showcase of the Articles Media games is tha
 
 [Background audio Loop (royalty-free) by XtremeFreddy](https://pixabay.com/users/xtremefreddy-32332307/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144037)  
 
+[Keyboard Key Icons by littleicon - Flaticon](https://www.flaticon.com/authors/littleicon)  
+
 JSX Model files have the author info in them right now as comments at the top automatically, Maybe eventually add them here? See components/Models for now

@@ -63,6 +63,9 @@ function GameMenu({
     const search = useStore((state) => state.search);
     const setSearch = useStore((state) => state.setSearch);
 
+    const filters = useStore((state) => state.filters);
+    const setFilters = useStore((state) => state.setFilters);
+
     // const gameState = useStore((state) => state?.gameState);
     // const setGameState = useStore((state) => state?.setGameState);
 
@@ -179,28 +182,41 @@ function GameMenu({
                             />
                         </div>
 
-                        <div className='border p-1'>
+                        {process.env.NODE_ENV === 'development' &&
+                            <div className='local-only-content border p-1'>
 
-                            <div className='flex-header mb-1'>
+                                <div className='flex-header mb-1'>
 
-                                <span>Presets</span>
+                                    <span>Launchers</span>
 
-                                <ArticlesButton
-                                    className={``}
-                                    small
-                                >
-                                    <i className='fad fa-eraser me-0'></i>
-                                </ArticlesButton>
+                                    <ArticlesButton
+                                        className={``}
+                                        small
+                                    >
+                                        <i className='fad fa-eraser me-0'></i>
+                                    </ArticlesButton>
 
-                            </div>
+                                </div>
 
-                            <div>
-                                <ArticlesButton
-                                    className={`w-50`}
-                                    small
-                                >
-                                    Articles
-                                </ArticlesButton>
+                                <div>
+                                    {Object.keys(filters.launchers).map((launcher) => (
+                                        <ArticlesButton
+                                            key={launcher}
+                                            className={`w-50`}
+                                            small
+                                            active={filters.launchers[launcher]}
+                                            onClick={() => {
+                                                const newLaunchers = { ...filters.launchers };
+                                                newLaunchers[launcher] = !newLaunchers[launcher];
+                                                setFilters({ ...filters, launchers: newLaunchers });
+                                            }}
+                                        >
+                                            {launcher}
+                                        </ArticlesButton>
+                                    ))}
+                                </div>
+                                
+                                {/* 
                                 <ArticlesButton
                                     className={`w-50`}
                                     small
@@ -218,10 +234,10 @@ function GameMenu({
                                     small
                                 >
                                     Custom
-                                </ArticlesButton>
-                            </div>
+                                </ArticlesButton> */}
 
-                        </div>
+                            </div>
+                        }
 
                         <div>
                             Filters
@@ -451,7 +467,7 @@ function GameMenu({
 
             </div>
 
-        </div>
+        </div >
     );
 }
 

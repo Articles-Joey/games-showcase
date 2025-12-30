@@ -82,9 +82,8 @@ function FourFrogsDemo({
 
                 <group 
                     // camera={{ position: [0, 200, 200], fov: 50 }}
+                    position={[0, 0, 0]}
                 >
-
-
 
                     <group scale={0.25}>
 
@@ -126,9 +125,9 @@ function FourFrogsDemo({
                             })}
                         </group>
 
-                        <group scale={2}>
+                        {/* <group scale={2}>
                             <GrassPlane rotation={[-Math.PI / 2, 0, 0]} position={[0, 50, -800]} />
-                        </group>
+                        </group> */}
 
                         <group scale={20} position={[-420, 50, -400]}>
 

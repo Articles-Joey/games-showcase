@@ -9,6 +9,7 @@ import { useStore } from "@/hooks/useStore";
 export default function useAllGames() {
 
     const search = useStore((state) => state.search);
+    const filters = useStore((state) => state.filters);
 
     const {
         // games, 
@@ -40,15 +41,15 @@ export default function useAllGames() {
 
     return ({
         games: [
-            ...userGames || [],
-            ...steamGames || [],
-            ...epicGames || [],
+            ...filters.launchers?.User ? userGames || [] : [],
+            ...filters.launchers?.Steam ? steamGames || [] : [],
+            ...filters.launchers?.Epic ? epicGames || [] : [],
             ...publicGames || [],
         ],
         filteredGames: filtered([
-            ...userGames || [],
-            ...steamGames || [],
-            ...epicGames || [],
+            ...filters.launchers?.User ? userGames || [] : [],
+            ...filters.launchers?.Steam ? steamGames || [] : [],
+            ...filters.launchers?.Epic ? epicGames || [] : [],
             ...publicGames || [],
         ]),
         // userGameInjections,

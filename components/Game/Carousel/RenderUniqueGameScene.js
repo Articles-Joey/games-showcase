@@ -14,10 +14,12 @@ import PinballScene from "./Games/Pinball";
 // import MazeScene from "./Games/Maze";
 // import MinecraftScene from "./Games/Minecraft";
 
+const ModelTrafficCone = dynamic(() => import("../Traffic Cone").then(mod => mod.ModelTrafficCone), { ssr: false });
+
 const BleacherBox = dynamic(() => import("./Games/Race Game/BleacherBox"), { ssr: false });
 const GameGrid = dynamic(() => import("./Games/Race Game/GameGrid"), { ssr: false });
+
 const FourFrogsDemo = dynamic(() => import("./Games/Four Frogs/index"), { ssr: false });
-const ModelTrafficCone = dynamic(() => import("../Traffic Cone").then(mod => mod.ModelTrafficCone), { ssr: false });
 const FlowingChips = dynamic(() => import("./Games/Blackjack/FlowingChips"), { ssr: false });
 const AssetsGalleryScene = dynamic(() => import("./Games/Assets Gallery"), { ssr: false });
 const TowerBlocksScene = dynamic(() => import("./Games/Tower Blocks"), { ssr: false });
@@ -25,6 +27,29 @@ const CarouselOfProgressScene = dynamic(() => import("./Games/Carousel of Progre
 const MazeScene = dynamic(() => import("./Games/Maze"), { ssr: false });
 const EightBallPoolScene = dynamic(() => import("./Games/8 Ball Pool"), { ssr: false });
 const SpleefScene = dynamic(() => import("./Games/Spleef"), { ssr: false });
+const TagScene = dynamic(() => import("./Games/Tag"), { ssr: false });
+const CannonScene = dynamic(() => import("./Games/Cannon"), { ssr: false });
+const MoveMatchScene = dynamic(() => import("./Games/Move Match"), { ssr: false });
+const OceanRingsScene = dynamic(() => import("./Games/Ocean Rings"), { ssr: false });
+const BattleTrapScene = dynamic(() => import("./Games/Battle Trap"), { ssr: false });
+const PlinkoScene = dynamic(() => import("./Games/Plinko"), { ssr: false });
+const DeathRaceScene = dynamic(() => import("./Games/Death Race"), { ssr: false });
+const IceSlideScene = dynamic(() => import("./Games/Ice Slide"), { ssr: false });
+const ParkourScene = dynamic(() => import("./Games/Parkour"), { ssr: false });
+const TugOfWarScene = dynamic(() => import("./Games/Tug of War"), { ssr: false });
+const JungleVinesScene = dynamic(() => import("./Games/Jungle Vines"), { ssr: false });
+const TreasureDiveScene = dynamic(() => import("./Games/Treasure Dive"), { ssr: false });
+const MemoryGameScene = dynamic(() => import("./Games/Memory Game"), { ssr: false });
+const CatchingGameScene = dynamic(() => import("./Games/Catching Game"), { ssr: false });
+const AssassinScene = dynamic(() => import("./Games/Assassin"), { ssr: false });
+const TrashChuteScene = dynamic(() => import("./Games/Trash Chute"), { ssr: false });
+const StopTheThievesScene = dynamic(() => import("./Games/Stop the Thieves"), { ssr: false });
+const PlatformerEscapeScene = dynamic(() => import("./Games/Platformer Escape"), { ssr: false });
+const SlingshotScene = dynamic(() => import("./Games/Slingshot"), { ssr: false });
+const USATycoonScene = dynamic(() => import("./Games/USA Tycoon"), { ssr: false });
+const AMCOTMMOScene = dynamic(() => import("./Games/AMCOT MMO"), { ssr: false });
+const AMCOTSpacesScene = dynamic(() => import("./Games/AMCOT Spaces"), { ssr: false });
+const GlassCeilingScene = dynamic(() => import("./Games/Glass Ceiling"), { ssr: false });
 
 const HaloScene = dynamic(() => import("./Games/Halo"), { ssr: false });
 const FortniteScene = dynamic(() => import("./Games/Fortnite"), { ssr: false });
@@ -119,9 +144,101 @@ function RenderUniqueGameScene({
             return (
                 <MazeScene />
             );
-            case "Spleef":
+        case "Spleef":
             return (
                 <SpleefScene />
+            );
+        case "Tag":
+            return (
+                <TagScene />
+            );
+        case "Cannon":
+            return (
+                <CannonScene />
+            );
+        case "Move Match":
+            return (
+                <MoveMatchScene />
+            );
+        case "Ocean Rings":
+            return (
+                <OceanRingsScene />
+            );
+        case "Battle Trap":
+            return (
+                <BattleTrapScene />
+            );
+        case "Plinko":
+            return (
+                <PlinkoScene />
+            );
+        case "Death Race":
+            return (
+                <DeathRaceScene />
+            );
+        case "Ice Slide":
+            return (
+                <IceSlideScene />
+            );
+        case "Parkour":
+            return (
+                <ParkourScene />
+            );
+        case "Tug of War":
+            return (
+                <TugOfWarScene />
+            );
+        case "Jungle Vines":
+            return (
+                <JungleVinesScene />
+            );
+        case "Treasure Dive":
+            return (
+                <TreasureDiveScene />
+            );
+        case "Memory Game":
+            return (
+                <MemoryGameScene />
+            );
+        case "Catching Game":
+            return (
+                <CatchingGameScene />
+            );
+        case "Assassin":
+            return (
+                <AssassinScene />
+            );
+        case "Trash Chute":
+            return (
+                <TrashChuteScene />
+            );
+        case "Stop the Thieves":
+            return (
+                <StopTheThievesScene />
+            );
+        case "Platformer Escape":
+            return (
+                <PlatformerEscapeScene />
+            );
+        case "Slingshot":
+            return (
+                <SlingshotScene />
+            );
+        case "USA Tycoon":
+            return (
+                <USATycoonScene />
+            );
+        case "AMCOT MMO":
+            return (
+                <AMCOTMMOScene />
+            );
+        case "AMCOT Spaces":
+            return (
+                <AMCOTSpacesScene />
+            );
+        case "Glass Ceiling":
+            return (
+                <GlassCeilingScene />
             );
         // case "Battle Trap":
         //     return (

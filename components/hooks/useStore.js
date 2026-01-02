@@ -21,6 +21,18 @@ export const useStore = create()(
       },
       setFilters: (filters) => set({ filters }),
 
+      gameInfoModal: null,
+      setGameInfoModal: (game) => set({ gameInfoModal: game }),
+      launchGame: () => {
+
+        const game = get().gameInfoModal;
+
+        if (game?.link) {
+          window.location.href = `${game.link}?controller=1&utm_source=games.articles.media&utm_medium=carousel`;
+        }
+
+      },
+
       activeGameIndex: 0,
       setActiveGameIndex: (index) => set({ activeGameIndex: index }),
 

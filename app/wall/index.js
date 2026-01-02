@@ -21,7 +21,8 @@ export default function PageContent() {
 
         <div
             className={`games-showcase-wall-page ${isFullscreen && 'fullscreen'}`}
-            id="cannon-game-page"
+        // id="cannon-game-page"
+
         >
 
             <nav style={{
@@ -31,21 +32,36 @@ export default function PageContent() {
                 width: '100%',
                 padding: '1rem',
                 zIndex: 100,
-                // background: 'rgba(0,0,0,0.5)',
+                height: '50px',
+                background: 'rgba(0, 0, 0, 1)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem'
             }}>
-                <Link href="/" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold', textShadow: '0px 0px 5px black' }}>
+                <Link href="/" style={{
+                    color: 'white',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '1.5rem',
+                    fontWeight: 'bold',
+                    textShadow: '0px 0px 5px black'
+                }}>
                     {/* Icon placeholder */}
                     <span>🎮</span>
                     <span>Games Showcase</span>
                 </Link>
             </nav>
 
-            <div className='grid'>
+            <div
+                className='grid'
+                style={{
+                    marginTop: '50px'
+                }}
+            >
                 {publicGames?.map((game, index) => (
-                    <div 
+                    <div
                         key={game.id}
                         className='grid-item'
                     >

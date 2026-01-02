@@ -24,6 +24,8 @@ const ControllerManager = () => {
     const showSettingsModal = useStore((state) => state.showSettingsModal)
     const toggleSettingsModal = useStore((state) => state.toggleSettingsModal)
 
+    const gameInfoModal = useStore((state) => state?.gameInfoModal);
+
     const lastMoveTime = useRef(0);
     const lastHotkeyTime = useRef(0);
     const lastInputTime = useRef(0); // Added for Start button debounce
@@ -42,7 +44,7 @@ const ControllerManager = () => {
     const delayBetweenMoves = 100; // milliseconds
 
     useHotkeys(['a', 'ArrowLeft'], () => {
-        if (visible || showSettingsModal) return; // Block input if modal is open
+        if (visible || showSettingsModal || gameInfoModal) return; // Block input if modal is open
 
         const now = Date.now();
         if (now - lastHotkeyTime.current < delayBetweenMoves) return;
@@ -53,9 +55,9 @@ const ControllerManager = () => {
             playSound();
         }
 
-    }, {}, [activeGameIndex, audioSettings, visible, showSettingsModal]);
+    }, {}, [activeGameIndex, audioSettings, visible, showSettingsModal, gameInfoModal]);
     useHotkeys(['d', 'ArrowRight'], () => {
-        if (visible || showSettingsModal) return; // Block input if modal is open
+        if (visible || showSettingsModal || gameInfoModal) return; // Block input if modal is open
 
         const now = Date.now();
         if (now - lastHotkeyTime.current < delayBetweenMoves) return;
@@ -66,7 +68,7 @@ const ControllerManager = () => {
             playSound();
         }
 
-    }, {}, [activeGameIndex, activeGames, audioSettings, visible, showSettingsModal]);
+    }, {}, [activeGameIndex, activeGames, audioSettings, visible, showSettingsModal, gameInfoModal]);
 
     useFrame((state) => {
         const gamepads = navigator.getGamepads();

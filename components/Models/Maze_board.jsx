@@ -8,71 +8,206 @@ Source: https://sketchfab.com/3d-models/maze-board-0a1e67906ba14e168896208c8c778
 Title: Maze Board
 */
 
-import React, { useMemo } from 'react'
-import { useGLTF } from '@react-three/drei'
+import React, { useMemo, useState, useEffect } from 'react'
+import { useCompoundBody, useSphere } from '@react-three/cannon'
 import { useFrame } from '@react-three/fiber'
-import { useTrimesh, useSphere } from '@react-three/cannon'
 import { Vector3, Quaternion, Euler } from 'three'
+import { degToRad } from 'three/src/math/MathUtils'
+
+function generateMaze(width, height) {
+  const cells = []
+  for (let y = 0; y < height; y++) {
+    const row = []
+    for (let x = 0; x < width; x++) {
+      row.push({ x, y, visited: false, walls: { top: true, right: true, bottom: true, left: true } })
+    }
+    cells.push(row)
+  }
+
+  const stack = []
+  const start = cells[0][0]
+  start.visited = true
+  stack.push(start)
+
+  while (stack.length > 0) {
+    const current = stack.pop()
+    const neighbors = []
+
+    // Top
+    if (current.y > 0 && !cells[current.y - 1][current.x].visited) neighbors.push({ cell: cells[current.y - 1][current.x], dir: 'top' })
+    // Right
+    if (current.x < width - 1 && !cells[current.y][current.x + 1].visited) neighbors.push({ cell: cells[current.y][current.x + 1], dir: 'right' })
+    // Bottom
+    if (current.y < height - 1 && !cells[current.y + 1][current.x].visited) neighbors.push({ cell: cells[current.y + 1][current.x], dir: 'bottom' })
+    // Left
+    if (current.x > 0 && !cells[current.y][current.x - 1].visited) neighbors.push({ cell: cells[current.y][current.x - 1], dir: 'left' })
+
+    if (neighbors.length > 0) {
+      stack.push(current)
+      const next = neighbors[Math.floor(Math.random() * neighbors.length)]
+      
+      // Remove walls
+      if (next.dir === 'top') {
+        current.walls.top = false
+        next.cell.walls.bottom = false
+      } else if (next.dir === 'right') {
+        current.walls.right = false
+        next.cell.walls.left = false
+      } else if (next.dir === 'bottom') {
+        current.walls.bottom = false
+        next.cell.walls.top = false
+      } else if (next.dir === 'left') {
+        current.walls.left = false
+        next.cell.walls.right = false
+      }
+
+      next.cell.visited = true
+      stack.push(next.cell)
+    }
+  }
+
+  return cells
+}
 
 export function ModelMazeBoard({ scale = 1, ...props }) {
-  const { nodes, materials } = useGLTF('models/maze_board-transformed.glb')
-  
-  const initialPos = useMemo(() => new Vector3(-1.318, 0, 0.007), [])
-  const initialRot = useMemo(() => new Euler(-Math.PI / 2, 0, -3.136), [])
-  
-  const finalScale = scale * 0.01
+  const { shapes, mazeWidth, mazeHeight } = useMemo(() => {
+    const w = 6
+    const h = 6
+    const cellSize = 4
+    const wallHeight = 4
+    const wallThickness = 0.5
+    
+    const cells = generateMaze(w, h)
+    const shapes = []
 
-  const [pinkRef, pinkApi] = useTrimesh(() => ({
-    args: [nodes.BoardMesh_Pink_0.geometry.attributes.position.array, nodes.BoardMesh_Pink_0.geometry.index.array],
-    position: [initialPos.x, initialPos.y, initialPos.z],
-    rotation: [initialRot.x, initialRot.y, initialRot.z],
-    scale: [finalScale, finalScale, finalScale],
-    type: 'Kinematic'
-  }))
+    // Floor
+    const totalWidth = w * cellSize
+    const totalHeight = h * cellSize
+    shapes.push({
+      type: 'Box',
+      position: [0, -0.5, 0],
+      args: [totalWidth, 1, totalHeight],
+      color: '#333',
+      transparent: true,
+      opacity: 0.5
+    })
+    shapes.push({
+      type: 'Box',
+      position: [0, 4.5, 0],
+      args: [totalWidth, 1, totalHeight],
+      color: '#333',
+      transparent: true,
+      opacity: 0.5
+    })
 
-  const [blueRef, blueApi] = useTrimesh(() => ({
-    args: [nodes.BoardMesh_Blue_0.geometry.attributes.position.array, nodes.BoardMesh_Blue_0.geometry.index.array],
+    // Generate walls
+    // We only need to render Top and Left for each cell, plus Bottom for last row and Right for last col
+    // Actually, to avoid double walls, let's just iterate and add walls if they exist.
+    // But since walls are shared, we need a strategy.
+    // Strategy: Each cell owns its Right and Bottom walls.
+    // Top and Left walls of the maze are added separately.
+    
+    // Add Top Border
+    for(let x=0; x<w; x++) {
+       if(cells[0][x].walls.top) {
+         shapes.push({
+           type: 'Box',
+           position: [(x * cellSize) - (totalWidth/2) + (cellSize/2), wallHeight/2, -(totalHeight/2)],
+           args: [cellSize + wallThickness, wallHeight, wallThickness],
+           color: 'hotpink'
+         })
+       }
+    }
+    // Add Left Border
+    for(let y=0; y<h; y++) {
+       if(cells[y][0].walls.left) {
+         shapes.push({
+           type: 'Box',
+           position: [-(totalWidth/2), wallHeight/2, (y * cellSize) - (totalHeight/2) + (cellSize/2)],
+           args: [wallThickness, wallHeight, cellSize + wallThickness],
+           color: 'cyan'
+         })
+       }
+    }
+
+    cells.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        const cx = (x * cellSize) - (totalWidth/2) + (cellSize/2)
+        const cy = (y * cellSize) - (totalHeight/2) + (cellSize/2)
+
+        if (cell.walls.right) {
+           shapes.push({
+             type: 'Box',
+             position: [cx + cellSize/2, wallHeight/2, cy],
+             args: [wallThickness, wallHeight, cellSize + wallThickness],
+             color: 'cyan'
+           })
+        }
+        if (cell.walls.bottom) {
+           shapes.push({
+             type: 'Box',
+             position: [cx, wallHeight/2, cy + cellSize/2],
+             args: [cellSize + wallThickness, wallHeight, wallThickness],
+             color: 'hotpink'
+           })
+        }
+      })
+    })
+
+    return { shapes, mazeWidth: totalWidth, mazeHeight: totalHeight }
+  }, [])
+
+  const initialPos = useMemo(() => new Vector3(0, 0, 0), [])
+
+  const initialRot = useMemo(() => new Euler(-Math.PI / 2, 0, 0), []) // Flat
+
+  const [ref, api] = useCompoundBody(() => ({
+    mass: 0,
+    type: 'Kinematic',
+    shapes: shapes.map(s => ({ type: 'Box', position: s.position, args: s.args })),
     position: [initialPos.x, initialPos.y, initialPos.z],
-    rotation: [initialRot.x, initialRot.y, initialRot.z],
-    scale: [finalScale, finalScale, finalScale],
-    type: 'Kinematic'
+    ...props
   }))
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime()
-    const angle = time * 0.2
+    
+    // Rotate clockwise infinitely around Z axis (like a wheel)
+    const angle = -time * 0.3
+    const euler = new Euler(degToRad(90), angle, 0)
+    const q = new Quaternion().setFromEuler(euler)
 
-    const yAxis = new Vector3(0, 1, 0)
-    const newPos = initialPos.clone().applyAxisAngle(yAxis, angle)
-
-    const qBase = new Quaternion().setFromEuler(initialRot)
-    const qRot = new Quaternion().setFromAxisAngle(yAxis, angle)
-    const qFinal = qRot.multiply(qBase)
-
-    pinkApi.position.set(newPos.x, newPos.y, newPos.z)
-    pinkApi.quaternion.set(qFinal.x, qFinal.y, qFinal.z, qFinal.w)
-
-    blueApi.position.set(newPos.x, newPos.y, newPos.z)
-    blueApi.quaternion.set(qFinal.x, qFinal.y, qFinal.z, qFinal.w)
+    api.quaternion.set(q.x, q.y, q.z, q.w)
   })
 
   return (
-    <group {...props} dispose={null}>
-      <mesh ref={pinkRef} geometry={nodes.BoardMesh_Pink_0.geometry} material={materials.Pink} />
-      <mesh ref={blueRef} geometry={nodes.BoardMesh_Blue_0.geometry} material={materials.Blue} />
+    <group ref={ref}>
+      {shapes.map((shape, i) => (
+        <mesh key={i} position={shape.position}>
+          <boxGeometry args={shape.args} />
+          <meshStandardMaterial color={shape.color} transparent={shape.transparent} opacity={shape.opacity} />
+        </mesh>
+      ))}
     </group>
   )
 }
 
 export function MazeBall(props) {
-  const [ref] = useSphere(() => ({ mass: 1, args: [6], ...props, position: [0, 10, 0] }))
+
+  const [ref] = useSphere(() => ({
+    mass: 1,
+    args: [1.4],
+    linearDamping: 0,
+    angularDamping: 0,
+    material: { friction: 0, restitution: 0.5 },
+    ...props,
+    position: [3, 0, 0]
+  }))
 
   return (
     <mesh ref={ref} castShadow receiveShadow>
-      <sphereGeometry args={[6, 32, 32]} />
+      <sphereGeometry args={[1.4, 32, 32]} />
       <meshStandardMaterial color="yellow" />
     </mesh>
   )
 }
-
-useGLTF.preload('models/maze_board-transformed.glb')

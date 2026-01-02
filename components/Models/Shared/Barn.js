@@ -1,0 +1,14 @@
+import { useGLTF } from '@react-three/drei'
+
+const link = `${process.env.NEXT_PUBLIC_CDN}games/Cannon/Farm.glb`
+
+export default function ModelBarn(props) {
+    const { nodes, materials } = useGLTF(link)
+    return (
+        <group {...props} dispose={null}>
+            <mesh castShadow receiveShadow geometry={nodes.Farm.geometry} material={materials.Mat} />
+        </group>
+    )
+}
+
+useGLTF.preload(link)

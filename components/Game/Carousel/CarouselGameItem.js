@@ -9,6 +9,7 @@ import RenderUniqueGameScene from "./RenderUniqueGameScene";
 import Tree from "../Tree";
 import Rock from "@/components/Models/Rock";
 import GrassPlane from "./Ground";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export default function CarouselGameItem({
     game,
@@ -87,6 +88,17 @@ export default function CarouselGameItem({
     //         />
     //     )
     // }, [game?.image])
+
+    const gameInfoModal = useStore((state) => state?.gameInfoModal);
+    const setGameInfoModal = useStore((state) => state?.setGameInfoModal);
+
+    useHotkeys('enter', () => {
+        if (isActive && !gameInfoModal) {
+            console.log("Open modal", game)
+            setGameInfoModal(game);
+            // window.open(`/game/${game?.slug}`, '_blank');
+        }
+    }, [isActive, game, gameInfoModal]);
 
     const gameImage = useMemo(() => {
         if (!game?.image) return null;
@@ -176,7 +188,7 @@ export default function CarouselGameItem({
                     <planeGeometry args={[8, 18]} />
                     <meshBasicMaterial
                         ref={materialRef}
-                        color="black"
+                        color={game?.carousel?.card?.backgroundColor || "black"}
                         transparent
                         opacity={0.3}
                     />

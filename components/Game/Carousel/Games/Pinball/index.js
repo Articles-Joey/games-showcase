@@ -1,5 +1,8 @@
 // import { ModelEasel } from "@/components/Models/Easel";
-import { ModelPinballMachine } from "@/components/Models/Pinball/Pinball";
+import { 
+    ModelPinballMachine,
+    ModelPinballMachineTransformed
+} from "@/components/Models/Pinball/Pinball";
 import { degToRad } from "three/src/math/MathUtils";
 
 export default function PinballScene() {

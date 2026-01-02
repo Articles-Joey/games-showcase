@@ -19,6 +19,11 @@ const InfoModal = dynamic(
     { ssr: false }
 )
 
+const GameInfoModal = dynamic(
+    () => import('@/components/UI/GameInfoModal'),
+    { ssr: false }
+)
+
 // const GameControllerKeyboard = dynamic(
 //     () => import('@/components/GameControllerKeyboard'),
 //     { ssr: false }
@@ -34,6 +39,9 @@ export default function GlobalClientModals() {
 
     const kickedStore = useStore((state) => state?.kicked);
     const setKickedStore = useStore((state) => state?.setKicked);
+
+    const gameInfoModal = useStore((state) => state?.gameInfoModal);
+    const setGameInfoModal = useStore((state) => state?.setGameInfoModal);
 
     return (
         <>
@@ -56,6 +64,13 @@ export default function GlobalClientModals() {
                 <SettingsModal
                     show={showSettingsModal}
                     setShow={setShowSettingsModal}
+                />
+            }
+
+            {gameInfoModal &&
+                <GameInfoModal
+                    show={gameInfoModal}
+                    setShow={setGameInfoModal}
                 />
             }
 

@@ -6,6 +6,7 @@ const useGames = () => {
 
     const fetcher = async () => {
         try {
+            if (process.env.NODE_ENV === 'production') throw new Error('Production mode');
             const res = await fetch('http://localhost:3001/api/community/games');
             if (!res.ok) throw new Error('Local request failed');
             return await res.json();

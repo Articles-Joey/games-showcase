@@ -11,6 +11,8 @@ export default function MazeScene() {
         >
             <Physics
                 gravity={[0, -100, 0]}
+                // allowSleep={false}
+                // iterations={500}
                 defaultContactMaterial={{
                     // restitution: 0.5,
                     // friction: 0.1

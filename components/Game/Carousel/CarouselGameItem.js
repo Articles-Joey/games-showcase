@@ -113,7 +113,7 @@ export default function CarouselGameItem({
                 scale={1}
                 occlude
                 // zIndexRange={1000}
-                // zIndexRange={-1} 
+                zIndexRange={-1} 
                 distanceFactor={10}
 
             >

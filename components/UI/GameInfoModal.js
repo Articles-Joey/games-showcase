@@ -21,7 +21,7 @@ export default function GameInfoModal({
 
             <Modal
                 className="articles-modal game-info-modal"
-                size='lg'
+                size='xl'
                 show={showModal}
                 centered
                 scrollable
@@ -52,7 +52,7 @@ export default function GameInfoModal({
                                     src={gameInfoModal?.active_image || gameInfoModal?.image}
                                     alt={`${gameInfoModal?.name} screenshot`}
                                     style={{
-                                        objectFit: 'covera'
+                                        objectFit: 'cover'
                                     }}
                                 />
                             </div>
@@ -60,7 +60,7 @@ export default function GameInfoModal({
 
                         <div className="col-lg-6">
 
-                            <div>
+                            <div className="mb-3">
                                 {gameInfoModal?.short_description || `No description available for this game.`}
                             </div>
 
@@ -92,12 +92,24 @@ export default function GameInfoModal({
                         Close
                     </ArticlesButton>
 
-                    <ArticlesButton variant="outline-dark" onClick={() => {
-                        // setShow(false)
-                        launchGame()
-                    }}>
-                        Launch
-                    </ArticlesButton>
+                    <div>
+
+                        {gameInfoModal?.link &&
+                            <span
+                                className="me-3"
+                            >
+                                {gameInfoModal?.link.replace('https://', '')}
+                            </span>
+                        }
+
+                        <ArticlesButton variant="outline-dark" onClick={() => {
+                            // setShow(false)
+                            launchGame()
+                        }}>
+                            Launch
+                        </ArticlesButton>
+
+                    </div>
 
                 </Modal.Footer>
 

@@ -201,7 +201,8 @@ export function MazeBall(props) {
     angularDamping: 0,
     material: { friction: 0, restitution: 0.5 },
     ...props,
-    position: [3, 0, 0]
+    position: [3, 0, 0],
+    type: 'Dynamic'
   }))
 
   return (

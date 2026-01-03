@@ -17,11 +17,11 @@ function PlinkoBall({ startPos }) {
         material: { restitution: 0.6, friction: 0.1 }
     }));
 
+    const pos = useRef([0, 0, 0]);
+    useEffect(() => api.position.subscribe((v) => (pos.current = v)), [api.position]);
+
     useFrame(() => {
-        if (!ref.current) return;
-        const currentPos = ref.current.position;
-        // Reset if falls below
-        if (currentPos.y < - (ROWS * GAP) / 2 - 5) {
+        if (pos.current[1] < - (ROWS * GAP) / 2 - 5) {
             api.position.set(0, (ROWS * GAP) / 2 + 3, 0);
             api.velocity.set((Math.random() - 0.5) * 2, 0, 0);
             api.angularVelocity.set(0, 0, 0);

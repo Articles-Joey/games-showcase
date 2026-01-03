@@ -16,7 +16,7 @@ export const useStore = create()(
           'Itch.io': process.env.NODE_ENV === 'development' ? true : false,
           'GOG': process.env.NODE_ENV === 'development' ? true : false,
           // 'Custom': true,
-          'User': true,
+          'User': process.env.NODE_ENV === 'development' ? true : false,
         },
       },
       setFilters: (filters) => set({ filters }),

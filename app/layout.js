@@ -1,5 +1,3 @@
-// import { Geist, Geist_Mono } from "next/font/google";
-
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,33 +5,13 @@ import theme from '@/components/theme';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// import "./globals.css";
 import "@/styles/index.scss";
-// import SocketLogicHandler from "@/components/SocketLogicHandler";
-// import PeerHandler from '@/components/PeerHandler';
+
 import AudioHandler from '@/components/AudioHandler';
-// import PeerHandlerTest from '@/components/PeerHandlerTest';
 import GlobalClientModals from '@/components/UI/GlobalClientModals';
 import DarkModeHandler from '@/components/UI/DarkModeHandler';
 import { Suspense } from 'react';
-// import CustomControlsLogic from '@/components/Game/CustomControlsLogic';
-// import dynamic from 'next/dynamic';
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-// import InfoModal from '@/components/UI/InfoModal';
-// const InfoModal = dynamic(
-//     () => import('@/components/UI/InfoModal'),
-//     { ssr: false }
-// )
 
 export const metadata = {
   title: "Games Showcase",
@@ -49,7 +27,7 @@ export default function RootLayout({ children }) {
 
         <link
           rel="stylesheet"
-          href={`${process.env.NEXT_PUBLIC_CDN}fonts/fontawsome/css/all.min.css`}
+          href={`${process.env.NEXT_PUBLIC_CDN}fonts/fontawesome/css/all.min.css`}
         />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,11 +41,6 @@ export default function RootLayout({ children }) {
         id="carousel-game-page"
       // className={`${geistSans.variable} ${geistMono.variable}`}
       >
-
-        {/* <SocketLogicHandler /> */}
-        {/* <PeerHandler /> */}
-        {/* <PeerHandlerTest /> */}
-        {/* <CustomControlsLogic /> */}
 
         <Suspense>
           <AudioHandler />

@@ -31,23 +31,10 @@ export default function PageContent() {
 
         <div
             className={`games-showcase-wall-page ${isFullscreen && 'fullscreen'}`}
-            // id="cannon-game-page"
+        // id="cannon-game-page"
         >
 
-            <nav style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                padding: '1rem',
-                zIndex: 100,
-                height: '50px',
-                background: 'rgba(0, 0, 0, 1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '1rem'
-            }}>
+            <nav>
                 <Link href="/" style={{
                     color: 'white',
                     textDecoration: 'none',
@@ -65,12 +52,19 @@ export default function PageContent() {
                     <span>{filteredGames?.length} games</span>
                 </Link>
 
-                <div>
+                <div className='d-flex'>
                     <input
                         placeholder='Search'
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
+                    <ArticlesButton
+                        onClick={() => {
+                            setSearch("");
+                        }}
+                    >
+                        <i className='fad fa-times'></i>
+                    </ArticlesButton>
                 </div>
 
             </nav>
@@ -78,7 +72,7 @@ export default function PageContent() {
             <div
                 className='grid'
                 style={{
-                    marginTop: '50px'
+                    
                 }}
             >
                 {filteredGames?.map((game, index) => (

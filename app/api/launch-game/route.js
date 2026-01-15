@@ -3,6 +3,15 @@ import { exec } from 'child_process';
 import path from 'path';
 
 export async function POST(req) {
+
+    if (process.env.NODE_ENV !== 'development') {
+        return NextResponse.json({
+            message: "Only available in development mode."
+        }, {
+            status: 403
+        });
+    }
+    
     try {
         const { location } = await req.json();
         console.log("Received location:", location);

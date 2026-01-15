@@ -236,7 +236,7 @@ export default function LandingPage() {
 
                 <div className="card card-articles card-sm mb-5">
 
-                    <div className="card-header d-flex align-items-center">
+                    <div className="card-header d-flex align-items-center justify-content-center">
 
                         Select Launcher Mode
 
@@ -251,11 +251,11 @@ export default function LandingPage() {
                                     <Popover.Body
                                         className="py-2"
                                     >
-                                        <div className="mb-1">
+                                        {/* <div className="mb-1">
                                             <span className='badge bg-success'>
                                                 ...
                                             </span>
-                                        </div>
+                                        </div> */}
                                         <span>
                                             Browse and launch games just how they are showed via articles.media.
                                         </span>
@@ -284,11 +284,11 @@ export default function LandingPage() {
                                     <Popover.Body
                                         className="py-2"
                                     >
-                                        <div className="mb-1">
+                                        {/* <div className="mb-1">
                                             <span className='badge bg-success'>
                                                 ...
                                             </span>
-                                        </div>
+                                        </div> */}
                                         <span>
                                             Browse and launch games in a 3D carousel environment.
                                         </span>
@@ -317,11 +317,11 @@ export default function LandingPage() {
                                     <Popover.Body
                                         className="py-2"
                                     >
-                                        <div className="mb-1">
+                                        {/* <div className="mb-1">
                                             <span className='badge bg-success'>
                                                 ...
                                             </span>
-                                        </div>
+                                        </div> */}
                                         <span>
                                             Browse and launch games in a 2D scrolling wall environment.
                                         </span>

@@ -5,7 +5,7 @@
     "name": "ArticlesJoey"
   },
   "homepage": "https://games.articles.media",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": false,
   "scripts": {
     "dev": "next dev --webpack -p 3048",

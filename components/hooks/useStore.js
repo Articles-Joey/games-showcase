@@ -5,7 +5,7 @@ export const useStore = create()(
   persist(
     (set, get, store) => ({
 
-      landingAnimation: false,
+      landingAnimation: true,
       setLandingAnimation: (value) => set({ landingAnimation: value }),
 
       search: "",
@@ -130,6 +130,20 @@ export const useStore = create()(
     {
       name: 'games-showcase-storage', // name of the item in the storage (must be unique)
       version: 1,
+      partialize: (state) =>
+        Object.fromEntries(
+          Object.entries(state).filter(([key]) => ![
+            // Exclude list of keys to not persist
+            // 'search',
+            // 'filters',
+            'activeGameIndex',
+            'gameInfoModal',
+            'infoModal',
+            'settingsModal',
+            'creditsModal',
+            'showMenu'
+          ].includes(key))
+        ),
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ),

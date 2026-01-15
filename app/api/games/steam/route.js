@@ -25,18 +25,18 @@ function getSteamGames(libraryPath) {
     files.forEach(file => {
         if (file.startsWith('appmanifest_') && file.endsWith('.acf')) {
             const content = fs.readFileSync(path.join(libraryPath, file), 'utf8');
-            
+
             // Simple Regex to grab name and ID without a full VDF parser
             const nameMatch = content.match(/"name"\s+"(.+)"/);
             const idMatch = content.match(/"appid"\s+"(\d+)"/);
-            
+
             if (nameMatch && idMatch) {
                 const appId = idMatch[1];
                 const gameCacheFiles = cacheFiles.filter(f => f.startsWith(`${appId}_`));
 
                 let imageBase64 = null;
                 const headerFilename = gameCacheFiles.find(f => f.endsWith('_header.jpg'));
-                
+
                 if (headerFilename) {
                     const imagePath = path.join(path.dirname(libraryPath), 'appcache', 'librarycache', headerFilename);
                     try {
@@ -62,9 +62,17 @@ function getSteamGames(libraryPath) {
 
 export async function GET(request) {
 
-  const cookies = request.cookies ? Object.fromEntries(request.cookies) : {};
+    if (process.env.NODE_ENV !== 'development') {
+        return NextResponse.json({
+            message: "Only available in development mode."
+        }, {
+            status: 403
+        });
+    }
 
-  const games = getSteamGames(steamPath);
+    const cookies = request.cookies ? Object.fromEntries(request.cookies) : {};
 
-  return NextResponse.json({ games });
+    const games = getSteamGames(steamPath);
+
+    return NextResponse.json({ games });
 }

@@ -4,6 +4,8 @@
 
 A 3D collection of games I developed, this serves as a portfolio/another 3D example project/game launcher.
 
+This started as a portfolio and launcher for games published by Articles Media. Primary goal is portfolio/launcher. Secondary goals is being able to use the launcher locally for other game stores as well.
+
 ## Getting Started
 
 First, run the development server:

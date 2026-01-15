@@ -9,11 +9,21 @@ import ArticlesButton from '@/components/UI/Button';
 
 import useFullscreen from '@/components/hooks/useFullScreen';
 
-import useGames from '@/components/hooks/useGames';
+// import useGames from '@/components/hooks/useGames';
+import useAllGames from '@/components/hooks/useAllGames';
+import { useStore } from '@/components/hooks/useStore';
 
 export default function PageContent() {
 
-    const { games, publicGames } = useGames();
+    // const { games, publicGames } = useGames();
+
+    const {
+        games: allGames,
+        filteredGames,
+    } = useAllGames();
+
+    const search = useStore((state) => state.search);
+    const setSearch = useStore((state) => state.setSearch);
 
     const { isFullscreen, requestFullscreen, exitFullscreen } = useFullscreen();
 
@@ -21,8 +31,7 @@ export default function PageContent() {
 
         <div
             className={`games-showcase-wall-page ${isFullscreen && 'fullscreen'}`}
-        // id="cannon-game-page"
-
+            // id="cannon-game-page"
         >
 
             <nav style={{
@@ -36,6 +45,7 @@ export default function PageContent() {
                 background: 'rgba(0, 0, 0, 1)',
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'space-between',
                 gap: '1rem'
             }}>
                 <Link href="/" style={{
@@ -51,7 +61,18 @@ export default function PageContent() {
                     {/* Icon placeholder */}
                     <span>🎮</span>
                     <span>Games Showcase</span>
+                    <span> - </span>
+                    <span>{filteredGames?.length} games</span>
                 </Link>
+
+                <div>
+                    <input
+                        placeholder='Search'
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </div>
+
             </nav>
 
             <div
@@ -60,17 +81,53 @@ export default function PageContent() {
                     marginTop: '50px'
                 }}
             >
-                {publicGames?.map((game, index) => (
-                    <div
-                        key={game.id}
-                        className='grid-item'
-                    >
-                        <div className='ratio ratio-1x1'>
-                            <img src={game.image} alt={game.name} width={200} />
-                        </div>
-                        {game.name}
-                    </div>
+                {filteredGames?.map((game, index) => (
+                    <GridItem
+                        key={game.name}
+                        game={game}
+                    />
                 ))}
+            </div>
+
+        </div>
+    );
+}
+
+function GridItem({
+    game
+}) {
+
+    return (
+        <div
+            key={game.id}
+            className='grid-item'
+        >
+
+            <div className='ratio ratio-1x1 mb-2'>
+                <img src={game.image} alt={game.name} width={200} style={{ objectFit: 'cover' }} />
+            </div>
+
+            <div className='h5'>{game.name}</div>
+
+            <div className='small mb-2'>
+                {game.short_description?.length > 100
+                    ? `${game.short_description.substring(0, 90)}...`
+                    : game.short_description}
+            </div>
+
+            <div className='mt-auto'>
+                <a href={game.url} target="_blank" rel="noopener noreferrer">
+                    <ArticlesButton>
+                        <i className='fad fa-info-circle'></i>
+                        Details
+                    </ArticlesButton>
+                </a>
+                <a href={game.url} target="_blank" rel="noopener noreferrer">
+                    <ArticlesButton>
+                        <i className='fad fa-play'></i>
+                        Play
+                    </ArticlesButton>
+                </a>
             </div>
 
         </div>

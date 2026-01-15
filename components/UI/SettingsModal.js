@@ -43,6 +43,9 @@ export default function SettingsModal({
 
     const [listenForKey, setListenForKey] = useState(false)
 
+    const landingAnimation = useStore((state) => state.landingAnimation)
+    const setLandingAnimation = useStore((state) => state.setLandingAnimation)
+
     useEffect(() => {
         if (listenForKey) {
             const handleKeyDown = (e) => {
@@ -165,47 +168,87 @@ export default function SettingsModal({
 
                         {tab == 'Graphics' &&
                             <>
-                                <div className="mx-2">Render Unique Game Scene Range</div>
 
-                                <div className='d-flex m-2 mb-3'>
+                                <div className="mb-3">
+                                    <div className="mx-2">Render Unique Game Scene Range</div>
 
-                                    <ArticlesButton
-                                        small
-                                        className="w-50"
-                                        // active={!audioSettings?.enabled}
-                                        onClick={() => {
-                                            setRenderUniqueGameSceneRange(renderUniqueGameSceneRange - 1)
-                                        }}
-                                    >
-                                        <i className="fad fa-arrow-down"></i>
-                                    </ArticlesButton>
+                                    <div className='d-flex m-2 mb-3'>
 
-                                    <ArticlesButton
-                                        small
-                                        className="w-50"
-                                        // active={audioSettings?.enabled}
-                                        onClick={() => {
-                                            // setAudioSettings({
-                                            //     ...audioSettings,
-                                            //     enabled: true
-                                            // })
-                                        }}
-                                    >
-                                        {renderUniqueGameSceneRange}
-                                    </ArticlesButton>
+                                        <ArticlesButton
+                                            small
+                                            className="w-50"
+                                            // active={!audioSettings?.enabled}
+                                            onClick={() => {
+                                                setRenderUniqueGameSceneRange(renderUniqueGameSceneRange - 1)
+                                            }}
+                                        >
+                                            <i className="fad fa-arrow-down"></i>
+                                        </ArticlesButton>
 
-                                    <ArticlesButton
-                                        small
-                                        className="w-50"
-                                        // active={audioSettings?.enabled}
-                                        onClick={() => {
-                                            setRenderUniqueGameSceneRange(renderUniqueGameSceneRange + 1)
-                                        }}
-                                    >
-                                        <i className="fad fa-arrow-up"></i>
-                                    </ArticlesButton>
+                                        <ArticlesButton
+                                            small
+                                            className="w-50"
+                                            // active={audioSettings?.enabled}
+                                            onClick={() => {
+                                                // setAudioSettings({
+                                                //     ...audioSettings,
+                                                //     enabled: true
+                                                // })
+                                            }}
+                                        >
+                                            {renderUniqueGameSceneRange}
+                                        </ArticlesButton>
 
+                                        <ArticlesButton
+                                            small
+                                            className="w-50"
+                                            // active={audioSettings?.enabled}
+                                            onClick={() => {
+                                                setRenderUniqueGameSceneRange(renderUniqueGameSceneRange + 1)
+                                            }}
+                                        >
+                                            <i className="fad fa-arrow-up"></i>
+                                        </ArticlesButton>
+
+                                    </div>
                                 </div>
+
+                                <div className="mb-3 mx-4">
+                                    <div className="d-flex align-items-center">
+                                        <Form.Check
+                                            type="switch"
+                                            id="dark-mode-switch"
+                                            label="Dark Mode"
+                                            // value={enabled}
+                                            checked={darkMode}
+                                            onChange={() => {
+                                                toggleDarkMode();
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="small mt-2">
+                                        {`Dark Mode changes the game's color scheme to be easier on the eyes in low light environments.`}
+                                    </div>
+                                </div>
+
+                                <div className="mb-3 mx-4">
+                                    <div className="d-flex align-items-center">
+                                        <Form.Check
+                                            type="switch"
+                                            id="synthwave-switch"
+                                            label="Synthwave Animation"
+                                            // value={enabled}
+                                            checked={landingAnimation}
+                                            onChange={() => {
+                                                setLandingAnimation(!landingAnimation);
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="small mt-2">
+                                        {`Shows a Synthwave animation on the landing page.`}
+                                    </div>
+                                </div>
+
                             </>
                         }
 
@@ -332,27 +375,9 @@ export default function SettingsModal({
                                 />
                             </>
                         }
-                        
+
                         {tab == 'Other' &&
                             <div className="mx-4 pt-3">
-
-                                <div className="mb-3">
-                                    <div className="d-flex align-items-center">
-                                        <Form.Check
-                                            type="switch"
-                                            id="dark-mode-switch"
-                                            label="Dark Mode"
-                                            // value={enabled}
-                                            checked={darkMode}
-                                            onChange={() => {
-                                                toggleDarkMode();
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="small mt-2">
-                                        {`Dark Mode changes the game's color scheme to be easier on the eyes in low light environments.`}
-                                    </div>
-                                </div>
 
                                 {/* <hr />
 
@@ -384,28 +409,30 @@ export default function SettingsModal({
                     {/* <div></div> */}
 
 
-                    <div>
+                    {/* <div> */}
 
-                        <ArticlesButton
-                            variant="outline-dark"
-                            onClick={() => {
-                                setShow(false)
-                            }}
-                        >
-                            Close
-                        </ArticlesButton>
+                    <ArticlesButton
+                        variant="outline-danger"
+                        onClick={() => {
+                            reset()
+                            // setShow(false)
+                        }}
+                    >
+                        Reset
+                    </ArticlesButton>
 
-                        <ArticlesButton
-                            variant="outline-danger ms-3"
-                            onClick={() => {
-                                reset()
-                                // setShow(false)
-                            }}
-                        >
-                            Reset
-                        </ArticlesButton>
+                    <ArticlesButton
+                        variant="outline-dark"
+                        onClick={() => {
+                            setShow(false)
+                        }}
+                    >
+                        Close
+                    </ArticlesButton>
 
-                    </div>
+
+
+                    {/* </div> */}
 
 
                     {/* <ArticlesButton variant="success" onClick={() => setValue(false)}>

@@ -43,7 +43,7 @@ export default function CreditsModal({
 
                     <div>Attributions:</div>
                     <a
-                        href="https://github.com/Articles-Joey/race-game/blob/main/README.md"
+                        href="https://github.com/Articles-Joey/games-showcase/blob/main/README.md"
                         target="_blank"
                         rel="noopener noreferrer"
                     >

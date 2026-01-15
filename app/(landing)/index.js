@@ -7,9 +7,9 @@ import dynamic from 'next/dynamic'
 
 // import { useSelector, useDispatch } from 'react-redux'
 
-const ChromePicker = dynamic(() => import('react-color'), {
-    ssr: false,
-});
+// const ChromePicker = dynamic(() => import('react-color'), {
+//     ssr: false,
+// });
 
 // import useUserDetails from '@/components/hooks/user/useUserDetails';
 // import useUserToken from '@/components/hooks/user/useUserToken';
@@ -28,55 +28,57 @@ import ArticlesButton from '@/components/UI/Button';
 //     ssr: false,
 // });
 
-const Viewer = dynamic(
-    () => import('@/components/Game/Viewer'),
-    { ssr: false }
-)
+// const Viewer = dynamic(
+//     () => import('@/components/Game/Viewer'),
+//     { ssr: false }
+// )
 
-const Duck = dynamic(
-    () => import('@/components/Game/PlayerModels/Duck'),
-    { ssr: false }
-)
+// const Duck = dynamic(
+//     () => import('@/components/Game/PlayerModels/Duck'),
+//     { ssr: false }
+// )
 
-const Dog = dynamic(
-    () => import('@/components/Game/PlayerModels/Dog'),
-    { ssr: false }
-)
+// const Dog = dynamic(
+//     () => import('@/components/Game/PlayerModels/Dog'),
+//     { ssr: false }
+// )
 
-const Bear = dynamic(
-    () => import('@/components/Game/PlayerModels/Bear'),
-    { ssr: false }
-)
+// const Bear = dynamic(
+//     () => import('@/components/Game/PlayerModels/Bear'),
+//     { ssr: false }
+// )
 
-const Witch = dynamic(
-    () => import('@/components/Game/PlayerModels/Witch'),
-    { ssr: false }
-)
+// const Witch = dynamic(
+//     () => import('@/components/Game/PlayerModels/Witch'),
+//     { ssr: false }
+// )
 
 // import SingleInput from '@/components/Articles/SingleInput';
-import IsDev from '@/components/UI/IsDev';
+// import IsDev from '@/components/UI/IsDev';
 import { useSocketStore } from '@/components/hooks/useSocketStore';
 // import ArticlesAd from '@/components/ArticlesAd';
 import CreditsModal from '@/components/UI/CreditsModal';
-import { Settings } from '@mui/icons-material';
+// import { Settings } from '@mui/icons-material';
 
 import { useStore } from '@/components/hooks/useStore';
 // import usePeerConnection from '@/components/hooks/usePeerConnection';
 // import PeerLogic from '@/components/PeerLogic';
 
-
-
-const LoginInfoModal = dynamic(
-    () => import('@/components/UI/LoginInfoModal'),
-    { ssr: false }
-)
+// const LoginInfoModal = dynamic(
+//     () => import('@/components/UI/LoginInfoModal'),
+//     { ssr: false }
+// )
 
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
-const assets_src = 'games/Race Game/'
+// import SynthwaveAnimation from '@/components/Game/Synthwave/SynthwaveAnimation';
+const SynthwaveAnimation = dynamic(
+    () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
+    { ssr: false }
+)
 
-export default function RaceGameLandingPage() {
+export default function LandingPage() {
 
     // const peerId = usePeerConnection((state) => state?.peerId);
 
@@ -92,6 +94,9 @@ export default function RaceGameLandingPage() {
 
     const loginInfoModal = useStore((state) => state.loginInfoModal)
     const toggleLoginInfoModal = useStore((state) => state.toggleLoginInfoModal)
+
+    const landingAnimation = useStore((state) => state.landingAnimation)
+    const setLandingAnimation = useStore((state) => state.setLandingAnimation)
 
     const infoModal = useStore((state) => state.infoModal)
     const setInfoModal = useStore((state) => state.setInfoModal)
@@ -181,7 +186,7 @@ export default function RaceGameLandingPage() {
 
     return (
 
-        <div className="race-game-landing-page">
+        <div className="landing-page">
 
             {showCreditsModal &&
                 <CreditsModal
@@ -193,7 +198,8 @@ export default function RaceGameLandingPage() {
             <div className='background-wrap'>
                 <Image
                     // src={`${process.env.NEXT_PUBLIC_CDN}games/Race Game/background.jpg`}
-                    src={`/img/preview.webp`}
+                    // src={`/img/preview.webp`}
+                    src={`https://cdn.articles.media/games/synth.jpg`}
                     fill
                     alt=""
                     style={{
@@ -203,9 +209,32 @@ export default function RaceGameLandingPage() {
                 />
             </div>
 
-            <div className="container d-flex flex-column-reverse flex-lg-row justify-content-center align-items-center">
+            {landingAnimation &&
+                <div
+                    className='synthwave-animation'
+                >
+                    <SynthwaveAnimation />
+                </div>
+            }
 
-                <div className="card card-articles card-sm" style={{ "width": "20rem" }}>
+            <div 
+                className="container d-flex flex-column justify-content-center align-items-center"
+                style={{ "width": "20rem" }}
+            >                
+
+                <img 
+                    src={"img/icon.svg"}
+                    width={200}
+                    className='landing-logo-image'
+                />
+
+                <div
+                    className='landing-title tiny5-regular'
+                >
+                    games.articles.media
+                </div>
+
+                <div className="card card-articles card-sm mb-5">
 
                     <div className="card-header d-flex align-items-center">
 
@@ -375,9 +404,35 @@ export default function RaceGameLandingPage() {
                             Settings
                         </ArticlesButton>
 
+                        <ArticlesButton
+                            className={`w-50 landing-animation-toggle-button`}
+                            small
+                            onClick={() => {
+                                setLandingAnimation(!landingAnimation)
+                            }}
+                        >
+                            <i className="fad fa-camera"></i>
+                            {landingAnimation ? 'Disable' : 'Enable'} Animation
+                        </ArticlesButton>
+
                     </div>
 
                 </div>
+
+                <Link
+                    href="https://articles.media&utm_source=games.articles.media&utm_medium=landing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <ArticlesButton className="visit-articles-button">
+                        <img 
+                            src={"https://cdn.articles.media/profile_photos/starter/articles.jpg"}
+                            width={10}
+                            className='me-3'
+                        />
+                        Visit articles.media
+                    </ArticlesButton>
+                </Link>
 
             </div>
         </div >

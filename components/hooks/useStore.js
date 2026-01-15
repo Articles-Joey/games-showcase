@@ -5,6 +5,9 @@ export const useStore = create()(
   persist(
     (set, get, store) => ({
 
+      landingAnimation: false,
+      setLandingAnimation: (value) => set({ landingAnimation: value }),
+
       search: "",
       setSearch: (search) => set({ search }),
 

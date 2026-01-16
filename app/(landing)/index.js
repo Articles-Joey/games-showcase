@@ -72,6 +72,10 @@ import { useStore } from '@/components/hooks/useStore';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
+// import '@articles-media/articles-gamepad-helper/style.css';
+
+import PieMenu from '@articles-media/articles-gamepad-helper/PieMenu';
+
 // import SynthwaveAnimation from '@/components/Game/Synthwave/SynthwaveAnimation';
 const SynthwaveAnimation = dynamic(
     () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
@@ -187,6 +191,8 @@ export default function LandingPage() {
     return (
 
         <div className="landing-page">
+
+            <PieMenu />
 
             {showCreditsModal &&
                 <CreditsModal

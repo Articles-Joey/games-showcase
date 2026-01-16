@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useContext, useState, useRef, useMemo } from 'react';
+import { useEffect, useContext, useState, useRef, useMemo, lazy } from 'react';
 
 // import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic'
@@ -25,6 +25,9 @@ const GameCanvas = dynamic(() => import('@/components/Game/GameCanvas'), {
     ssr: false,
 });
 
+import GamepadKeyboard from "@articles-media/articles-gamepad-helper/GamepadKeyboard"
+// const GamepadKeyboard = lazy(() => import('@articles-media/articles-gamepad-helper/GamepadKeyboard'));
+
 export default function PageContent() {
 
     // const {
@@ -47,7 +50,7 @@ export default function PageContent() {
 
     // const [ cameraMode, setCameraMode ] = useState('Player')
 
-    const [players, setPlayers] = useState([])
+    // const [players, setPlayers] = useState([])
 
     // useEffect(() => {
 
@@ -87,7 +90,7 @@ export default function PageContent() {
 
     const [sceneKey, setSceneKey] = useState(0);
 
-    const [gameState, setGameState] = useState(false)
+    // const [gameState, setGameState] = useState(false)
 
     // Function to handle scene reload
     const reloadScene = () => {
@@ -115,15 +118,14 @@ export default function PageContent() {
         // setShowMenu
     }
 
-    const game_name = 'Cannon'
-    const game_key = 'cannon'
-
     return (
 
         <div
             className={`games-showcase-carousel-page carousel-game-page ${isFullscreen && 'fullscreen'}`}
             
         >
+
+            <GamepadKeyboard />
 
             <div className="menu-bar card card-articles p-1 justify-content-center">
 

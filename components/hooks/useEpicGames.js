@@ -1,7 +1,12 @@
 import useSWR from 'swr';
 import { useState } from 'react';
+import useUserGameInjections from './useUserGameInjections';
 
 const useEpicGames = () => {
+
+    const {
+        games: userGameInjections
+    } = useUserGameInjections();
 
     // const [isRemote, setIsRemote] = useState(false);
 
@@ -11,7 +16,7 @@ const useEpicGames = () => {
         return await res.json();
     }
 
-    const { data, error, isLoading } = useSWR(process.env.NODE_ENV === 'development' ? 'http://localhost:3048/api/games/epic' : null, fetcher, {
+    const { data, error, isLoading } = useSWR(process.env.NODE_ENV === 'development' ? 'http://localhost:3048/api/games/epic-games' : null, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false

@@ -6,6 +6,8 @@ import { Modal } from "react-bootstrap"
 import ArticlesButton from "./Button";
 import { useStore } from "../hooks/useStore";
 
+import XboxIcons from '@articles-media/articles-gamepad-helper/XboxIcons';
+
 export default function GameInfoModal({
     show,
     setShow,
@@ -86,10 +88,15 @@ export default function GameInfoModal({
 
                 <Modal.Footer className="justify-content-between">
 
-                    <ArticlesButton variant="outline-dark" onClick={() => {
-                        setShow(false)
-                    }}>
-                        Close
+                    <ArticlesButton
+                        className="d-flex align-items-center"
+                        variant="outline-dark"
+                        onClick={() => {
+                            setShow(false)
+                        }}
+                    >
+                        <img width={20} src={XboxIcons.B}></img>
+                        <span className="ms-2">Close</span>
                     </ArticlesButton>
 
                     <div>
@@ -102,11 +109,16 @@ export default function GameInfoModal({
                             </span>
                         }
 
-                        <ArticlesButton variant="outline-dark" onClick={() => {
-                            // setShow(false)
-                            launchGame()
-                        }}>
-                            Launch
+                        <ArticlesButton
+                            className="d-inline-flex align-items-center"
+                            variant="outline-dark"
+                            onClick={() => {
+                                // setShow(false)
+                                launchGame()
+                            }}
+                        >
+                            <img width={20} src={XboxIcons.A}></img>
+                            <span className="ms-2">Launch</span>
                         </ArticlesButton>
 
                     </div>

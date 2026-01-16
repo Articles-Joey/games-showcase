@@ -35,10 +35,15 @@ export async function GET(request) {
     if (process.env.NODE_ENV !== 'development') {
         return NextResponse.json({
             message: "Only available in development mode."
-         }, {
+        }, {
             status: 403
-         });
+        });
     }
+
+    // Temp
+    return NextResponse.json({
+        games: []
+    });
 
     const cookies = request.cookies ? Object.fromEntries(request.cookies) : {};
 

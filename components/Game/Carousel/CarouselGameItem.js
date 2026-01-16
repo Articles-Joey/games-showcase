@@ -101,7 +101,14 @@ export default function CarouselGameItem({
     }, [isActive, game, gameInfoModal]);
 
     const gameImage = useMemo(() => {
+
         if (!game?.image) return null;
+
+        if (
+            (gameInfoModal?.name === game?.name)
+            &&
+            gameInfoModal
+        ) return null;
 
         const imageSrc = (showActiveImage && game?.active_image) ? game.active_image : game.image;
 
@@ -130,7 +137,7 @@ export default function CarouselGameItem({
                 />
             </Html>
         )
-    }, [game?.image, game?.active_image, showActiveImage])
+    }, [game?.image, game?.active_image, showActiveImage, gameInfoModal])
 
     if (Math.abs(activeGameIndex - i) >= 15) return null;
 

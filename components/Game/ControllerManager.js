@@ -4,7 +4,10 @@ import { memo, useRef } from "react";
 
 import { useHotkeys } from "react-hotkeys-hook";
 import useGames from "../hooks/useGames";
-import useGameControllerKeyboardStore from "../hooks/useGameControllerKeyboardStore";
+
+// import useGameControllerKeyboardStore from "../hooks/useGameControllerKeyboardStore";
+import useGameControllerKeyboardStore from "@articles-media/articles-gamepad-helper/useGameControllerKeyboardStore";
+
 import useAllGames from "../hooks/useAllGames";
 
 const ControllerManager = () => {
@@ -15,6 +18,7 @@ const ControllerManager = () => {
     let activeGames = allGames;
 
     const visible = useGameControllerKeyboardStore((state) => state.visible);
+    // const visible = false
 
     const audioSettings = useStore((state) => state?.audioSettings);
 
@@ -25,11 +29,14 @@ const ControllerManager = () => {
     const toggleSettingsModal = useStore((state) => state.toggleSettingsModal)
 
     const gameInfoModal = useStore((state) => state?.gameInfoModal);
+    const setGameInfoModal = useStore((state) => state?.setGameInfoModal);
 
     const lastMoveTime = useRef(0);
     const lastHotkeyTime = useRef(0);
     const lastInputTime = useRef(0); // Added for Start button debounce
     const prevButton0 = useRef(false); // Track previous state of Button A
+    const prevButton1 = useRef(false); // Track previous state of Button B
+    const prevButton2 = useRef(false); // Track previous state of Button X
     const audioRef = useRef(typeof Audio !== "undefined" ? new Audio("/audio/noisy-switch.mp3") : null);
     // const audioRef = useRef(typeof Audio !== "undefined" ? new Audio("/audio/noisy-switch.mp3") : null);
 
@@ -128,15 +135,41 @@ const ControllerManager = () => {
                         const data = response.json();
                         console.log("Launch response data:", data);
 
-                        exitFullscreen();
+                        // exitFullscreen();
 
                     });
                 }
 
             }
-            // Call your function here
         }
         prevButton0.current = button0;
+
+        // Detect 'B' Button (Index 1) Press
+        const button1 = gp.buttons[1]?.pressed;
+        if (button1 && !prevButton1.current) {
+            if (gameInfoModal) {
+                console.log("B Button Pressed! Closing modal.");
+                setGameInfoModal(false);
+                playSound();
+            }
+        }
+        prevButton1.current = button1;
+
+        // Detect 'X' Button (Index 2) Press
+        const button2 = gp.buttons[2]?.pressed;
+        if (button2 && !prevButton2.current) {
+            console.log("X Button Pressed!", activeGameIndex);
+            playSound();
+
+            if (activeGames && activeGames[activeGameIndex]) {
+                const selectedGame = activeGames[activeGameIndex];
+                console.log("Selected Game:", selectedGame);
+
+                setGameInfoModal(selectedGame);
+
+            }
+        }
+        prevButton2.current = button2;
 
         // Standard mapping: 14=Left, 15=Right
         const leftPressed = gp.buttons[14]?.pressed;

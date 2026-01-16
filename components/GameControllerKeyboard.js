@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import useGameControllerKeyboardStore from './hooks/useGameControllerKeyboardStore';
-import { useStore } from '@/hooks/useStore';
 
 const KEYS = [
     ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
@@ -15,8 +14,6 @@ const GameControllerKeyboard = ({ onFinish, onCancel }) => {
 
     const visible = useGameControllerKeyboardStore((state) => state.visible);
     const setVisible = useGameControllerKeyboardStore((state) => state.setVisible);
-
-
 
     // const [isVisible, setIsVisible] = useState(false);
 

@@ -11,7 +11,7 @@ import AudioHandler from '@/components/AudioHandler';
 import GlobalClientModals from '@/components/UI/GlobalClientModals';
 import DarkModeHandler from '@/components/UI/DarkModeHandler';
 import { Suspense } from 'react';
-
+import LayoutClient from './layout-client';
 
 export const metadata = {
   title: "Games Showcase",
@@ -25,13 +25,13 @@ export default function RootLayout({ children }) {
 
       <head>
 
-        <link
+        {/* <link
           rel="stylesheet"
           href={`${process.env.NEXT_PUBLIC_CDN}fonts/fontawesome/css/all.min.css`}
-        />
+        /> */}
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Road+Rage&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet"></link>
 
@@ -46,6 +46,7 @@ export default function RootLayout({ children }) {
           <AudioHandler />
           <DarkModeHandler />
           <GlobalClientModals />
+          <LayoutClient />
         </Suspense>
 
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>

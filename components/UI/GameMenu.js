@@ -23,6 +23,7 @@ import classNames from 'classnames';
 import useGames from '../hooks/useGames';
 // import { Article } from '@mui/icons-material';
 import useAllGames from '../hooks/useAllGames';
+import { useGameControllerKeyboardStore } from '@articles-media/articles-gamepad-helper';
 
 function GameMenu({
     reloadScene,
@@ -41,6 +42,8 @@ function GameMenu({
 
     // const cameraUpdate = useCameraStore((state) => state?.cameraUpdate);
     const setCameraUpdate = useCameraStore((state) => state?.setCameraUpdate);
+
+    const visible = useGameControllerKeyboardStore((state) => state.visible);
 
     // const router = useRouter()
     // const pathname = usePathname()
@@ -184,6 +187,8 @@ function GameMenu({
 
                         {process.env.NODE_ENV === 'development' &&
                             <div className='local-only-content border p-1'>
+
+                                {visible ? <div>Visible Content</div> : <div>Hidden Content</div>}
 
                                 <div className='flex-header mb-1'>
 

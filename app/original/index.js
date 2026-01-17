@@ -28,7 +28,9 @@ export default function GamesPage(props) {
         isRemote
     } = useGames();
 
-    const ROUTES = {};
+    const ROUTES = {
+        PRESS: '/press'
+    };
 
     // const userReduxState = useSelector((state) => state.auth.user_details);
     const userReduxState = null
@@ -530,7 +532,7 @@ export default function GamesPage(props) {
 
                 <div className='d-flex justify-content-center'>
 
-                    <div className="card card-extra mx-2 w-100" style={{ maxWidth: '400px' }}>
+                    {/* <div className="card card-extra mx-2 w-100" style={{ maxWidth: '400px' }}>
 
                         <div className="card-header rounded-0 d-flex justify-content-between align-items-center py-2">
                             <h5 className="mb-0">Build a Web Game!</h5>
@@ -542,7 +544,6 @@ export default function GamesPage(props) {
 
                             <ArticlesButton
                                 onClick={() => {
-                                    // setModalShow(true)
                                     setActiveModalGame({
                                         name: 'Publish With Us',
                                         short_description:
@@ -569,7 +570,7 @@ export default function GamesPage(props) {
 
                         </div>
 
-                    </div>
+                    </div> */}
 
                     <div className="card card-extra mx-2 w-100" style={{ maxWidth: '400px' }}>
 

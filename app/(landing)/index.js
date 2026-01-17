@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useContext, useState, Suspense } from 'react';
+import { useEffect, useContext, useState, Suspense, useRef } from 'react';
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -76,6 +76,8 @@ import Popover from 'react-bootstrap/Popover';
 
 import PieMenu from '@articles-media/articles-gamepad-helper/PieMenu';
 
+import { useLandingNavigation } from '@/hooks/useLandingNavigation';
+
 // import SynthwaveAnimation from '@/components/Game/Synthwave/SynthwaveAnimation';
 const SynthwaveAnimation = dynamic(
     () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
@@ -83,6 +85,9 @@ const SynthwaveAnimation = dynamic(
 )
 
 export default function LandingPage() {
+
+    const elementsRef = useRef([]);
+    useLandingNavigation(elementsRef);
 
     // const peerId = usePeerConnection((state) => state?.peerId);
 
@@ -92,18 +97,18 @@ export default function LandingPage() {
     //     socket: state.socket,
     // }));
     const socket = useSocketStore((state) => state.socket)
-    const connectSocket = useSocketStore((state) => state.connectSocket)
-    const disconnectSocket = useSocketStore((state) => state.disconnectSocket)
-    const connected = useSocketStore((state) => state.connected)
+    // const connectSocket = useSocketStore((state) => state.connectSocket)
+    // const disconnectSocket = useSocketStore((state) => state.disconnectSocket)
+    // const connected = useSocketStore((state) => state.connected)
 
-    const loginInfoModal = useStore((state) => state.loginInfoModal)
-    const toggleLoginInfoModal = useStore((state) => state.toggleLoginInfoModal)
+    // const loginInfoModal = useStore((state) => state.loginInfoModal)
+    // const toggleLoginInfoModal = useStore((state) => state.toggleLoginInfoModal)
 
     const landingAnimation = useStore((state) => state.landingAnimation)
     const setLandingAnimation = useStore((state) => state.setLandingAnimation)
 
-    const infoModal = useStore((state) => state.infoModal)
-    const setInfoModal = useStore((state) => state.setInfoModal)
+    // const infoModal = useStore((state) => state.infoModal)
+    // const setInfoModal = useStore((state) => state.setInfoModal)
     // const toggleInfoModal = useStore((state) => state.toggleInfoModal)
 
     // const showSettingsModal = useStore((state) => state.showSettingsModal)
@@ -148,51 +153,83 @@ export default function LandingPage() {
 
     // const [nickname, setNickname] = useLocalStorageNew("game:nickname", userReduxState.display_name)
 
-    const nickname = useStore((state) => state.nickname)
-    const setNickname = useStore((state) => state.setNickname)
+    // const nickname = useStore((state) => state.nickname)
+    // const setNickname = useStore((state) => state.setNickname)
 
-    const [lobbyDetails, setLobbyDetails] = useState({
-        players: [],
-        games: [],
-    })
+    // const [lobbyDetails, setLobbyDetails] = useState({
+    //     players: [],
+    //     games: [],
+    // })
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        // setRulesAnControls(localStorage.getItem('game:race-game:rulesAnControls') === 'true' ? true : false)
+    //     // setRulesAnControls(localStorage.getItem('game:race-game:rulesAnControls') === 'true' ? true : false)
 
-        // if (userReduxState._id) {
-        //     console.log("Is user")
-        // }
+    //     // if (userReduxState._id) {
+    //     //     console.log("Is user")
+    //     // }
 
-        socket.on('game:game-showcase-landing-details', function (msg) {
-            console.log('game:game-showcase-landing-details', msg)
-            setLobbyDetails(msg)
-        });
+    //     socket.on('game:game-showcase-landing-details', function (msg) {
+    //         console.log('game:game-showcase-landing-details', msg)
+    //         setLobbyDetails(msg)
+    //     });
 
-        return () => {
-            socket.off('game:game-showcase-landing-details');
-            socket.emit('leave-room', 'game:game-showcase-landing')
-        };
+    //     return () => {
+    //         socket.off('game:game-showcase-landing-details');
+    //         socket.emit('leave-room', 'game:game-showcase-landing')
+    //     };
 
-    }, [socket])
+    // }, [socket])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (socket.connected) {
-            socket.emit('join-room', 'game:game-showcase-landing');
-        }
+    //     if (socket.connected) {
+    //         socket.emit('join-room', 'game:game-showcase-landing');
+    //     }
 
-        return function cleanup() {
-            // socket.emit('leave-room', 'game:game-showcase-landing')
-        };
+    //     return function cleanup() {
+    //         // socket.emit('leave-room', 'game:game-showcase-landing')
+    //     };
 
-    }, [socket.connected]);
+    // }, [socket.connected]);
 
     return (
 
         <div className="landing-page">
 
-            <PieMenu />
+            <Suspense>
+                <PieMenu
+                    options={[
+                        {
+                            label: 'Settings',
+                            icon: 'fad fa-cog',
+                            callback: () => {
+                                setShowSettingsModal(prev => !prev)
+                            }
+                        },
+                        {
+                            label: 'Credits',
+                            icon: 'fad fa-cog',
+                            callback: () => {
+                                setShowCreditsModal(true)
+                            }
+                        },
+                        {
+                            label: 'Toggle Animation',
+                            icon: 'fad fa-cog',
+                            callback: () => {
+                                setLandingAnimation(!landingAnimation)
+                            }
+                        },
+                    ]}
+                    onFinish={(event) => {
+                        console.log("Event", event)
+                        if (event.callback) {
+                            event.callback()
+                        }
+                    }}
+                />
+            </Suspense>
 
             {showCreditsModal &&
                 <CreditsModal
@@ -223,12 +260,12 @@ export default function LandingPage() {
                 </div>
             }
 
-            <div 
+            <div
                 className="container d-flex flex-column justify-content-center align-items-center"
                 style={{ "width": "20rem" }}
-            >                
+            >
 
-                <img 
+                <img
                     src={"img/icon.svg"}
                     width={200}
                     className='landing-logo-image'
@@ -271,6 +308,7 @@ export default function LandingPage() {
                         >
                             <Link href="/original">
                                 <ArticlesButton
+                                    ref={el => elementsRef.current[0] = el}
                                     className={`w-100 mb-2`}
                                     small
                                     onClick={() => {
@@ -304,6 +342,7 @@ export default function LandingPage() {
                         >
                             <Link href="/carousel">
                                 <ArticlesButton
+                                    ref={el => elementsRef.current[1] = el}
                                     className={`w-100 mb-2`}
                                     small
                                     onClick={() => {
@@ -337,6 +376,7 @@ export default function LandingPage() {
                         >
                             <Link href="/wall">
                                 <ArticlesButton
+                                    ref={el => elementsRef.current[2] = el}
                                     className={`w-100 mb-2`}
                                     small
                                     onClick={() => {
@@ -377,6 +417,7 @@ export default function LandingPage() {
 
                         <a className='w-50' target='_blank' href='https://github.com/Articles-Joey/games-showcase'>
                             <ArticlesButton
+                                ref={el => elementsRef.current[3] = el}
                                 className={`w-100`}
                                 small
                                 onClick={() => {
@@ -389,6 +430,7 @@ export default function LandingPage() {
                         </a>
 
                         <ArticlesButton
+                            ref={el => elementsRef.current[4] = el}
                             className={`w-50`}
                             small
                             onClick={() => {
@@ -400,6 +442,7 @@ export default function LandingPage() {
                         </ArticlesButton>
 
                         <ArticlesButton
+                            ref={el => elementsRef.current[5] = el}
                             className={`w-50`}
                             small
                             onClick={() => {
@@ -411,6 +454,7 @@ export default function LandingPage() {
                         </ArticlesButton>
 
                         <ArticlesButton
+                            ref={el => elementsRef.current[6] = el}
                             className={`w-50 landing-animation-toggle-button`}
                             small
                             onClick={() => {
@@ -430,8 +474,11 @@ export default function LandingPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <ArticlesButton className="visit-articles-button">
-                        <img 
+                    <ArticlesButton
+                        className="visit-articles-button"
+                        ref={el => elementsRef.current[7] = el}
+                    >
+                        <img
                             src={"https://cdn.articles.media/profile_photos/starter/articles.jpg"}
                             width={10}
                             className='me-3'

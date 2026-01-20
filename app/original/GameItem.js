@@ -12,11 +12,12 @@ import Modal from 'react-bootstrap/Modal';
 import ArticlesButton from '@/components/UI/Button';
 import { Textfit } from '@/components/UI/Textfit';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { useStore } from '@/components/hooks/useStore';
 
-const InfoModal = dynamic(
-    () => import('@/components/UI/InfoModal'),
-    { ssr: false }
-)
+// const InfoModal = dynamic(
+//     () => import('@/components/UI/InfoModal'),
+//     { ssr: false }
+// )
 
 const ArticlesModal = dynamic(
     () => import('@/components/UI/ArticlesModal'),
@@ -27,7 +28,9 @@ export default function GameItem({ item, toontownImages }) {
 
     // const userReduxState = useSelector((state) => state.auth.user_details);
 
-    const [showInfoModal, setShowInfoModal] = useState(false)
+    // const [showInfoModal, setShowInfoModal] = useState(false)
+
+    const setGameInfoModal = useStore((state) => state.setGameInfoModal);
 
     const [showOfflineModal, setShowOfflineModal] = useState(false)
     const [gamepadSupportModal, setGamepadSupportModal] = useState(false)
@@ -43,12 +46,12 @@ export default function GameItem({ item, toontownImages }) {
     return (
         <div className='game-item'>
 
-            {showInfoModal &&
+            {/* {showInfoModal &&
                 <InfoModal
                     show={showInfoModal}
                     setShow={setShowInfoModal}
                 />
-            }
+            } */}
 
             {/* TODO - Move into info modal */}
             {showOfflineModal &&
@@ -399,10 +402,7 @@ export default function GameItem({ item, toontownImages }) {
 
                             <ArticlesButton
                                 onClick={() => {
-                                    setShowInfoModal({
-                                        game: item.name,
-                                        item: item
-                                    })
+                                    setGameInfoModal(item);
                                 }}
                                 className='flex-grow-1 text-center w-50 py-0'
                                 small

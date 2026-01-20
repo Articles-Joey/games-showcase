@@ -89,6 +89,9 @@ export default function LandingPage() {
     const elementsRef = useRef([]);
     useLandingNavigation(elementsRef);
 
+    const darkMode = useStore((state) => state.darkMode)
+    const toggleDarkMode = useStore((state) => state.toggleDarkMode)
+
     // const peerId = usePeerConnection((state) => state?.peerId);
 
     // const {
@@ -441,17 +444,32 @@ export default function LandingPage() {
                             Credits
                         </ArticlesButton>
 
-                        <ArticlesButton
-                            ref={el => elementsRef.current[5] = el}
-                            className={`w-50`}
-                            small
-                            onClick={() => {
-                                setShowSettingsModal(true)
-                            }}
-                        >
-                            <i className="fad fa-users"></i>
-                            Settings
-                        </ArticlesButton>
+                        <div className='w-50 d-flex'>
+                            <ArticlesButton
+                                ref={el => elementsRef.current[5] = el}
+                                className={`w-100`}
+                                small
+                                onClick={() => {
+                                    setShowSettingsModal(true)
+                                }}
+                            >
+                                <i className="fad fa-users"></i>
+                                Settings
+                            </ArticlesButton>
+                            <ArticlesButton
+                                className={``}
+                                small
+                                onClick={() => {
+                                    toggleDarkMode()
+                                }}
+                            >
+                                {darkMode ?
+                                    <i className="fad fa-sun"></i>
+                                    :
+                                    <i className="fad fa-moon"></i>
+                                }
+                            </ArticlesButton>
+                        </div>
 
                         <ArticlesButton
                             ref={el => elementsRef.current[6] = el}

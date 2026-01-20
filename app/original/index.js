@@ -93,9 +93,9 @@ export default function GamesPage(props) {
 
                         <h2 className='mb-2'>{activeModalGame.name}</h2>
 
-                        <p className='lh-sm small mb-1'>
+                        <div className='lh-sm small mb-1'>
                             {activeModalGame.short_description}
-                        </p>
+                        </div>
 
                     </Modal.Body>
 

@@ -72,7 +72,7 @@ export default function PageContent() {
             <div
                 className='grid'
                 style={{
-                    
+
                 }}
             >
                 {filteredGames?.map((game, index) => (
@@ -90,6 +90,8 @@ export default function PageContent() {
 function GridItem({
     game
 }) {
+
+    const setGameInfoModal = useStore((state) => state.setGameInfoModal);
 
     return (
         <div
@@ -110,13 +112,21 @@ function GridItem({
             </div>
 
             <div className='mt-auto'>
-                <a href={game.url} target="_blank" rel="noopener noreferrer">
-                    <ArticlesButton>
-                        <i className='fad fa-info-circle'></i>
-                        Details
-                    </ArticlesButton>
-                </a>
-                <a href={game.url} target="_blank" rel="noopener noreferrer">
+                {/* <a href={game.url} target="_blank" rel="noopener noreferrer"> */}
+                <ArticlesButton
+                    onClick={() => {
+                        setGameInfoModal(game);
+                    }}
+                >
+                    <i className='fad fa-info-circle'></i>
+                    Details
+                </ArticlesButton>
+                {/* </a> */}
+                <a
+                    href={game.link}
+                    // target="_blank"
+                    // rel="noopener noreferrer"
+                >
                     <ArticlesButton>
                         <i className='fad fa-play'></i>
                         Play

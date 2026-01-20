@@ -41,6 +41,7 @@ export const useStore = create()(
 
       darkMode: true,
       toggleDarkMode: () => set({ darkMode: !get().darkMode }),
+      setDarkMode: (value) => set({ darkMode: value }),
 
       infoModal: false,
       setInfoModal: (value) => set({ infoModal: value }),

@@ -1,23 +1,13 @@
 import useSWR from 'swr';
-import { useState } from 'react';
 
 const useGames = () => {
-    const [isRemote, setIsRemote] = useState(false);
-
     const fetcher = async () => {
-        try {
-            if (process.env.NODE_ENV === 'production') throw new Error('Production mode');
-            const res = await fetch('http://localhost:3001/api/community/games');
-            if (!res.ok) throw new Error('Local request failed');
-            return await res.json();
-        } catch (err) {
-            setIsRemote(true);
-            const res = await fetch('https://articles.media/api/community/games');
-            return await res.json();
-        }
-    }
+        const res = await fetch('/api/games/articles-media');
+        if (!res.ok) throw new Error('Failed to fetch articles media games');
+        return await res.json();
+    };
 
-    const { data, error, isLoading } = useSWR('community/games', fetcher, {
+    const { data, error, isLoading } = useSWR('games/articles-media', fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false
@@ -30,7 +20,6 @@ const useGames = () => {
         publicGames,
         isLoading,
         isError: error,
-        isRemote
     };
 };
 

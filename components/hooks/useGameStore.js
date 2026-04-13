@@ -4,7 +4,7 @@
 import { create } from 'zustand';
 import Peer from 'peerjs';
 import { useStore } from './useStore';
-import useChatStore from './useChatStore';
+// import useChatStore from './useChatStore';
 
 function getFirstAvailableRow(players) {
     if (!players || players.length === 0) return 1;
@@ -351,6 +351,8 @@ const useGameStore = create((set, get) => ({
 
                     console.log("ChatMessage data received", conn.peer, data, playerNicknameLookup);
 
+                    return
+
                     const simpleCensor = (text) => {
                         // TODO - Use package for better censorship
                         // const bannedWords = ['retard', 'nigger'];
@@ -366,12 +368,12 @@ const useGameStore = create((set, get) => ({
                     let finalMessage = simpleCensor(data.message);
 
                     // Host adds their own message
-                    const addMessage = useChatStore.getState().addMessage;
-                    addMessage({
-                        sender: conn.peer,
-                        text: finalMessage,
-                        nickname: playerNicknameLookup?.nickname || null
-                    });
+                    // const addMessage = useChatStore.getState().addMessage;
+                    // addMessage({
+                    //     sender: conn.peer,
+                    //     text: finalMessage,
+                    //     nickname: playerNicknameLookup?.nickname || null
+                    // });
 
                     const { broadcastPeerChatMessage } = get();
                     broadcastPeerChatMessage(
@@ -440,14 +442,7 @@ const useGameStore = create((set, get) => ({
             }
 
             if (data?.event === 'ChatMessage') {
-                // TODO - Handle incoming chat message
                 console.log('Chat message received:', data);
-                const addMessage = useChatStore.getState().addMessage;
-                addMessage({
-                    ...data,
-                    sender: data.id,
-                    text: data.message
-                });
             }
 
             if (data?.event === 'ReturnToLobby') {

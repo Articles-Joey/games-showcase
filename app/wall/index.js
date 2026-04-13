@@ -13,6 +13,10 @@ import useFullscreen from '@/components/hooks/useFullScreen';
 import useAllGames from '@/components/hooks/useAllGames';
 import { useStore } from '@/components/hooks/useStore';
 
+import GameItem from '../original/GameItem';
+
+import '@/styles/pages/original.scss';
+
 export default function PageContent() {
 
     // const { games, publicGames } = useGames();
@@ -76,9 +80,14 @@ export default function PageContent() {
                 }}
             >
                 {filteredGames?.map((game, index) => (
-                    <GridItem
+                    // <GridItem
+                    //     key={game.name}
+                    //     game={game}
+                    // />
+                    <GameItem
                         key={game.name}
-                        game={game}
+                        item={game}
+                        // toontownImages={toontownImages}
                     />
                 ))}
             </div>
@@ -124,8 +133,8 @@ function GridItem({
                 {/* </a> */}
                 <a
                     href={game.link}
-                    // target="_blank"
-                    // rel="noopener noreferrer"
+                // target="_blank"
+                // rel="noopener noreferrer"
                 >
                     <ArticlesButton>
                         <i className='fad fa-play'></i>

@@ -91,7 +91,7 @@ export default function GamesPage(props) {
 
                     <Modal.Body>
 
-                        <h2 className='mb-2'>{activeModalGame.name}</h2>
+                        <h3 className='mb-2'>{activeModalGame.name}</h3>
 
                         <div className='lh-sm small mb-1'>
                             {activeModalGame.short_description}
@@ -594,11 +594,18 @@ export default function GamesPage(props) {
                                                     If you have a WebGL/WebGPU game that you have made and would like to publish then reach out! We can host your game for you and provide an API to handle multiplayer and scoreboards.
                                                 </div>
 
-                                                <Link
-                                                    href={ROUTES.PRESS}
+                                                <a
+                                                    href={"https://articles.media/community/press"}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                 >
-                                                    <ArticlesButton small>Contact Us</ArticlesButton>
-                                                </Link>
+                                                    <ArticlesButton 
+                                                        // small
+                                                        large
+                                                    >
+                                                        Contact Us
+                                                    </ArticlesButton>
+                                                </a>
 
                                             </div>
                                     })

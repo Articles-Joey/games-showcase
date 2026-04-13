@@ -1,0 +1,48 @@
+@use "@/styles/components/global.scss" as *;
+
+.game-item {
+
+    .card-game {
+        height: 100%;
+        border: 0px solid cyan;
+        border-radius: 0;
+        @include shadow-articles;
+
+        @include media-breakpoint-up(lg) {
+            min-height: 250px;
+        }
+
+        .card-header {
+            background-color: rgb(38 3 70);
+            border-radius: 0;
+            color: white;
+        }
+
+        .thumbnail-wrapper {
+
+            .icons-wrapper {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                z-index: 1;
+                margin: 0.2rem;
+                display: flex;
+            }
+
+        }
+
+        .card-body {
+
+            .ratio {
+                width: 100px;
+                // flex-basis: 100px;
+                // flex-shrink: 0;
+
+                @include media-breakpoint-up(lg) {
+                    width: initial;
+                }
+            }
+        }
+    }
+
+}

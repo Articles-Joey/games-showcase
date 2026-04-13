@@ -7,6 +7,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import "@/styles/index.scss";
 
+import "@articles-media/articles-dev-box/dist/style.css";
+
+import "@articles-media/articles-gamepad-helper/dist/articles-gamepad-helper.css";
+
 import AudioHandler from '@/components/AudioHandler';
 import GlobalClientModals from '@/components/UI/GlobalClientModals';
 import DarkModeHandler from '@/components/UI/DarkModeHandler';

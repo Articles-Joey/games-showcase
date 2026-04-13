@@ -4,7 +4,7 @@ import { Modal, Form } from "react-bootstrap"
 
 import ArticlesButton from "@/components/UI/Button";
 import { useStore } from "../hooks/useStore";
-import useChatStore from "../hooks/useChatStore";
+// import useChatStore from "../hooks/useChatStore";
 
 import "styles/components/SettingsModal.scss";
 
@@ -29,8 +29,8 @@ export default function SettingsModal({
     const renderUniqueGameSceneRange = useStore((state) => state.renderUniqueGameSceneRange);
     const setRenderUniqueGameSceneRange = useStore((state) => state.setRenderUniqueGameSceneRange);
 
-    const enabled = useChatStore((state) => state.enabled);
-    const speechBubblesEnabled = useChatStore((state) => state.speechBubblesEnabled);
+    // const enabled = useChatStore((state) => state.enabled);
+    // const speechBubblesEnabled = useChatStore((state) => state.speechBubblesEnabled);
 
     const audioSettings = useStore((state) => state.audioSettings);
     const setAudioSettings = useStore((state) => state.setAudioSettings);

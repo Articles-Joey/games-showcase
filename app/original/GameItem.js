@@ -334,8 +334,11 @@ export default function GameItem({ item, toontownImages }) {
                                     disabled={item.public}
                                     small
                                     className='w-100'
+                                    style={{
+                                        height: "30px",
+                                    }}
                                 >
-                                    <Textfit mode='single' max={14}>
+                                    <Textfit mode='single' maxFontSize={12}>
                                         <span>
                                             {item.preview ? item.preview_true_button_text : 'Play'}
                                             <i className="fal fa-play me-0 ms-2"></i>
@@ -386,7 +389,7 @@ export default function GameItem({ item, toontownImages }) {
 
                         <div className='d-flex justify-content-center align-items-center'>
 
-                            {item.github_repo && (
+                            {/* {item.github_repo && (
                                 <ArticlesButton
                                     onClick={() => {
                                         window.open(item.github_repo, '_blank');
@@ -398,7 +401,7 @@ export default function GameItem({ item, toontownImages }) {
                                     <i className="fab fa-github me-0 me-2"></i>
                                     <span>Github</span>
                                 </ArticlesButton>
-                            )}
+                            )} */}
 
                             <ArticlesButton
                                 onClick={() => {
@@ -482,7 +485,7 @@ export default function GameItem({ item, toontownImages }) {
                                 Engine:
                             </span>
                             <span>{item.engine || "None"}</span>
-                        </div>
+                        </div>                        
 
                     </div>
 

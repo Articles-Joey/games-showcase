@@ -70,9 +70,32 @@ export default function GameInfoModal({
                                 Engine: {gameInfoModal?.engine || 'Unknown'}
                             </div>
 
-                            <div>
+                            <div className="mb-3">
                                 Rating: {gameInfoModal?.content_rating || 'Unrated'}
                             </div>
+
+                            {gameInfoModal.github_public && <div
+                                // className='d-flex px-1 align-items-center'
+                                // style={{ fontSize: '0.65rem' }}
+                            >
+                                <div
+                                    // className='me-1 border-end'
+                                    // style={{ width: '60px' }}
+                                >
+                                    GitHub Available
+                                </div>
+                                <div>
+                                    <a
+                                        href={gameInfoModal.github_repo}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <ArticlesButton>
+                                            GitHub
+                                        </ArticlesButton>
+                                    </a>
+                                </div>
+                            </div>}
 
                             <div>
 

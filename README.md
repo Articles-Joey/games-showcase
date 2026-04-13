@@ -22,6 +22,10 @@ npm run dev
 - IGDB API Relay?
 - Dashboard for adding custom games/game scenes
 
+## TODO
+
+- Add mobile support via controls and styles
+
 ## Game Store Support
 
 One of the features on top of just a showcase of the Articles Media games is that this can be used to showcase your own pc game collection. Manually add games via json or add your game library locations to see them in the launcher.

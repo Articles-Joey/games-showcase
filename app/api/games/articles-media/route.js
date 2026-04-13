@@ -4,6 +4,11 @@ const UPSTREAM_LOCAL = 'http://localhost:3001/api/community/games';
 const UPSTREAM_REMOTE = 'https://articles.media/api/community/games';
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
+const FETCH_CONFIG = {
+    cache: 'no-store',
+    headers: process.env.CLOUDFLARE_BACKDOOR ? { 'cloudflare-backdoor': process.env.CLOUDFLARE_BACKDOOR } : {},
+};
+
 // Module-level cache — persists across requests within the same server process
 let cache = {
     data: null,
@@ -14,15 +19,21 @@ async function fetchUpstream() {
     // Try local first (non-production), fall back to remote
     if (process.env.NODE_ENV !== 'production') {
         try {
-            const res = await fetch(UPSTREAM_LOCAL, { cache: 'no-store' });
+            const res = await fetch(UPSTREAM_LOCAL, FETCH_CONFIG);
             if (!res.ok) throw new Error(`Local responded ${res.status}`);
             return await res.json();
         } catch {
-            // fall through to remote
+            // fall through to dev fallback
+            try {
+                const res = await fetch('https://articles.media/api/games/articles-media', FETCH_CONFIG);
+                if (res.ok) return await res.json();
+            } catch {
+                // fall through to remote
+            }
         }
     }
 
-    const res = await fetch(UPSTREAM_REMOTE, { cache: 'no-store' });
+    const res = await fetch(UPSTREAM_REMOTE, FETCH_CONFIG);
     if (!res.ok) throw new Error(`Remote responded ${res.status}`);
     return await res.json();
 }

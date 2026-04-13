@@ -6,7 +6,9 @@ import { Modal } from "react-bootstrap"
 import ArticlesButton from "./Button";
 import { useStore } from "../hooks/useStore";
 
-import XboxIcons from '@articles-media/articles-gamepad-helper/XboxIcons';
+// import XboxIcons from '@articles-media/articles-gamepad-helper/XboxIcons';
+import B from "@articles-media/articles-gamepad-helper/dist/img/Xbox UI/B.svg";
+import A from "@articles-media/articles-gamepad-helper/dist/img/Xbox UI/A.svg";
 
 export default function GameInfoModal({
     show,
@@ -118,7 +120,7 @@ export default function GameInfoModal({
                             setShow(false)
                         }}
                     >
-                        <img width={20} src={XboxIcons.B}></img>
+                        <img width={20} src={B}></img>
                         <span className="ms-2">Close</span>
                     </ArticlesButton>
 
@@ -140,7 +142,7 @@ export default function GameInfoModal({
                                 launchGame()
                             }}
                         >
-                            <img width={20} src={XboxIcons.A}></img>
+                            <img width={20} src={A}></img>
                             <span className="ms-2">Launch</span>
                         </ArticlesButton>
 

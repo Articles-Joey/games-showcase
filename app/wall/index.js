@@ -16,6 +16,8 @@ import { useStore } from '@/components/hooks/useStore';
 import GameItem from '../original/GameItem';
 
 import '@/styles/pages/original.scss';
+import FilterDropdowns from '@/components/UI/FilterDropdowns';
+import { useFilterStore } from '@/components/hooks/useFilterStore';
 
 export default function PageContent() {
 
@@ -26,8 +28,8 @@ export default function PageContent() {
         filteredGames,
     } = useAllGames();
 
-    const search = useStore((state) => state.search);
-    const setSearch = useStore((state) => state.setSearch);
+    const search = useFilterStore((state) => state.search);
+    const setSearch = useFilterStore((state) => state.setSearch);
 
     const { isFullscreen, requestFullscreen, exitFullscreen } = useFullscreen();
 
@@ -57,6 +59,9 @@ export default function PageContent() {
                 </Link>
 
                 <div className='d-flex'>
+
+                    <FilterDropdowns />
+
                     <input
                         placeholder='Search'
                         value={search}
@@ -69,6 +74,7 @@ export default function PageContent() {
                     >
                         <i className='fad fa-times'></i>
                     </ArticlesButton>
+
                 </div>
 
             </nav>
@@ -87,7 +93,7 @@ export default function PageContent() {
                     <GameItem
                         key={game.name}
                         item={game}
-                        // toontownImages={toontownImages}
+                    // toontownImages={toontownImages}
                     />
                 ))}
             </div>

@@ -57,7 +57,11 @@ import ArticlesButton from '@/components/UI/Button';
 // import IsDev from '@/components/UI/IsDev';
 import { useSocketStore } from '@/components/hooks/useSocketStore';
 // import ArticlesAd from '@/components/ArticlesAd';
-import CreditsModal from '@/components/UI/CreditsModal';
+// import CreditsModal from '@/components/UI/CreditsModal';
+const CreditsModal = dynamic(
+    () => import('@articles-media/articles-dev-box/CreditsModal'),
+    { ssr: false }
+)
 // import { Settings } from '@mui/icons-material';
 
 import { useStore } from '@/components/hooks/useStore';
@@ -238,6 +242,8 @@ export default function LandingPage() {
                 <CreditsModal
                     show={showCreditsModal}
                     setShow={setShowCreditsModal}
+                    owner="Articles-Joey"
+                    repo="games-showcase"
                 />
             }
 

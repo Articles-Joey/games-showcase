@@ -175,7 +175,7 @@
 
         .controls-helper {
             position: absolute;
-            bottom: 10px;
+            bottom: 60px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.9rem;
@@ -183,6 +183,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
+            @include media-breakpoint-up(lg) {
+                bottom: 10px;
+            }
 
             .bubble {
                 border-radius: 8px;

@@ -122,7 +122,7 @@ export default function PageContent() {
 
         <div
             className={`games-showcase-carousel-page carousel-game-page ${isFullscreen && 'fullscreen'}`}
-            
+
         >
 
             <GamepadKeyboard />
@@ -185,8 +185,18 @@ export default function PageContent() {
 
                 <div className='controls-helper'>
 
-                    <img id={"controls-helper-dpad-left"} src="img/Xbox UI/DpadL.svg" alt="Control Keys"></img>
-                    <img id={"controls-helper-dpad-right"} src="img/Xbox UI/DpadR.svg" alt="Control Keys"></img>
+                    <img
+                        id={"controls-helper-dpad-left"}
+                        src="img/Xbox UI/DpadL.svg"
+                        alt="Control Keys"
+                        className='only-controller'
+                    ></img>
+                    <img
+                        id={"controls-helper-dpad-right"}
+                        src="img/Xbox UI/DpadR.svg"
+                        alt="Control Keys"
+                        className='only-controller'
+                    ></img>
 
                     <div className='bubble'>
                         <img className='me-2' height={30} width={30} src="img/Xbox UI/A.svg" alt="Control Keys"></img>

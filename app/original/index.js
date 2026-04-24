@@ -19,6 +19,9 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import GameItem from './GameItem';
 import useGames from '@/components/hooks/useGames';
 import { Box, CircularProgress } from '@mui/material';
+import FilterDropdowns from '@/components/UI/FilterDropdowns';
+import { useFilterStore } from '@/components/hooks/useFilterStore';
+import useAllGames from '@/components/hooks/useAllGames';
 
 export default function GamesPage(props) {
 
@@ -27,6 +30,11 @@ export default function GamesPage(props) {
         isLoading: isLoadingGames,
         isRemote
     } = useGames();
+
+    const {
+        games: allGames,
+        filteredGames,
+    } = useAllGames();
 
     const ROUTES = {
         PRESS: '/press'
@@ -39,15 +47,16 @@ export default function GamesPage(props) {
 
     const [toontownImages, setToontownImages] = useState(false);
 
-    const [playerFilter, setPlayerFilter] = useState('All')
-
-    // Save last place
-    const [availabilityFilter, setAvailabilityFilter] = useState('Available')
+    const playerFilter = useFilterStore((state) => state.playerFilter);
+    const setPlayerFilter = useFilterStore((state) => state.setPlayerFilter);
+    const availabilityFilter = useFilterStore((state) => state.availabilityFilter);
+    const setAvailabilityFilter = useFilterStore((state) => state.setAvailabilityFilter);
 
     // const [modalShow, setModalShow] = useState(false);
     const [activeModalGame, setActiveModalGame] = useState(null);
 
-    const [search, setSearch] = useState('');
+    const search = useFilterStore((state) => state.search);
+    const setSearch = useFilterStore((state) => state.setSearch);
 
     const [isMounted, setIsMounted] = useState(false)
 
@@ -55,21 +64,21 @@ export default function GamesPage(props) {
         setToontownImages(prev => !prev)
     })
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (localStorage.getItem('games:availabilityFilter')) {
-            setAvailabilityFilter(localStorage.getItem('games:availabilityFilter'))
-        }
+    //     if (localStorage.getItem('games:availabilityFilter')) {
+    //         setAvailabilityFilter(localStorage.getItem('games:availabilityFilter'))
+    //     }
 
-        setIsMounted(true)
+    //     setIsMounted(true)
 
-    }, []);
+    // }, []);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (isMounted) localStorage.setItem('games:availabilityFilter', availabilityFilter)
+    //     if (isMounted) localStorage.setItem('games:availabilityFilter', availabilityFilter)
 
-    }, [availabilityFilter, isMounted])
+    // }, [availabilityFilter, isMounted])
 
     return (
         <div className="games-page">
@@ -149,121 +158,7 @@ export default function GamesPage(props) {
 
                     <span className="d-flex">
 
-                        {/* Player Type */}
-                        <Dropdown className="dropdown-articles" drop={'down'}>
-
-                            <Dropdown.Toggle
-                                variant="articles align-items-center d-flex "
-                                disabled={search !== ''}
-                            >
-
-                                <div>
-
-                                    <i className="fad fa-filter fa-lg me-2"></i>
-                                    {/* <i className="fad fa-sort-shapes-up fa-lg me-2"></i> */}
-
-                                    <span className='small me-2'>Type</span>
-
-                                    <span className='badge bg-dark shadow-articles me-1 d-none d-lg-inline-block'>
-                                        {playerFilter}
-                                    </span>
-
-                                </div>
-
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu className="dropdown-articles">
-
-                                <div className='small px-2 py-0 mb-0'>Player Type</div>
-
-                                <Dropdown.Divider className="py-0 my-1" />
-
-                                {['All', 'Single Player', 'Multiplayer'].map(item =>
-                                    <Dropdown.Item
-                                        key={item}
-                                        className={` ${playerFilter == item && 'active'}`}
-                                        onClick={() => {
-
-                                            setPlayerFilter(item)
-
-                                        }}
-                                    >
-
-                                        <span>{item}</span>
-
-                                    </Dropdown.Item>
-                                )}
-
-                            </Dropdown.Menu>
-
-                        </Dropdown>
-
-                        {/* Availability Type */}
-                        <Dropdown className="dropdown-articles" drop={'down'}>
-
-                            <Dropdown.Toggle
-                                variant="articles align-items-center d-flex "
-                                disabled={search !== ''}
-                            >
-
-                                <div>
-
-                                    {/* <i className="fad fa-filter"></i> */}
-                                    <i className="fad fa-sort-shapes-up fa-lg me-2"></i>
-
-                                    <span className='small me-2'>Status</span>
-
-                                    <span className='badge bg-dark shadow-articles me-1 d-none d-lg-inline-block'>
-                                        {availabilityFilter}
-                                    </span>
-
-                                </div>
-
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu className="dropdown-articles">
-
-                                <div className='small px-2 py-0 mb-0'>Availability Status</div>
-
-                                <Dropdown.Divider className="py-0 my-1" />
-
-                                {['All', 'Available', 'Upcoming'].map(item =>
-                                    <Dropdown.Item
-                                        key={item}
-                                        className={` ${availabilityFilter == item && 'active'}`}
-                                        onClick={() => {
-
-                                            setAvailabilityFilter(item)
-
-                                        }}
-                                    >
-
-                                        <span>{item}</span>
-
-                                    </Dropdown.Item>
-                                )}
-
-                                {userReduxState?.roles?.isDev && <>
-                                    <hr />
-
-                                    <Dropdown.Item
-                                        key={"Developer Only"}
-                                        className={` ${availabilityFilter == "Developer Only" && 'active'}`}
-                                        onClick={() => {
-
-                                            setAvailabilityFilter("Developer Only")
-
-                                        }}
-                                    >
-
-                                        <span>Not Public</span>
-
-                                    </Dropdown.Item>
-                                </>}
-
-                            </Dropdown.Menu>
-
-                        </Dropdown>
+                        <FilterDropdowns />
 
                     </span>
 
@@ -318,73 +213,75 @@ export default function GamesPage(props) {
 
                 <div className="games mb-5">
 
-                    {games
-                        ?.filter(item => {
+                    {
+                        // games
+                        //     ?.filter(item => {
 
-                            // Override other filters if a search
-                            if (search !== '') {
-                                return item
-                            }
+                        //         // Override other filters if a search
+                        //         if (search !== '') {
+                        //             return item
+                        //         }
 
-                            if (playerFilter == 'All') {
-                                return item
-                            }
+                        //         if (playerFilter == 'All') {
+                        //             return item
+                        //         }
 
-                            if (playerFilter == 'Multiplayer') {
-                                return item.multiplayer
-                            }
+                        //         if (playerFilter == 'Multiplayer') {
+                        //             return item.multiplayer
+                        //         }
 
-                            if (playerFilter == 'Single Player') {
-                                return item.single_player
-                            }
+                        //         if (playerFilter == 'Single Player') {
+                        //             return item.single_player
+                        //         }
 
-                        })
-                        ?.filter(item => {
+                        //     })
+                        //     ?.filter(item => {
 
-                            // Override other filters if a search
-                            if (search !== '') {
-                                return item
-                            }
+                        //         // Override other filters if a search
+                        //         if (search !== '') {
+                        //             return item
+                        //         }
 
-                            if (availabilityFilter == 'All') {
-                                return item && item.public !== false
-                            }
+                        //         if (availabilityFilter == 'All') {
+                        //             return item && item.public !== false
+                        //         }
 
-                            if (availabilityFilter == 'Available') {
-                                return !item.preview && item.public !== false
-                            }
+                        //         if (availabilityFilter == 'Available') {
+                        //             return !item.preview && item.public !== false
+                        //         }
 
-                            if (availabilityFilter == 'Upcoming') {
-                                return item.preview && item.public !== false
-                            }
+                        //         if (availabilityFilter == 'Upcoming') {
+                        //             return item.preview && item.public !== false
+                        //         }
 
-                            if (availabilityFilter == 'Developer Only') {
-                                return item.public === false
-                            }
+                        //         if (availabilityFilter == 'Developer Only') {
+                        //             return item.public === false
+                        //         }
 
-                        })
-                        ?.filter(item => {
+                        //     })
+                        //     ?.filter(item => {
 
-                            // Override other filters if a search
-                            if (search == '') {
-                                return item
-                            }
+                        //         // Override other filters if a search
+                        //         if (search == '') {
+                        //             return item
+                        //         }
 
-                            if (search !== '') {
-                                return item.name.toLowerCase().includes(search.toLowerCase())
-                            }
+                        //         if (search !== '') {
+                        //             return item.name.toLowerCase().includes(search.toLowerCase())
+                        //         }
 
-                        })
-                        ?.map(item => {
+                        //     })
+                        filteredGames
+                            ?.map(item => {
 
-                            return (
-                                <GameItem
-                                    key={item.name}
-                                    item={item}
-                                    toontownImages={toontownImages}
-                                />
-                            );
-                        })
+                                return (
+                                    <GameItem
+                                        key={item.name}
+                                        item={item}
+                                        toontownImages={toontownImages}
+                                    />
+                                );
+                            })
                     }
 
                 </div>
@@ -599,7 +496,7 @@ export default function GamesPage(props) {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
-                                                    <ArticlesButton 
+                                                    <ArticlesButton
                                                         // small
                                                         large
                                                     >

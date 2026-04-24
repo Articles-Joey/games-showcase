@@ -24,6 +24,7 @@ import useGames from '../hooks/useGames';
 // import { Article } from '@mui/icons-material';
 import useAllGames from '../hooks/useAllGames';
 import { useGameControllerKeyboardStore } from '@articles-media/articles-gamepad-helper';
+import { useFilterStore } from '../hooks/useFilterStore';
 
 function GameMenu({
     reloadScene,
@@ -63,11 +64,11 @@ function GameMenu({
     const showMenu = useStore((state) => state?.showMenu);
     const setShowMenu = useStore((state) => state?.setShowMenu);
 
-    const search = useStore((state) => state.search);
-    const setSearch = useStore((state) => state.setSearch);
+    const search = useFilterStore((state) => state.search);
+    const setSearch = useFilterStore((state) => state.setSearch);
 
-    const filters = useStore((state) => state.filters);
-    const setFilters = useStore((state) => state.setFilters);
+    const filters = useFilterStore((state) => state.filters);
+    const setFilters = useFilterStore((state) => state.setFilters);
 
     // const gameState = useStore((state) => state?.gameState);
     // const setGameState = useStore((state) => state?.setGameState);

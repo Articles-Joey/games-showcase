@@ -25,9 +25,12 @@ import useGames from '../hooks/useGames';
 import useAllGames from '../hooks/useAllGames';
 import { useGameControllerKeyboardStore } from '@articles-media/articles-gamepad-helper';
 import { useFilterStore } from '../hooks/useFilterStore';
+import FilterDropdowns from './FilterDropdowns';
+
+import GameMenuPrimaryButtonGroup from '@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup';
 
 function GameMenu({
-    reloadScene,
+    // reloadScene,
     // isFullscreen,
     // requestFullscreen,
     // exitFullscreen
@@ -88,6 +91,7 @@ function GameMenu({
 
     const sidebar = useStore((state) => state.sidebar)
     const toggleSidebar = useStore((state) => state.toggleSidebar)
+    const reloadScene = useStore((state) => state.reloadScene)
 
     // const peerId = usePeerConnection((state) => state?.peerId);
 
@@ -172,6 +176,15 @@ function GameMenu({
                 )
             }>
 
+                <div className="card-body d-flex flex-wrap">
+
+                    <GameMenuPrimaryButtonGroup 
+                        useStore={useStore}
+                        type="GameMenu"
+                    />
+
+                </div>
+
                 <div className="card-body p-2 mt-auto d-flex flex-column">
 
                     <div className='d-flex flex-column mb-2 mt-auto'>
@@ -187,7 +200,7 @@ function GameMenu({
                         </div>
 
                         {process.env.NODE_ENV === 'development' &&
-                            <div className='local-only-content border p-1'>
+                            <div className='local-only-content border p-1 mb-3'>
 
                                 {visible ? <div>Visible Content</div> : <div>Hidden Content</div>}
 
@@ -221,7 +234,7 @@ function GameMenu({
                                         </ArticlesButton>
                                     ))}
                                 </div>
-                                
+
                                 {/* 
                                 <ArticlesButton
                                     className={`w-50`}
@@ -249,88 +262,13 @@ function GameMenu({
                             Filters
                         </div>
 
-                        <div className='mb-2'>
+                        <div className="d-flex flex-column mb-2">
 
-                            <Link
-                                className=""
-                                href={'/'}
-                            >
-                                <ArticlesButton
-                                    small
-                                    className='w-50'
-                                >
-                                    <i className="fad fa-sign-out fa-rotate-180"></i>
-                                    Leave Game
-                                </ArticlesButton>
-                            </Link>
+                            <FilterDropdowns />
 
-                            <ArticlesButton
-                                small
-                                className="w-50"
-                                active={isFullscreen}
-                                onClick={() => {
-                                    if (isFullscreen) {
-                                        exitFullscreen()
-                                    } else {
-                                        requestFullscreen('carousel-game-page')
-                                    }
-                                }}
-                            >
-                                {isFullscreen && <span>Exit </span>}
-                                {!isFullscreen && <span><i className='fad fa-expand'></i></span>}
-                                <span>Fullscreen</span>
-                            </ArticlesButton>
                         </div>
 
                         <div className='d-flex flex-wrap mb-2'>
-
-                            <ArticlesButton
-                                small
-                                className="w-50"
-                                onClick={() => {
-                                    setInfoModal(true)
-                                }}
-                            >
-                                {/* <i className="fad fa-info-circle"></i> */}
-                                <i className="fad fa-info-square"></i>
-                                Info & Rules
-                            </ArticlesButton>
-
-                            <ArticlesButton
-                                small
-                                className="w-50"
-                                onClick={() => {
-                                    setShowSettingsModal(true)
-                                }}
-                            >
-                                <i className="fad fa-cog"></i>
-                                Settings
-                            </ArticlesButton>
-
-                            <ArticlesButton
-                                className={`w-50`}
-                                small
-                                active={sidebar}
-                                onClick={() => {
-                                    toggleSidebar()
-                                    setShowMenu(false)
-                                }}
-                            >
-                                <i className="fad fa-info-square"></i>
-                                Sidebar
-                            </ArticlesButton>
-
-                            <ArticlesButton
-                                className={`w-50`}
-                                small
-                                active={devDebug}
-                                onClick={() => {
-                                    toggleDevDebug()
-                                }}
-                            >
-                                <i className="fad fa-info-square"></i>
-                                Dev Mode
-                            </ArticlesButton>
 
                             <ArticlesButton
                                 className={`w-50`}

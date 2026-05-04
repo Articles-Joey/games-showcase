@@ -24,8 +24,10 @@ import LeftPanelContent from '@/components/UI/GameMenu';
 const GameCanvas = dynamic(() => import('@/components/Game/GameCanvas'), {
     ssr: false,
 });
+import GameMenu from '@articles-media/articles-dev-box/GameMenu';
 
 import GamepadKeyboard from "@articles-media/articles-gamepad-helper/GamepadKeyboard"
+import { useStore } from '@/components/hooks/useStore';
 // const GamepadKeyboard = lazy(() => import('@articles-media/articles-gamepad-helper/GamepadKeyboard'));
 
 export default function PageContent() {
@@ -35,6 +37,8 @@ export default function PageContent() {
     // } = useSocketStore(state => ({
     //     socket: state.socket
     // }));
+
+    const sidebar = useStore(state => state.sidebar)
 
     // const resetPlayerRotation = useCannonStore(state => state.resetPlayerRotation);
     // const setGoalLocation = useCannonStore(state => state.setGoalLocation);
@@ -84,50 +88,63 @@ export default function PageContent() {
 
     }, []);
 
-    const [showMenu, setShowMenu] = useState(false)
+    // const [showMenu, setShowMenu] = useState(false)
 
     // const [touchControlsEnabled, setTouchControlsEnabled] = useLocalStorageNew("game:touchControlsEnabled", false)
 
-    const [sceneKey, setSceneKey] = useState(0);
+    // const [sceneKey, setSceneKey] = useState(0);
+    const sceneKey = useStore(state => state.sceneKey)
 
     // const [gameState, setGameState] = useState(false)
 
     // Function to handle scene reload
-    const reloadScene = () => {
-        // resetPlayerRotation()
-        // setGoalLocation([
-        //     generateRandomInteger(-10, 10),
-        //     0,
-        //     generateRandomInteger(-10, 10)
-        // ])
-        setSceneKey((prevKey) => prevKey + 1);
-    };
+    // const reloadScene = () => {
+    //     // resetPlayerRotation()
+    //     // setGoalLocation([
+    //     //     generateRandomInteger(-10, 10),
+    //     //     0,
+    //     //     generateRandomInteger(-10, 10)
+    //     // ])
+    //     setSceneKey((prevKey) => prevKey + 1);
+    // };
 
     const { isFullscreen, requestFullscreen, exitFullscreen } = useFullscreen();
 
-    let panelProps = {
-        // server,
-        // players,
-        // touchControlsEnabled,
-        // setTouchControlsEnabled,
-        reloadScene,
-        // controllerState,
-        // isFullscreen,
-        // requestFullscreen,
-        // exitFullscreen,
-        // setShowMenu
-    }
+    // let panelProps = {
+    //     // server,
+    //     // players,
+    //     // touchControlsEnabled,
+    //     // setTouchControlsEnabled,
+    //     reloadScene,
+    //     // controllerState,
+    //     // isFullscreen,
+    //     // requestFullscreen,
+    //     // exitFullscreen,
+    //     // setShowMenu
+    // }
 
     return (
 
         <div
-            className={`games-showcase-carousel-page carousel-game-page ${isFullscreen && 'fullscreen'}`}
+            className={`games-showcase-carousel-page carousel-game-page ${isFullscreen && 'fullscreen'} ${sidebar && 'show-sidebar'}`}
 
         >
 
             <GamepadKeyboard />
 
-            <div className="menu-bar card card-articles p-1 justify-content-center">
+            <GameMenu
+                useStore={useStore}
+                LeftPanelContent={LeftPanelContent}
+                menuBarConfig={{
+                    style: "Corner Button",
+                    menuBarButtonPosition: "Left"
+                }}
+                sidebarConfig={{
+                    style: "Static Panel",
+                }}
+            />
+
+            {/* <div className="menu-bar card card-articles p-1 justify-content-center">
 
                 <div className='d-flex justify-content-center align-items-center'>
 
@@ -144,30 +161,29 @@ export default function PageContent() {
                     </ArticlesButton>
 
                     <div>
-                        {/* Y: {(playerLocation?.y || 0)} */}
                     </div>
 
                 </div>
 
-            </div>
+            </div> */}
 
-            <div className={`mobile-menu ${showMenu && 'show'}`}>
+            {/* <div className={`mobile-menu ${showMenu && 'show'}`}>
                 <LeftPanelContent
                     {...panelProps}
                 />
-            </div>
+            </div> */}
 
             {/* <TouchControls
                 // touchControlsEnabled={touchControlsEnabled}
             /> */}
 
-            <div className='panel-left card rounded-0 d-none d-lg-flex'>
+            {/* <div className='panel-left card rounded-0 d-none d-lg-flex'>
 
                 <LeftPanelContent
                     {...panelProps}
                 />
 
-            </div>
+            </div> */}
 
             {/* <div className='game-info'>
                 <div className="card card-articles card-sm">
@@ -183,20 +199,14 @@ export default function PageContent() {
 
             <div className='canvas-wrap'>
 
-                <div className='controls-helper'>
+                <div className='controller-only controls-helper'>
 
                     <img
                         id={"controls-helper-dpad-left"}
                         src="img/Xbox UI/DpadL.svg"
                         alt="Control Keys"
                         className='only-controller'
-                    ></img>
-                    <img
-                        id={"controls-helper-dpad-right"}
-                        src="img/Xbox UI/DpadR.svg"
-                        alt="Control Keys"
-                        className='only-controller'
-                    ></img>
+                    ></img>                    
 
                     <div className='bubble'>
                         <img className='me-2' height={30} width={30} src="img/Xbox UI/A.svg" alt="Control Keys"></img>
@@ -207,6 +217,13 @@ export default function PageContent() {
                         <img className='me-2' height={30} width={30} src="img/Xbox UI/X.svg" alt="Control Keys"></img>
                         <strong>Details</strong>
                     </div>
+
+                    <img
+                        id={"controls-helper-dpad-right"}
+                        src="img/Xbox UI/DpadR.svg"
+                        alt="Control Keys"
+                        className='only-controller'
+                    ></img>
 
                 </div>
 

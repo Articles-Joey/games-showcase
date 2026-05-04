@@ -5,84 +5,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
-// import { useSelector, useDispatch } from 'react-redux'
-
-// const ChromePicker = dynamic(() => import('react-color'), {
-//     ssr: false,
-// });
-
-// import useUserDetails from '@/components/hooks/user/useUserDetails';
-// import useUserToken from '@/components/hooks/user/useUserToken';
-
-// import { useLocalStorageNew } from '@/components/hooks/useLocalStorageNew';
-
-// import { useForm, useWatch } from "react-hook-form";
-
-// import Logo from "public/images/race-game/splash.jpg";
-
-// import ROUTES from 'components/constants/routes'
-
 import ArticlesButton from '@/components/UI/Button';
 
-// const Ad = dynamic(() => import('components/Ads/Ad'), {
-//     ssr: false,
-// });
-
-// const Viewer = dynamic(
-//     () => import('@/components/Game/Viewer'),
-//     { ssr: false }
-// )
-
-// const Duck = dynamic(
-//     () => import('@/components/Game/PlayerModels/Duck'),
-//     { ssr: false }
-// )
-
-// const Dog = dynamic(
-//     () => import('@/components/Game/PlayerModels/Dog'),
-//     { ssr: false }
-// )
-
-// const Bear = dynamic(
-//     () => import('@/components/Game/PlayerModels/Bear'),
-//     { ssr: false }
-// )
-
-// const Witch = dynamic(
-//     () => import('@/components/Game/PlayerModels/Witch'),
-//     { ssr: false }
-// )
-
-// import SingleInput from '@/components/Articles/SingleInput';
-// import IsDev from '@/components/UI/IsDev';
-import { useSocketStore } from '@/components/hooks/useSocketStore';
-// import ArticlesAd from '@/components/ArticlesAd';
-// import CreditsModal from '@/components/UI/CreditsModal';
+import GameMenuPrimaryButtonGroup from '@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup';
+// import { useSocketStore } from '@/components/hooks/useSocketStore';
 const CreditsModal = dynamic(
     () => import('@articles-media/articles-dev-box/CreditsModal'),
     { ssr: false }
 )
-// import { Settings } from '@mui/icons-material';
 
 import { useStore } from '@/components/hooks/useStore';
-// import usePeerConnection from '@/components/hooks/usePeerConnection';
-// import PeerLogic from '@/components/PeerLogic';
-
-// const LoginInfoModal = dynamic(
-//     () => import('@/components/UI/LoginInfoModal'),
-//     { ssr: false }
-// )
 
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
-// import '@articles-media/articles-gamepad-helper/style.css';
-
 import PieMenu from '@articles-media/articles-gamepad-helper/PieMenu';
 
 import { useLandingNavigation } from '@/hooks/useLandingNavigation';
+import InfoModal from '@/components/UI/InfoModal';
 
-// import SynthwaveAnimation from '@/components/Game/Synthwave/SynthwaveAnimation';
 const SynthwaveAnimation = dynamic(
     () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
     { ssr: false }
@@ -96,109 +37,15 @@ export default function LandingPage() {
     const darkMode = useStore((state) => state.darkMode)
     const toggleDarkMode = useStore((state) => state.toggleDarkMode)
 
-    // const peerId = usePeerConnection((state) => state?.peerId);
-
-    // const {
-    //     socket,
-    // } = useSocketStore(state => ({
-    //     socket: state.socket,
-    // }));
-    const socket = useSocketStore((state) => state.socket)
-    // const connectSocket = useSocketStore((state) => state.connectSocket)
-    // const disconnectSocket = useSocketStore((state) => state.disconnectSocket)
-    // const connected = useSocketStore((state) => state.connected)
-
-    // const loginInfoModal = useStore((state) => state.loginInfoModal)
-    // const toggleLoginInfoModal = useStore((state) => state.toggleLoginInfoModal)
-
     const landingAnimation = useStore((state) => state.landingAnimation)
     const setLandingAnimation = useStore((state) => state.setLandingAnimation)
 
-    // const infoModal = useStore((state) => state.infoModal)
-    // const setInfoModal = useStore((state) => state.setInfoModal)
-    // const toggleInfoModal = useStore((state) => state.toggleInfoModal)
-
-    // const showSettingsModal = useStore((state) => state.showSettingsModal)
     const setShowSettingsModal = useStore((state) => state.setShowSettingsModal)
-    // const toggleSettingsModal = useStore((state) => state.toggleSettingsModal)
+    const showInfoModal = useStore((state) => state.showInfoModal)
+    const setShowInfoModal = useStore((state) => state.setShowInfoModal)
 
     const showCreditsModal = useStore((state) => state.showCreditsModal)
     const setShowCreditsModal = useStore((state) => state.setShowCreditsModal)
-
-    // const [showInfoModal, setShowInfoModal] = useState(false)
-    // const [showCreditsModal, setShowCreditsModal] = useState(false)
-
-    // const userReduxState = useSelector((state) => state.auth.user_details)
-    const userReduxState = false
-
-    // const {
-    //     data: userToken,
-    //     error: userTokenError,
-    //     isLoading: userTokenLoading,
-    //     mutate: userTokenMutate
-    // } = useUserToken();
-
-    // const {
-    //     data: userDetails,
-    //     error: userDetailsError,
-    //     isLoading: userDetailsLoading,
-    //     mutate: userDetailsMutate
-    // } = useUserDetails({
-    //     token: userToken
-    // });
-
-    // const [rulesAnControls, setRulesAnControls] = useState(false);
-
-    // const { register, handleSubmit, watch, formState: { errors } } = useForm({
-    //     defaultValues: {
-    //         // "Cover Fees": false
-    //         ...(typeof window !== 'undefined' && { nickname: localStorage.getItem('game:nickname') || userReduxState.display_name })
-    //     }
-    // });
-
-    // const nickname = watch("nickname", false);
-
-    // const [nickname, setNickname] = useLocalStorageNew("game:nickname", userReduxState.display_name)
-
-    // const nickname = useStore((state) => state.nickname)
-    // const setNickname = useStore((state) => state.setNickname)
-
-    // const [lobbyDetails, setLobbyDetails] = useState({
-    //     players: [],
-    //     games: [],
-    // })
-
-    // useEffect(() => {
-
-    //     // setRulesAnControls(localStorage.getItem('game:race-game:rulesAnControls') === 'true' ? true : false)
-
-    //     // if (userReduxState._id) {
-    //     //     console.log("Is user")
-    //     // }
-
-    //     socket.on('game:game-showcase-landing-details', function (msg) {
-    //         console.log('game:game-showcase-landing-details', msg)
-    //         setLobbyDetails(msg)
-    //     });
-
-    //     return () => {
-    //         socket.off('game:game-showcase-landing-details');
-    //         socket.emit('leave-room', 'game:game-showcase-landing')
-    //     };
-
-    // }, [socket])
-
-    // useEffect(() => {
-
-    //     if (socket.connected) {
-    //         socket.emit('join-room', 'game:game-showcase-landing');
-    //     }
-
-    //     return function cleanup() {
-    //         // socket.emit('leave-room', 'game:game-showcase-landing')
-    //     };
-
-    // }, [socket.connected]);
 
     return (
 
@@ -242,8 +89,14 @@ export default function LandingPage() {
                 <CreditsModal
                     show={showCreditsModal}
                     setShow={setShowCreditsModal}
-                    owner="Articles-Joey"
-                    repo="games-showcase"
+                    owner='Articles-Joey'
+                    repo='games-showcase'
+                />
+            }
+            {showInfoModal &&
+                <InfoModal
+                    show={showInfoModal}
+                    setShow={setShowInfoModal}
                 />
             }
 
@@ -402,84 +255,14 @@ export default function LandingPage() {
 
                     <div className="card-footer d-flex flex-wrap justify-content-center">
 
-                        {/* <ArticlesButton
-                            className={`w-50`}
-                            small
-                            onClick={() => {
-                                setShowSettingsModal(true)
-                            }}
-                        >
-                            <i className="fad fa-cog"></i>
-                            Settings
-                        </ArticlesButton>
-
-                        <ArticlesButton
-                            className={`w-50`}
-                            small
-                            onClick={() => {
-                                setInfoModal(true)
-                            }}
-                        >
-                            <i className="fad fa-info-square"></i>
-                            Info & Rules
-                        </ArticlesButton> */}
-
-                        <a className='w-50' target='_blank' href='https://github.com/Articles-Joey/games-showcase'>
-                            <ArticlesButton
-                                ref={el => elementsRef.current[3] = el}
-                                className={`w-100`}
-                                small
-                                onClick={() => {
-
-                                }}
-                            >
-                                <i className="fab fa-github"></i>
-                                GitHub
-                            </ArticlesButton>
-                        </a>
-
-                        <ArticlesButton
-                            ref={el => elementsRef.current[4] = el}
-                            className={`w-50`}
-                            small
-                            onClick={() => {
-                                setShowCreditsModal(true)
-                            }}
-                        >
-                            <i className="fad fa-users"></i>
-                            Credits
-                        </ArticlesButton>
-
-                        <div className='w-50 d-flex'>
-                            <ArticlesButton
-                                ref={el => elementsRef.current[5] = el}
-                                className={`w-100`}
-                                small
-                                onClick={() => {
-                                    setShowSettingsModal(true)
-                                }}
-                            >
-                                <i className="fad fa-users"></i>
-                                Settings
-                            </ArticlesButton>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                onClick={() => {
-                                    toggleDarkMode()
-                                }}
-                            >
-                                {darkMode ?
-                                    <i className="fad fa-sun"></i>
-                                    :
-                                    <i className="fad fa-moon"></i>
-                                }
-                            </ArticlesButton>
-                        </div>
+                        <GameMenuPrimaryButtonGroup
+                            useStore={useStore}
+                            type="Landing"
+                        />
 
                         <ArticlesButton
                             ref={el => elementsRef.current[6] = el}
-                            className={`w-50 landing-animation-toggle-button`}
+                            className={`w-50 landing-animation-toggle-button mt-2`}
                             small
                             onClick={() => {
                                 setLandingAnimation(!landingAnimation)

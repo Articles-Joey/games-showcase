@@ -5,9 +5,9 @@
     display: flex;
 
     &.fullscreen {
-        .mobile-menu {
-            top: 0px;
-        }
+        // .mobile-menu {
+        //     top: 0px;
+        // }
     }
 
     .background {
@@ -91,39 +91,39 @@
         }
     }
 
-    .menu-bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        z-index: 3;
+    // .menu-bar {
+    //     position: fixed;
+    //     bottom: 0;
+    //     left: 0;
+    //     width: 100%;
+    //     height: 50px;
+    //     z-index: 3;
 
-        @include media-breakpoint-up(lg) {
-            display: none;
-        }
-    }
+    //     @include media-breakpoint-up(lg) {
+    //         display: none;
+    //     }
+    // }
 
-    .mobile-menu {
-        position: fixed;
-        bottom: 50px;
-        left: 0;
-        width: 100%;
-        top: 0px;
-        // height: calc(100vh - 50px);
-        z-index: 2;
-        background-color: rgba(0, 0, 0, 0.75);
-        transform: translateY(calc(100% + 50px));
-        transition-duration: 200ms;
-        padding: 1rem;
-        display: flex;
-        align-items: flex-end;
+    // .mobile-menu {
+    //     position: fixed;
+    //     bottom: 50px;
+    //     left: 0;
+    //     width: 100%;
+    //     top: 0px;
+    //     // height: calc(100vh - 50px);
+    //     z-index: 2;
+    //     background-color: rgba(0, 0, 0, 0.75);
+    //     transform: translateY(calc(100% + 50px));
+    //     transition-duration: 200ms;
+    //     padding: 1rem;
+    //     display: flex;
+    //     align-items: flex-end;
 
-        &.show {
-            transform: translateY(0);
-        }
+    //     &.show {
+    //         transform: translateY(0);
+    //     }
 
-    }
+    // }
 
     .touch-controls-area {
         position: fixed;
@@ -175,9 +175,9 @@
 
         .controls-helper {
             position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 0px;
+            right: 0;
+            // transform: translateX(-50%);
             font-size: 0.9rem;
             z-index: 2;
             display: flex;
@@ -185,7 +185,7 @@
             align-items: center;
 
             @include media-breakpoint-up(lg) {
-                bottom: 10px;
+                bottom: 0px;
             }
 
             .bubble {
@@ -193,22 +193,40 @@
                 margin: 0 0.25rem;
                 background-color: rgba(0, 0, 0, 0.5);
                 color: white;
-                padding: 0.5rem 1rem;
+                padding: 0.25rem 0.5rem;
+
+                display: flex;
+                align-items: center;
+
+                font-size: 0.8rem;
+
+                @include media-breakpoint-up(lg) {
+                    font-size: 1rem;
+                    padding: 0.5rem 1rem;
+                }
             }
 
             #controls-helper-dpad-left,
             #controls-helper-dpad-right {
-                position: absolute;
-                margin: 0 0.5rem;
+                // position: absolute;
+                margin: 0 0.25rem;
+                height: 40px;
+                width: 40px;
+
+                @include media-breakpoint-up(lg) {
+                    margin: 0 0.5rem;
+                    height: 70px;
+                    width: 70px;
+                }
             }
 
-            #controls-helper-dpad-left {
-                left: -80px;
-            }
+            // #controls-helper-dpad-left {
+            //     left: -80px;
+            // }
 
-            #controls-helper-dpad-right {
-                right: -80px;
-            }
+            // #controls-helper-dpad-right {
+            //     right: -80px;
+            // }
         }
 
         canvas {
@@ -230,18 +248,18 @@
         // padding: 1rem;
     }
 
-    .panel-left,
-    .panel-right {
-        width: 300px;
-        height: calc(100vh - 0px);
-        flex-shrink: 0;
-    }
+    // .panel-left,
+    // .panel-right {
+    //     width: 300px;
+    //     height: calc(100vh - 0px);
+    //     flex-shrink: 0;
+    // }
 
-    .panel-right {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    // .panel-right {
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    // }
 
     .game-panel {
         width: 100%;

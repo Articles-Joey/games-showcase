@@ -1,12 +1,18 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
+import typicalZustandStoreExcludes from '@articles-media/articles-dev-box/typicalZustandStoreExcludes';
+import typicalZustandStoreStateSlice from '@articles-media/articles-dev-box/typicalZustandStoreStateSlice';
+
+function generateRandomNickname() {
+  return null
+}
+
 export const useStore = create()(
   persist(
     (set, get, store) => ({
 
-      landingAnimation: true,
-      setLandingAnimation: (value) => set({ landingAnimation: value }),
+      ...typicalZustandStoreStateSlice(set, get, generateRandomNickname),
 
       search: "",
       setSearch: (search) => set({ search }),
@@ -39,25 +45,9 @@ export const useStore = create()(
       activeGameIndex: 0,
       setActiveGameIndex: (index) => set({ activeGameIndex: index }),
 
-      darkMode: true,
-      toggleDarkMode: () => set({ darkMode: !get().darkMode }),
-      setDarkMode: (value) => set({ darkMode: value }),
-
-      infoModal: false,
-      setInfoModal: (value) => set({ infoModal: value }),
-      toggleInfoModal: () => set({ infoModal: !get().infoModal }),
-
       loginInfoModal: false,
       setLoginInfoModal: (value) => set({ loginInfoModal: value }),
       toggleLoginInfoModal: () => set({ loginInfoModal: !get().loginInfoModal }),
-
-      showSettingsModal: false,
-      setShowSettingsModal: (value) => set({ showSettingsModal: value }),
-      toggleSettingsModal: () => set({ showSettingsModal: !get().showSettingsModal }),
-
-      showCreditsModal: false,
-      setShowCreditsModal: (value) => set({ showCreditsModal: value }),
-      toggleCreditsModal: () => set({ showCreditsModal: !get().showCreditsModal }),
 
       // 2D or 3D
       renderMode: '3D',
@@ -68,18 +58,6 @@ export const useStore = create()(
 
       renderUniqueGameSceneRange: 2,
       setRenderUniqueGameSceneRange: (range) => set({ renderUniqueGameSceneRange: range }),
-
-      devDebug: false,
-      setDevDebug: (value) => set({ devDebug: value }),
-      toggleDevDebug: () => set({ devDebug: !get().devDebug }),
-
-      sidebar: true,
-      setSidebar: (value) => set({ sidebar: value }),
-      toggleSidebar: () => set({ sidebar: !get().sidebar }),
-
-      showMenu: false,
-      setShowMenu: (value) => set({ showMenu: value }),
-      toggleShowMenu: () => set({ showMenu: !get().showMenu }),
 
       audioSettings: {
         enabled: false,
@@ -97,55 +75,25 @@ export const useStore = create()(
       },
       setControlSettings: (settings) => set({ controlSettings: settings }),
 
-      // Automates end of game and starting new ones for hands off arcade fun
-      arcadeMode: false,
-      setArcadeMode: (arcadeMode) => set({ arcadeMode }),
-
-      // Toontown mode changes graphics to be more ToonTown like
-      toontownMode: false,
-      setToontownMode: (toontownMode) => set({ toontownMode }),
-
-      character: {
-        model: 'Duck',
-        color: '#FFD801'
-      },
-      setCharacter: (character) => set({ character }),
-
-      nickname: "",
-      setNickname: (nickname) => set({ nickname }),
-
-      gameState: {},
-      setGameState: (gameState) => set({ gameState }),
-
-      kicked: null,
-      setKicked: (reason) => set({ kicked: reason }),
-
-      socketServerHost: process.env.NEXT_PUBLIC_NODE_SERVER,
-      setSocketServerHost: (host) => set({ socketServerHost: host }),
-
       reset: () => {
         set(store.getInitialState())
       },
 
     }),
     {
-      name: 'games-showcase-storage', // name of the item in the storage (must be unique)
-      version: 1,
+      name: 'games-showcase-storage',
+      version: 2,
+      onRehydrateStorage: (state) => {
+        return () => state.setHasHydrated(true)
+      },
       partialize: (state) =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) => ![
-            // Exclude list of keys to not persist
-            // 'search',
-            // 'filters',
-            'activeGameIndex',
-            'gameInfoModal',
-            'infoModal',
-            'settingsModal',
-            'creditsModal',
-            'showMenu'
+            ...typicalZustandStoreExcludes,
+            "gameInfoModal",
+            "activeGameIndex"
           ].includes(key))
         ),
-      // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ),
 )

@@ -27,14 +27,13 @@ const nextConfig = {
         if (process.env.NODE_ENV === 'development') {
             return [];
         }
-
         return [
             {
                 source: '/(.*)',
                 headers: [
                     {
                         key: 'Content-Security-Policy',
-                        value: "frame-ancestors 'self' https://*.articles.media",
+                        value: "frame-ancestors 'self' https://articles.media",
                     },
                 ],
             },

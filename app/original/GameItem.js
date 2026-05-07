@@ -148,112 +148,205 @@ export default function GameItem({ item, toontownImages }) {
                     <b>{item.name}</b>
                 </div>
 
-                <Link
-                    // href={item.link}
-                    href={`${item.link}`}
-                    prefetch={false}
-                    target='_blank'
-                    rel="noopener noreferrer"
-                >
-                    <div className="thumbnail-wrapper ratio ratio-1x1 bg-dark mb-0 me-2 me-lg-0">
+                <div className="thumbnail-wrapper position-relative">
 
-                        <div>
-                            <div className='icons-wrapper'>
-                                {item.gamepadSupport &&
-                                    <OverlayTrigger
-                                        placement={'bottom'}
-                                        overlay={
-                                            <Tooltip id={`tooltip-${'bottom'}`}>
-                                                Gamepad Support
-                                            </Tooltip>
-                                        }
-                                    >
-                                        <i className="action fad fa-gamepad-alt me-0"></i>
-                                    </OverlayTrigger>
-                                }
-                                {item.offline &&
-                                    <OverlayTrigger
-                                        placement={'bottom'}
-                                        overlay={
-                                            <Tooltip id={`tooltip-${'bottom'}`}>
-                                                Playable Offline
-                                            </Tooltip>
-                                        }
-                                    >
-                                        <i className="action fad fa-plug me-0"></i>
-                                    </OverlayTrigger>
-                                }
-                                {item.amcot_character &&
-                                    <OverlayTrigger
-                                        placement={'bottom'}
-                                        overlay={
-                                            <Tooltip id={`tooltip-${'bottom'}`}>
-                                                AMCOT Character Usage
-                                            </Tooltip>
-                                        }
-                                    >
-                                        <i className="action fad fa-user-astronaut me-0"></i>
-                                    </OverlayTrigger>
-                                }
-                            </div>
+                    <Link
+                        // href={item.link}
+                        href={`${item.link}`}
+                        prefetch={false}
+                        target='_blank'
+                        rel="noopener noreferrer"
+                    >
+                        <div className="ratio ratio-1x1 bg-dark mb-0 me-2 me-lg-0">
+
+                            {item?.image?.src &&
+                                <Image
+                                    alt=""
+                                    fill
+                                    placeholder={
+                                        ['jpg', 'png', 'wep'].includes(item.image.src.split('.').pop()) ? 'blur' : 'empty'
+                                    }
+                                    style={{
+                                        objectFit: 'cover',
+                                    }}
+                                    src={item.image}
+                                >
+                                </Image>
+                            }
+
+                            {item.image && !item?.image?.src &&
+                                <img
+                                    src={
+                                        (toontownImages && item.inspo_image) ?
+                                            item.inspo_image
+                                            :
+                                            item.image
+
+                                    }
+                                    alt=""
+                                    className='w-100 h-100'
+                                    style={{ objectFit: 'cover' }}
+                                />
+                            }
+
                         </div>
+                    </Link>
 
-                        {item?.image?.src &&
-                            <Image
-                                alt=""
-                                fill
-                                placeholder={
-                                    ['jpg', 'png', 'wep'].includes(item.image.src.split('.').pop()) ? 'blur' : 'empty'
+                    <div
+                        className='icons-wrapper'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }}
+                    >
+                        {item.gamepadSupport &&
+                            <OverlayTrigger
+                                placement={'bottom'}
+                                overlay={
+                                    <Tooltip id={`tooltip-${'bottom'}`}>
+                                        Gamepad Support
+                                    </Tooltip>
                                 }
-                                style={{
-                                    objectFit: 'cover',
-                                }}
-                                src={item.image}
                             >
-                            </Image>
+                                <i className="action fad fa-gamepad-alt me-0"></i>
+                            </OverlayTrigger>
                         }
-
-                        {item.image && !item?.image?.src &&
-                            <img
-                                src={
-                                    (toontownImages && item.inspo_image) ?
-                                        item.inspo_image
-                                        :
-                                        item.image
-
+                        {item.leaderboards &&
+                            <OverlayTrigger
+                                placement={'bottom'}
+                                overlay={
+                                    <Tooltip id={`tooltip-${'bottom'}`}>
+                                        <div>Leaderboards</div>
+                                        <hr className="my-1" />
+                                        {item.leaderboards.local && <div>Local</div>}
+                                        {item.leaderboards.online && <div>Online</div>}
+                                    </Tooltip>
                                 }
-                                alt=""
-                                className='w-100 h-100'
-                                style={{ objectFit: 'cover' }}
-                            />
+                            >
+                                <i className="action fad fa-trophy me-0"></i>
+                            </OverlayTrigger>
                         }
-
-                        {/* {item.image &&
-                                                    <img
-                                                        src={item.image.src}
-                                                        alt=""
-                                                        className='w-100 h-100'
-                                                        style={{
-                                                            objectFit: 'cover',
-                                                        }}
-                                                    />
-                                                } */}
-
+                        {
+                            item.github_repo
+                            &&
+                            item.github_public
+                            &&
+                            <a
+                                href={item.github_repo}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => {
+                                    window.open(item.github_repo, '_blank');
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <OverlayTrigger
+                                    placement={'bottom'}
+                                    overlay={
+                                        <Tooltip id={`tooltip-${'bottom'}`}>
+                                            Open Source GitHub Repo
+                                        </Tooltip>
+                                    }
+                                >
+                                    <i className="action fab fa-github me-0"></i>
+                                </OverlayTrigger>
+                            </a>
+                        }
+                        {item.offline &&
+                            <OverlayTrigger
+                                placement={'bottom'}
+                                overlay={
+                                    <Tooltip id={`tooltip-${'bottom'}`}>
+                                        Playable Offline
+                                    </Tooltip>
+                                }
+                            >
+                                <i className="action fad fa-plug me-0"></i>
+                            </OverlayTrigger>
+                        }
+                        {item.amcot_character &&
+                            <OverlayTrigger
+                                placement={'bottom'}
+                                overlay={
+                                    <Tooltip id={`tooltip-${'bottom'}`}>
+                                        AMCOT Character Usage
+                                    </Tooltip>
+                                }
+                            >
+                                <i className="action fad fa-user-astronaut me-0"></i>
+                            </OverlayTrigger>
+                        }
                     </div>
-                </Link>
+
+                </div>
 
                 <div className="card-header p-1 border-bottom h-100">
-                    <div className='d-flex flex-row flex-wrap w-100 justify-content-center align-items-center'>
+
+                    <div
+                        className='d-flex flex-row flex-wrap w-100 justify-content-center align-items-center'
+                        style={{
+                            fontSize: '0.9rem',
+                        }}
+                    >
 
                         {item.single_player &&
                             <>
-                                <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>Single Player</span>
+                                <OverlayTrigger
+                                    // key={'customer_id'}
+                                    placement={'bottom'}
+                                    overlay={
+                                        <Tooltip id={`tooltip-${'bottom'}`}>
+
+                                            <div>Single Player</div>
+
+                                            {item.single_player_tag &&
+                                                <div>
+                                                    {item.single_player_tag}
+                                                </div>
+                                            }
+
+                                        </Tooltip>
+                                    }
+                                >
+                                    <div style={{ cursor: 'pointer' }}>
+                                        <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>
+                                            <i className="fad fa-user me-1"></i>
+                                            Single Player
+                                        </span>
+                                    </div>
+                                </OverlayTrigger>
+                                {/* <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>Single Player</span> */}
                             </>
                         }
                         {item.multiplayer &&
                             <>
-                                <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>Multiplayer</span>
-                                <span className='badge bg-light shadow-articles text-dark mb-1'>{item.multiplayer_tag}</span>
+                                <OverlayTrigger
+                                    // key={'customer_id'}
+                                    placement={'bottom'}
+                                    overlay={
+                                        <Tooltip id={`tooltip-${'bottom'}`}>
+
+                                            <div>Multiplayer</div>
+
+                                            {item.multiplayer_tag &&
+                                                <div>
+                                                    {item.multiplayer_tag}
+                                                </div>
+                                            }
+
+                                        </Tooltip>
+                                    }
+                                >
+                                    <div style={{ cursor: 'pointer' }}>
+                                        <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>
+                                            <i className="fad fa-users me-1"></i>
+                                            Multiplayer
+                                        </span>
+                                    </div>
+                                </OverlayTrigger>
+                                {/* <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>Multiplayer</span>
+                                <span className='badge bg-light shadow-articles text-dark mb-1'>{item.multiplayer_tag}</span> */}
                             </>
                         }
                         {item.multiplayer === false &&
@@ -280,6 +373,7 @@ export default function GameItem({ item, toontownImages }) {
                         }
 
                     </div>
+
                 </div>
 
                 <div className="card-body p-1 d-flex flex-column align-items-start">
@@ -485,7 +579,7 @@ export default function GameItem({ item, toontownImages }) {
                                 Engine:
                             </span>
                             <span>{item.engine || "None"}</span>
-                        </div>                        
+                        </div>
 
                     </div>
 

@@ -53,7 +53,7 @@ export default function GamesPage(props) {
     const setAvailabilityFilter = useFilterStore((state) => state.setAvailabilityFilter);
 
     // const [modalShow, setModalShow] = useState(false);
-    const [activeModalGame, setActiveModalGame] = useState(null);
+    const [modalPublishWithUs, setModalPublishWithUs] = useState(null);
 
     const search = useFilterStore((state) => state.search);
     const setSearch = useFilterStore((state) => state.setSearch);
@@ -83,28 +83,85 @@ export default function GamesPage(props) {
     return (
         <div className="games-page">
 
-            {activeModalGame &&
+            {modalPublishWithUs &&
                 <Modal
-                    show={activeModalGame}
+                    show={modalPublishWithUs}
                     className="articles-modal"
                     centered
                     onHide={() => {
                         // setModalShow(false)
-                        setActiveModalGame(null)
+                        setModalPublishWithUs(null)
                     }}
                 >
 
-                    <Modal.Header className="py-1" closeButton>
-                        <Modal.Title>Game Info</Modal.Title>
+                    <Modal.Header className="" closeButton>
+                        <Modal.Title>Publish Your Game!</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
 
-                        <h3 className='mb-2'>{activeModalGame.name}</h3>
-
-                        <div className='lh-sm small mb-1'>
-                            {activeModalGame.short_description}
+                        <div className='mb-3'>
+                            If you have a WebGL/WebGPU game that you have made and would like to publish then reach out! We can host your game for you and provide a few different services.
                         </div>
+
+                        <ul>
+                            <li>
+                                Scoreboard and multiplayer API for your games!
+                            </li>
+                            <li>
+                                React Three Fiber components for characters and animations. Also allows players to bring their AMCOT character from game to game on our platform!
+                            </li>
+                            <li>
+                                React components and APIs for handling user accounts and authentication.
+                            </li>
+                        </ul>
+
+                        <a
+                            href={"https://articles.media/community/press"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className='mb-3'
+                        >
+                            <ArticlesButton
+                                // small
+                                large
+                                className="w-100 mb-3"
+                            >
+                                Contact Us
+                            </ArticlesButton>
+                        </a>
+
+                        <div className='mb-3'>Here is some links to some of our documentation and resources if you want to learn more about how to use our platform to publish your game:</div>
+
+                        <ul>
+                            <li>
+                                <a
+                                    href={"https://github.com/Articles-Joey/articles-dev-box"}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Articles Dev Box
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={"https://github.com/Articles-Joey/articles-gamepad-helper"}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Articles Gamepad Helper
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={"https://github.com/Articles-Joey/articles-amcot-character"}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Articles AMCOT Character
+                                </a>
+                            </li>
+                        </ul>
 
                     </Modal.Body>
 
@@ -118,7 +175,7 @@ export default function GamesPage(props) {
                             variant="secondary"
                             onClick={() => {
                                 // setModalShow(false)
-                                setActiveModalGame(null)
+                                setModalPublishWithUs(null)
                             }}
                         >
                             Close
@@ -482,30 +539,7 @@ export default function GamesPage(props) {
                             <ArticlesButton
                                 onClick={() => {
                                     // setModalShow(true)
-                                    setActiveModalGame({
-                                        name: 'Publish With Us',
-                                        short_description:
-                                            <div>
-
-                                                <div className='mb-3'>
-                                                    If you have a WebGL/WebGPU game that you have made and would like to publish then reach out! We can host your game for you and provide an API to handle multiplayer and scoreboards.
-                                                </div>
-
-                                                <a
-                                                    href={"https://articles.media/community/press"}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <ArticlesButton
-                                                        // small
-                                                        large
-                                                    >
-                                                        Contact Us
-                                                    </ArticlesButton>
-                                                </a>
-
-                                            </div>
-                                    })
+                                    setModalPublishWithUs(true)
                                 }}
                                 className="d-block mt-auto"
                                 small

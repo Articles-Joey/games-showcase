@@ -206,15 +206,23 @@ export default function PageContent() {
                         src="img/Xbox UI/DpadL.svg"
                         alt="Control Keys"
                         className='only-controller'
+                        loading='lazy'
                     ></img>                    
 
                     <div className='bubble'>
-                        <img className='me-2' height={30} width={30} src="img/Xbox UI/A.svg" alt="Control Keys"></img>
+                        <img 
+                        className='me-2' 
+                        height={30} 
+                        width={30} 
+                        src="img/Xbox UI/A.svg" 
+                        alt="Control Keys"
+                        loading='lazy'
+                        ></img>
                         <strong>Select</strong>
                     </div>
 
                     <div className='bubble'>
-                        <img className='me-2' height={30} width={30} src="img/Xbox UI/X.svg" alt="Control Keys"></img>
+                        <img className='me-2' height={30} width={30} src="img/Xbox UI/X.svg" alt="Control Keys" loading='lazy'></img>
                         <strong>Details</strong>
                     </div>
 
@@ -223,6 +231,7 @@ export default function PageContent() {
                         src="img/Xbox UI/DpadR.svg"
                         alt="Control Keys"
                         className='only-controller'
+                        loading='lazy'
                     ></img>
 
                 </div>

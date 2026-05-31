@@ -12,6 +12,7 @@ export async function GET(req) {
         .map(game => ({
             link: game.link,
             name: game.name,
+            image: game.image
         }))
     );
     const allowedOrigins = [

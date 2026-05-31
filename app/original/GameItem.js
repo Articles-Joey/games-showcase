@@ -186,6 +186,7 @@ export default function GameItem({ item, toontownImages }) {
                                     alt=""
                                     className='w-100 h-100'
                                     style={{ objectFit: 'cover' }}
+                                    loading='lazy'
                                 />
                             }
 

@@ -20,7 +20,8 @@ export default function NotFound() {
                     alt=""
                     style={{
                         objectFit: 'cover',
-                        filter: 'blur(3px)',
+                        filter: 'blur(10px)',
+                        transform: 'scale(1.05)',
                     }}
                 />
             </div>

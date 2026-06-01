@@ -20,7 +20,7 @@ const InfoModal = dynamic(
 )
 
 const GameInfoModal = dynamic(
-    () => import('@/components/UI/GameInfoModal'),
+    () => import('@/components/UI/GameInfoModal/index'),
     { ssr: false }
 )
 

@@ -22,6 +22,7 @@ import { Box, CircularProgress } from '@mui/material';
 import FilterDropdowns from '@/components/UI/FilterDropdowns';
 import { useFilterStore } from '@/components/hooks/useFilterStore';
 import useAllGames from '@/components/hooks/useAllGames';
+import OnlinePlayerCount from '@/components/UI/OnlinePlayerCount';
 
 export default function GamesPage(props) {
 
@@ -127,6 +128,7 @@ export default function GamesPage(props) {
                                 large
                                 className="w-100 mb-3"
                             >
+                                <i className="fad fa-comment-alt-edit me-1 fa-lg"></i>
                                 Contact Us
                             </ArticlesButton>
                         </a>
@@ -205,6 +207,9 @@ export default function GamesPage(props) {
                 <div className='text'>
                     <h1 className="">Games - {games?.filter(obj => !obj.preview)?.length || 0}</h1>
                     <p className='mb-0'>Play some games with your friends or other users.</p>
+                    <OnlinePlayerCount />
+
+                    <Link href="/" className="text-white">Return to landing</Link>
                 </div>
 
             </div>
@@ -544,6 +549,7 @@ export default function GamesPage(props) {
                                 className="d-block mt-auto"
                                 small
                             >
+                                <i className="fad fa-info-circle me-1 fa-lg"></i>
                                 Learn More
                             </ArticlesButton>
 

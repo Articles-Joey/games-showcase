@@ -16,6 +16,7 @@ import GlobalClientModals from '@/components/UI/GlobalClientModals';
 import DarkModeHandler from '@/components/UI/DarkModeHandler';
 import { Suspense } from 'react';
 import LayoutClient from './layout-client';
+import SocketLogicHandler from '@/components/Handlers/SocketLogicHandler';
 
 export const metadata = {
   title: "Games Showcase",
@@ -28,11 +29,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
 
       <head>
-
-        {/* <link
-          rel="stylesheet"
-          href={`${process.env.NEXT_PUBLIC_CDN}fonts/fontawesome/css/all.min.css`}
-        /> */}
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
@@ -51,6 +47,7 @@ export default function RootLayout({ children }) {
           <DarkModeHandler />
           <GlobalClientModals />
           <LayoutClient />
+          <SocketLogicHandler />
         </Suspense>
 
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>

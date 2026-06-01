@@ -1,0 +1,63 @@
+.game-info-modal {
+
+    .active-game-image {
+        position: relative;
+
+        .next-button, .previous-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            cursor: pointer;
+            z-index: 1;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition-duration: 200ms;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.7);
+                transform: translateY(-50%) scale(1.1);
+            }
+        }
+
+        .next-button {
+            right: 10px;
+        }
+
+        .previous-button {
+            left: 10px;
+        }
+
+    }
+
+    .thumbnail-slider {
+        display: flex;
+        overflow-x: auto;
+
+        .thumbnail {
+            width: 100px;
+            flex-shrink: 0;
+            // height: 168px;
+            object-fit: contain;
+            background-color: black;
+            border: 1px solid rgba(133, 133, 133, 0.5);
+            // border-radius: 0.5rem;
+        }
+    }
+
+    .details-tag {
+        margin-bottom: 1rem;
+
+        .label {
+            font-size: 0.75rem;
+            // font-weight: bold;
+            // color: #555;
+        }
+    }
+}

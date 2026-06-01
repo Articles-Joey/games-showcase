@@ -3,6 +3,7 @@ import React, { Suspense, useRef, useMemo } from 'react'
 import { Canvas, extend, useThree, useLoader, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sky } from '@react-three/drei'
 import { Water } from 'three-stdlib'
+import { useStore } from '../hooks/useStore'
 
 extend({ Water })
 
@@ -11,6 +12,8 @@ const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/waternormals.jpeg`
 export default function Ocean(props) {
     const ref = useRef()
     const gl = useThree((state) => state.gl)
+
+    const darkMode = useStore((state) => state.darkMode)
 
     const waterNormals = useLoader(THREE.TextureLoader, link)
 
@@ -22,8 +25,8 @@ export default function Ocean(props) {
             textureHeight: 512,
             waterNormals,
             sunDirection: [1000, 10, 0],
-            sunColor: 0xffffff,
-            waterColor: 0x001e0f,
+            sunColor: darkMode ? 0x222222 : 0xffffff,
+            waterColor: darkMode ? 0x011111 : 0x001e0f,
             distortionScale: 3.7,
             fog: false,
             format: gl.encoding

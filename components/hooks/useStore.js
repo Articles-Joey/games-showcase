@@ -79,6 +79,12 @@ export const useStore = create()(
         set(store.getInitialState())
       },
 
+      lobbyDetails: {
+        players: [],
+        games: [],
+      },
+      setLobbyDetails: (details) => set({ lobbyDetails: details }),
+
     }),
     {
       name: 'games-showcase-storage',
@@ -91,7 +97,9 @@ export const useStore = create()(
           Object.entries(state).filter(([key]) => ![
             ...typicalZustandStoreExcludes,
             "gameInfoModal",
-            "activeGameIndex"
+            "activeGameIndex",
+            "loginInfoModal",
+            // "lobbyDetails",
           ].includes(key))
         ),
     },

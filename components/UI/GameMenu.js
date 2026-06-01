@@ -28,6 +28,7 @@ import { useFilterStore } from '../hooks/useFilterStore';
 import FilterDropdowns from './FilterDropdowns';
 
 import GameMenuPrimaryButtonGroup from '@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup';
+import { useRouter } from 'next/navigation';
 
 function GameMenu({
     // reloadScene,
@@ -181,6 +182,7 @@ function GameMenu({
                     <GameMenuPrimaryButtonGroup 
                         useStore={useStore}
                         type="GameMenu"
+                        useRouter={useRouter}
                     />
 
                 </div>

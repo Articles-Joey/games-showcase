@@ -24,6 +24,8 @@ import PieMenu from '@articles-media/articles-gamepad-helper/PieMenu';
 import { useLandingNavigation } from '@/hooks/useLandingNavigation';
 import InfoModal from '@/components/UI/InfoModal';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useSocketStore } from '@/components/hooks/useSocketStore';
+import OnlinePlayerCount from '@/components/UI/OnlinePlayerCount';
 
 const SynthwaveAnimation = dynamic(
     () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
@@ -37,6 +39,8 @@ export default function LandingPage() {
     const searchParams = useSearchParams()
     const params = Object.fromEntries(searchParams.entries());
     const { utm_source, utm_medium } = params
+
+    const connected = useSocketStore((state) => state.connected)
 
     const elementsRef = useRef([]);
     useLandingNavigation(elementsRef);
@@ -53,6 +57,8 @@ export default function LandingPage() {
 
     const showCreditsModal = useStore((state) => state.showCreditsModal)
     const setShowCreditsModal = useStore((state) => state.setShowCreditsModal)
+
+    const lobbyDetails = useStore(state => state.lobbyDetails)
 
     useEffect(() => {
 
@@ -129,10 +135,11 @@ export default function LandingPage() {
                     src={`https://cdn.articles.media/games/synth.jpg`}
                     fill
                     alt=""
-                    style={{
-                        objectFit: 'cover',
-                        filter: 'blur(3px)',
-                    }}
+                    // style={{
+                    //     objectFit: 'cover',
+                    //     filter: 'blur(10px)',
+                    //     transform: 'scale(1.05)',
+                    // }}
                 />
             </div>
 
@@ -160,6 +167,10 @@ export default function LandingPage() {
                 >
                     games.articles.media
                 </div>
+
+                <OnlinePlayerCount />
+
+                {/* <div className="px-1">{lobbyDetails?.landing_player_count}</div> */}
 
                 <div className="card card-articles card-sm mb-5">
 

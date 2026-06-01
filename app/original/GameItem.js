@@ -524,7 +524,8 @@ export default function GameItem({ item, toontownImages }) {
                             className='d-flex border-bottom px-1 align-items-center'
                             style={{ fontSize: '0.65rem', cursor: 'pointer' }}
                             onClick={() => {
-                                setActiveDeveloper(item)
+                                // setActiveDeveloper(item)
+                                setGameInfoModal(item);
                             }}
                         >
 

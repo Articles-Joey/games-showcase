@@ -15,6 +15,20 @@ const games = [
         multiplayer_tag: '2-4 Players',
         single_player: false,
         image: `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/thumbnail.webp`,
+        controls_support: [
+            {
+                name: 'Keyboard',
+                methods: []
+            },
+            {
+                name: 'Gamepad',
+                methods: []
+            },
+            {
+                name: 'Touch',
+                methods: []
+            }
+        ],
         gamepadSupport: true,
         engine: 'Three.js',
         content_rating: "Everyone",

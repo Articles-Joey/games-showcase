@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef, useEffect } from "react";
+import { memo, useMemo, useRef, useEffect, Suspense } from "react";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, Sky, Text, useDetectGPU, useTexture } from "@react-three/drei";
@@ -113,7 +113,7 @@ function GameCanvas(props) {
 
             <CameraControls />
 
-            <Ocean position={[0, -0.3, 0]} />
+            {/* <Ocean position={[0, -0.3, 0]} /> */}
 
             <Sky
                 // distance={450000}
@@ -133,7 +133,10 @@ function GameCanvas(props) {
             {!darkMode && <pointLight position={[-10, -10, -10]} intensity={10000} />} */}
 
             {/* Actual Game Carousel */}
-            <Carousel />
+            <Suspense>
+                <Carousel />
+                <Ocean position={[0, -0.3, 0]} />
+            </Suspense>
 
         </Canvas>
     )

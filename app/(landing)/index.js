@@ -26,6 +26,7 @@ import InfoModal from '@/components/UI/InfoModal';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useSocketStore } from '@/components/hooks/useSocketStore';
 import OnlinePlayerCount from '@/components/UI/OnlinePlayerCount';
+import SearchParamsHandler from '@/components/Handlers/SearchParamsHandler';
 
 const SynthwaveAnimation = dynamic(
     () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
@@ -34,11 +35,11 @@ const SynthwaveAnimation = dynamic(
 
 export default function LandingPage() {
 
-    const router = useRouter()
-    const pathname = usePathname()
-    const searchParams = useSearchParams()
-    const params = Object.fromEntries(searchParams.entries());
-    const { utm_source, utm_medium } = params
+    // const router = useRouter()
+    // const pathname = usePathname()
+    // const searchParams = useSearchParams()
+    // const params = Object.fromEntries(searchParams.entries());
+    // const { utm_source, utm_medium } = params
 
     const connected = useSocketStore((state) => state.connected)
 
@@ -60,24 +61,28 @@ export default function LandingPage() {
 
     const lobbyDetails = useStore(state => state.lobbyDetails)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (utm_source || utm_medium) {
-            console.log("UTM Params:", { utm_source, utm_medium })
+    //     if (utm_source || utm_medium) {
+    //         console.log("UTM Params:", { utm_source, utm_medium })
 
-            const current = new URLSearchParams(Array.from(searchParams.entries()));
-            current.delete('utm_source');
-            current.delete('utm_medium');
-            const search = current.toString();
-            const query = search ? `?${search}` : "";
-            router.replace(`${pathname}${query}`);
-        }
+    //         const current = new URLSearchParams(Array.from(searchParams.entries()));
+    //         current.delete('utm_source');
+    //         current.delete('utm_medium');
+    //         const search = current.toString();
+    //         const query = search ? `?${search}` : "";
+    //         router.replace(`${pathname}${query}`);
+    //     }
 
-    }, [searchParams, router, pathname])
+    // }, [searchParams, router, pathname])
 
     return (
 
         <div className="landing-page">
+
+            <Suspense>
+                <SearchParamsHandler />
+            </Suspense>           
 
             <Suspense>
                 <PieMenu

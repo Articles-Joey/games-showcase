@@ -258,7 +258,7 @@ const games = [
         engine: 'Three.js',
         content_rating: "Ages 12+",
         amcot_character: true,
-        github_public: true,
+        github_public: false,
         github_repo: 'https://github.com/Articles-Joey/glass-ceiling',
     },
     {

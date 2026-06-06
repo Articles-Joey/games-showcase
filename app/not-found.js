@@ -15,7 +15,7 @@ export default function NotFound() {
                 className='background-wrap'
             >
                 <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN}games/Race Game/background.jpg`}
+                    src={`https://cdn.articles.media/games/synth.jpg`}
                     fill
                     alt=""
                     style={{

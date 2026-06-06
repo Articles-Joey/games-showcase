@@ -206,7 +206,7 @@ export default function LandingPage() {
                                 </Popover>
                             }
                         >
-                            <Link href="/original">
+                            <Link href="/original" prefetch={false} >
                                 <ArticlesButton
                                     ref={el => elementsRef.current[0] = el}
                                     className={`w-100 mb-2`}
@@ -240,7 +240,7 @@ export default function LandingPage() {
                                 </Popover>
                             }
                         >
-                            <Link href="/carousel">
+                            <Link href="/carousel" prefetch={false} >
                                 <ArticlesButton
                                     ref={el => elementsRef.current[1] = el}
                                     className={`w-100 mb-2`}
@@ -274,7 +274,7 @@ export default function LandingPage() {
                                 </Popover>
                             }
                         >
-                            <Link href="/wall">
+                            <Link href="/wall" prefetch={false} >
                                 <ArticlesButton
                                     ref={el => elementsRef.current[2] = el}
                                     className={`w-100 mb-2`}

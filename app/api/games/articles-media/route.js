@@ -8,13 +8,17 @@ export async function GET(req) {
         const upstream = process.env.NODE_ENV === 'production'
             ? 'https://socket.articles.media/api/games'
             : 'http://localhost:3000/api/games';
+
+        // console.log("upstream", upstream)
+
         const upstreamRes = await fetch(upstream);
         if (!upstreamRes.ok) {
             return NextResponse.json({ error: 'Upstream fetch failed' }, { status: 502 });
         }
-        
+
         // New way so I don't need to commit just to update the games list
-        const games = await upstreamRes.json().games;
+        const games = (await upstreamRes.json()).games;
+        // console.log("Fetched games was equal to:", games);
         const response = NextResponse.json(games);
 
         const allowedOrigins = [
@@ -30,6 +34,9 @@ export async function GET(req) {
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         return response;
     } catch (err) {
-        return NextResponse.json({ error: 'Server error' }, { status: 500 });
+        console.log("Error fetching games:", err);
+        return NextResponse.json({ 
+            error: 'Server error' 
+        }, { status: 500 });
     }
 }

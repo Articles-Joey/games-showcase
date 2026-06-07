@@ -46,13 +46,6 @@ export default function GlobalClientModals() {
     return (
         <>
 
-            {/* {kickedStore &&
-                <KickedModal
-                    show={kickedStore}
-                    setShow={setKickedStore}
-                />
-            } */}
-
             {infoModal &&
                 <InfoModal
                     show={infoModal}

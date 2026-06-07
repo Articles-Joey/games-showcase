@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import useGameControllerKeyboardStore from './hooks/useGameControllerKeyboardStore';
 
+// DO NOT USE - In articles-gamepad-helper package now.
+
 const KEYS = [
     ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],

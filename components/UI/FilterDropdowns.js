@@ -107,24 +107,6 @@ export default function FilterDropdowns() {
                         </Dropdown.Item>
                     )}
 
-                    {/* {userReduxState?.roles?.isDev && <>
-                        <hr />
-
-                        <Dropdown.Item
-                            key={"Developer Only"}
-                            className={` ${availabilityFilter == "Developer Only" && 'active'}`}
-                            onClick={() => {
-
-                                setAvailabilityFilter("Developer Only")
-
-                            }}
-                        >
-
-                            <span>Not Public</span>
-
-                        </Dropdown.Item>
-                    </>} */}
-
                 </Dropdown.Menu>
 
             </Dropdown>

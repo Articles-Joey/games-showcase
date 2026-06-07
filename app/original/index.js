@@ -3,19 +3,9 @@ import { useState, useEffect } from 'react';
 
 import Link from 'next/link'
 
-// import { useSelector } from 'react-redux'
-
-import Dropdown from 'react-bootstrap/Dropdown'
-import Modal from 'react-bootstrap/Modal';
-
-// import ROUTES from '@/components/constants/routes';
-
-// import games from '@/components/constants/games';
-
 import ArticlesButton from '@/components/UI/Button';
 import classNames from 'classnames';
 import { useHotkeys } from 'react-hotkeys-hook';
-// import ArticlesAlert from '@/components/Articles/ArticlesAlert';
 import GameItem from './GameItem';
 import useGames from '@/components/hooks/useGames';
 import { Box, CircularProgress } from '@mui/material';
@@ -23,6 +13,7 @@ import FilterDropdowns from '@/components/UI/FilterDropdowns';
 import { useFilterStore } from '@/components/hooks/useFilterStore';
 import useAllGames from '@/components/hooks/useAllGames';
 import OnlinePlayerCount from '@/components/UI/OnlinePlayerCount';
+import PublishWithUsModal from '@/components/UI/PublishWithUsModal';
 
 export default function GamesPage(props) {
 
@@ -37,158 +28,26 @@ export default function GamesPage(props) {
         filteredGames,
     } = useAllGames();
 
-    const ROUTES = {
-        PRESS: '/press'
-    };
-
-    // const userReduxState = useSelector((state) => state.auth.user_details);
-    const userReduxState = null
-
-    // const { session, status } = useSession()
-
     const [toontownImages, setToontownImages] = useState(false);
 
-    const playerFilter = useFilterStore((state) => state.playerFilter);
-    const setPlayerFilter = useFilterStore((state) => state.setPlayerFilter);
-    const availabilityFilter = useFilterStore((state) => state.availabilityFilter);
-    const setAvailabilityFilter = useFilterStore((state) => state.setAvailabilityFilter);
-
-    // const [modalShow, setModalShow] = useState(false);
     const [modalPublishWithUs, setModalPublishWithUs] = useState(null);
 
     const search = useFilterStore((state) => state.search);
     const setSearch = useFilterStore((state) => state.setSearch);
 
-    const [isMounted, setIsMounted] = useState(false)
-
     useHotkeys(["t"], () => {
         setToontownImages(prev => !prev)
     })
-
-    // useEffect(() => {
-
-    //     if (localStorage.getItem('games:availabilityFilter')) {
-    //         setAvailabilityFilter(localStorage.getItem('games:availabilityFilter'))
-    //     }
-
-    //     setIsMounted(true)
-
-    // }, []);
-
-    // useEffect(() => {
-
-    //     if (isMounted) localStorage.setItem('games:availabilityFilter', availabilityFilter)
-
-    // }, [availabilityFilter, isMounted])
 
     return (
         <div className="games-page">
 
             {modalPublishWithUs &&
-                <Modal
+                <PublishWithUsModal
                     show={modalPublishWithUs}
-                    className="articles-modal"
-                    centered
-                    onHide={() => {
-                        // setModalShow(false)
-                        setModalPublishWithUs(null)
-                    }}
-                >
-
-                    <Modal.Header className="" closeButton>
-                        <Modal.Title>Publish Your Game!</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-
-                        <div className='mb-3'>
-                            If you have a WebGL/WebGPU game that you have made and would like to publish then reach out! We can host your game for you and provide a few different services.
-                        </div>
-
-                        <ul>
-                            <li>
-                                Scoreboard and multiplayer API for your games!
-                            </li>
-                            <li>
-                                React Three Fiber components for characters and animations. Also allows players to bring their AMCOT character from game to game on our platform!
-                            </li>
-                            <li>
-                                React components and APIs for handling user accounts and authentication.
-                            </li>
-                        </ul>
-
-                        <a
-                            href={"https://articles.media/community/press"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className='mb-3'
-                        >
-                            <ArticlesButton
-                                // small
-                                large
-                                className="w-100 mb-3"
-                            >
-                                <i className="fad fa-comment-alt-edit me-1 fa-lg"></i>
-                                Contact Us
-                            </ArticlesButton>
-                        </a>
-
-                        <div className='mb-3'>Here is some links to some of our documentation and resources if you want to learn more about how to use our platform to publish your game:</div>
-
-                        <ul>
-                            <li>
-                                <a
-                                    href={"https://github.com/Articles-Joey/articles-dev-box"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Articles Dev Box
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href={"https://github.com/Articles-Joey/articles-gamepad-helper"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Articles Gamepad Helper
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href={"https://github.com/Articles-Joey/articles-amcot-character"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Articles AMCOT Character
-                                </a>
-                            </li>
-                        </ul>
-
-                    </Modal.Body>
-
-                    <Modal.Footer className='d-flex justify-content-between align-items-center'>
-
-                        <div>
-
-                        </div>
-
-                        <ArticlesButton
-                            variant="secondary"
-                            onClick={() => {
-                                // setModalShow(false)
-                                setModalPublishWithUs(null)
-                            }}
-                        >
-                            Close
-                        </ArticlesButton>
-
-                    </Modal.Footer>
-
-                </Modal>
+                    setShow={setModalPublishWithUs}
+                />
             }
-
-            {/* <div className="background-overlay"></div> */}
 
             <div className="sub-header">
 
@@ -256,13 +115,6 @@ export default function GamesPage(props) {
 
             <div className='games-section'>
 
-                {/* <ArticlesAlert
-                    text="We are separating each game into its own repo and updating them to work with the new Articles Media platform. Some games may currently be unavailable, migration will be completed by 2026!"
-                    className="mb-3"
-                >
-
-                </ArticlesAlert> */}
-
                 {
                     isLoadingGames
                     // true
@@ -276,63 +128,6 @@ export default function GamesPage(props) {
                 <div className="games mb-5">
 
                     {
-                        // games
-                        //     ?.filter(item => {
-
-                        //         // Override other filters if a search
-                        //         if (search !== '') {
-                        //             return item
-                        //         }
-
-                        //         if (playerFilter == 'All') {
-                        //             return item
-                        //         }
-
-                        //         if (playerFilter == 'Multiplayer') {
-                        //             return item.multiplayer
-                        //         }
-
-                        //         if (playerFilter == 'Single Player') {
-                        //             return item.single_player
-                        //         }
-
-                        //     })
-                        //     ?.filter(item => {
-
-                        //         // Override other filters if a search
-                        //         if (search !== '') {
-                        //             return item
-                        //         }
-
-                        //         if (availabilityFilter == 'All') {
-                        //             return item && item.public !== false
-                        //         }
-
-                        //         if (availabilityFilter == 'Available') {
-                        //             return !item.preview && item.public !== false
-                        //         }
-
-                        //         if (availabilityFilter == 'Upcoming') {
-                        //             return item.preview && item.public !== false
-                        //         }
-
-                        //         if (availabilityFilter == 'Developer Only') {
-                        //             return item.public === false
-                        //         }
-
-                        //     })
-                        //     ?.filter(item => {
-
-                        //         // Override other filters if a search
-                        //         if (search == '') {
-                        //             return item
-                        //         }
-
-                        //         if (search !== '') {
-                        //             return item.name.toLowerCase().includes(search.toLowerCase())
-                        //         }
-
-                        //     })
                         filteredGames
                             ?.map(item => {
 
@@ -348,198 +143,17 @@ export default function GamesPage(props) {
 
                 </div>
 
-                {availabilityFilter == 'Developer Only' &&
-                    <div className="card card-extra mx-auto w-100" style={{ maxWidth: '400px' }}>
-
-                        <div className="card-header rounded-0 d-flex justify-content-between align-items-center py-2">
-                            <h5 className="mb-0">Toontown Preservation Status!</h5>
-                        </div>
-
-                        <div className="card-body py-2 small d-flex flex-column">
-
-                            <div className="">Progress on converting Toontown trolley games to web games. Eventually to be used in AMCOT MMO in a similar gameplay mechanic of getting in game currency.</div>
-
-                            <hr />
-
-                            <a
-                                href="https://toontown.fandom.com/wiki/Trolley#Trolley_Games"
-                                target='_blank'
-                                className='text-decoration-underline'
-                            >
-                                Games List Link
-                            </a>
-
-                            <hr />
-
-                            <ArticlesButton
-                                active={toontownImages}
-                                onClick={() => {
-                                    setToontownImages(prev => !prev)
-                                }}
-                            >
-                                Show Toontown Thumbnails (T key)
-                            </ArticlesButton>
-
-                            <hr />
-
-                            {[
-                                {
-                                    toontown_name: "Race Game",
-                                    articles_name: "Race Game",
-                                    status: "Complete"
-                                },
-                                {
-                                    toontown_name: "Ring Game",
-                                    articles_name: "Ocean Rings",
-                                    status: "Complete"
-                                },
-                                {
-                                    toontown_name: "Jungle Vines",
-                                    articles_name: "Jungle Vines",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Cannon Game",
-                                    articles_name: "Cannon",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Toon Escape",
-                                    articles_name: "Platformer Escape",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Toon Slingshot",
-                                    articles_name: "Slingshot",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Tug of War",
-                                    articles_name: "Tug of War",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Ice Slide",
-                                    articles_name: "Ice Slide",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Match Minnie",
-                                    articles_name: "Move Match",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Toon Tag",
-                                    articles_name: "Tag",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Maze Game",
-                                    articles_name: "Maze",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Treasure Dive",
-                                    articles_name: "Treasure Dive",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Toon Memory Game",
-                                    articles_name: "Memory Game",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Catching Game",
-                                    articles_name: "Catching Game",
-                                    status: "In Progress"
-                                },
-                                {
-                                    toontown_name: "Cog Thief",
-                                    articles_name: "Stop the Thieves",
-                                    status: "In Progress"
-                                }
-                            ].map(game => {
-                                return (
-                                    <div
-                                        key={game.articles_name}
-                                        className='border p-1'
-                                    >
-                                        <div>Toontown Name: {game.toontown_name}</div>
-                                        <div>Articles Name: {game.articles_name}</div>
-                                        <div>
-                                            <span>Status: </span>
-                                            <span className={classNames(
-                                                "badge",
-                                                {
-                                                    "bg-success text-white": game.status == "Complete",
-                                                    "bg-articles text-dark": game.status == "In Progress",
-                                                    "bg-warning text-dark": game.status == "Not Started",
-                                                    "bg-danger text-white": game.status == "Never"
-                                                }
-                                            )}>
-                                                {game.status}
-                                            </span>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-
-                        </div>
-
-                    </div>
-                }
-
                 <div className='d-flex justify-content-center'>
-
-                    {/* <div className="card card-extra mx-2 w-100" style={{ maxWidth: '400px' }}>
-
-                        <div className="card-header rounded-0 d-flex justify-content-between align-items-center py-2">
-                            <h5 className="mb-0">Build a Web Game!</h5>
-                        </div>
-
-                        <div className="card-body py-2 small d-flex flex-column">
-
-                            <span className="mb-2">Using our game engine, AMCOT Spaces, build your own game that can be published on our platform.</span>
-
-                            <ArticlesButton
-                                onClick={() => {
-                                    setActiveModalGame({
-                                        name: 'Publish With Us',
-                                        short_description:
-                                            <div>
-
-                                                <div className='mb-3'>
-                                                    If you used the AMCOT Spaces engine to build a game and you want and feel it should have its own dedicated spot here then get in touch. Your space will be viewable in the AMCOT Spaces game placeholder but if it is developed enough to justify it&apos;s own spot then we would love to feature it.
-                                                </div>
-
-                                                <Link
-                                                    href={ROUTES.PRESS}
-                                                >
-                                                    <ArticlesButton small>Contact Us</ArticlesButton>
-                                                </Link>
-
-                                            </div>
-                                    })
-                                }}
-                                className="d-block mt-auto"
-                                small
-                            >
-                                Learn More
-                            </ArticlesButton>
-
-                        </div>
-
-                    </div> */}
 
                     <div className="card card-extra mx-2 w-100" style={{ maxWidth: '400px' }}>
 
                         <div className="card-header rounded-0 d-flex justify-content-between align-items-center py-2">
-                            <h5 className="mb-0">Publish Your Web Game!</h5>
+                            <h5 className="mb-0">Publish your web game with us!</h5>
                         </div>
 
                         <div className="card-body py-2 small d-flex flex-column">
 
-                            <span className="mb-2">Publish your game on Articles Media, easy to use multiplayer API and at cost hosting fees.</span>
+                            <span className="mb-2">Publish your React web game on Articles Media, easy to use multiplayer API and at cost hosting fees. We also provide three different NPM packages to help you get started.</span>
 
                             <ArticlesButton
                                 onClick={() => {
@@ -556,22 +170,6 @@ export default function GamesPage(props) {
                         </div>
 
                     </div>
-
-                    {/* <div className="card card-extra mx-auto" style={{ maxWidth: '400px' }}>
-    
-                        <div className="card-header d-flex justify-content-between align-items-center py-2">
-                            <h5 className="mb-0">Learn How To Program!</h5>
-                        </div>
-    
-                        <div className="card-body py-2 small d-flex flex-column">
-    
-                            <span className="mb-3">Access to all of our games source code is available on GitHub.</span>
-    
-                            <ArticlesButton onClick={() => setModalShow(true) + setActiveModalGame('Publish With Us')} small className="d-block mt-auto">Learn More</ArticlesButton>
-    
-                        </div>
-    
-                    </div> */}
 
                 </div>
 

@@ -1,27 +1,14 @@
 "use client"
-
-// import { QRCodeCanvas } from 'qrcode.react';
-
-import Link from 'next/link';
-
 import ArticlesButton from '@/components/UI/Button';
 
 import { Dropdown, Form } from 'react-bootstrap';
 
-// import IsDev from '@/components/UI/IsDev';
 import { useStore } from '../hooks/useStore';
-// import { useSearchParams } from 'next/navigation';
-// import usePeerConnection from '../hooks/usePeerConnection';
 import { memo, Suspense, useEffect, useState } from 'react';
-// import { connect } from 'socket.io-client';
-// import PeerLogic from '../PeerLogic';
-// import useGameStore from '../hooks/useGameStore';
 import useFullscreen from '../hooks/useFullScreen';
 import useCameraStore from '../hooks/useCameraStore';
-// import GameChat from './GameChat';
 import classNames from 'classnames';
 import useGames from '../hooks/useGames';
-// import { Article } from '@mui/icons-material';
 import useAllGames from '../hooks/useAllGames';
 import { useGameControllerKeyboardStore } from '@articles-media/articles-gamepad-helper';
 import { useFilterStore } from '../hooks/useFilterStore';
@@ -30,34 +17,15 @@ import FilterDropdowns from './FilterDropdowns';
 import GameMenuPrimaryButtonGroup from '@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup';
 import { useRouter } from 'next/navigation';
 
-function GameMenu({
-    // reloadScene,
-    // isFullscreen,
-    // requestFullscreen,
-    // exitFullscreen
-}) {
+function GameMenu({}) {
 
     const { games, publicGames } = useGames();
 
     const { games: allGames } = useAllGames();
 
-    // const { games } = useBulkGames();
-
-    const { isFullscreen, requestFullscreen, exitFullscreen } = useFullscreen();
-
-    // const cameraUpdate = useCameraStore((state) => state?.cameraUpdate);
     const setCameraUpdate = useCameraStore((state) => state?.setCameraUpdate);
 
     const visible = useGameControllerKeyboardStore((state) => state.visible);
-
-    // const router = useRouter()
-    // const pathname = usePathname()
-    // const searchParams = useSearchParams()
-    // const searchParamsObject = Object.fromEntries(searchParams.entries());
-    // const {
-    //     server_id,
-    //     server_type
-    // } = searchParamsObject
 
     const activeGameIndex = useStore((state) => state?.activeGameIndex);
     const setActiveGameIndex = useStore((state) => state?.setActiveGameIndex);
@@ -74,15 +42,6 @@ function GameMenu({
     const filters = useFilterStore((state) => state.filters);
     const setFilters = useFilterStore((state) => state.setFilters);
 
-    // const gameState = useStore((state) => state?.gameState);
-    // const setGameState = useStore((state) => state?.setGameState);
-
-    // const audioSettings = useStore((state) => state?.audioSettings);
-    // const setAudioSettings = useStore((state) => state?.setAudioSettings);
-
-    // const renderMode = useStore((state) => state?.renderMode);
-    // const setRenderMode = useStore((state) => state?.setRenderMode)
-
     const setInfoModal = useStore((state) => state.setInfoModal)
 
     const setShowSettingsModal = useStore((state) => state.setShowSettingsModal)
@@ -93,42 +52,6 @@ function GameMenu({
     const sidebar = useStore((state) => state.sidebar)
     const toggleSidebar = useStore((state) => state.toggleSidebar)
     const reloadScene = useStore((state) => state.reloadScene)
-
-    // const peerId = usePeerConnection((state) => state?.peerId);
-
-    // const [players, setPlayers] = useState([]);
-    // const connections = useGameStore((state) => state.connections);
-
-    // const broadcastGameState = useGameStore((state) => state.broadcastGameState);
-    // const startGame = useGameStore((state) => state.startGame);
-    // const myId = useGameStore((state) => state.myId);
-    // const isHost = useGameStore((state) => state.isHost);
-
-    // const [peerId, setPeerId] = useState(false);
-
-    // const shareLink = `/play?server_id=${peerId}&server_type=${server_type || 'error'}`
-
-    // const peerRef = usePeerConnection((state) => state?.peerRef);
-    // const connections = usePeerConnection((state) => state?.connections);
-    // const setConnections = usePeerConnection((state) => state?.setConnections);
-    // const peerId = usePeerConnection((state) => state?.peerId);
-    // const connectPeer = usePeerConnection((state) => state?.connect);
-
-    // useEffect(() => {
-    //     console.log("peerRef:", peerRef?._id)
-    // }, [peerRef])
-
-    // useEffect(() => {
-    //     console.log("peerId:", peerId)
-    // }, [peerId])
-
-    // useEffect(() => {
-    //     setPeerId(myId)
-    // }, [myId])
-
-    useEffect(() => {
-        console.log("remount")
-    })
 
     return (
         <div
@@ -236,26 +159,6 @@ function GameMenu({
                                         </ArticlesButton>
                                     ))}
                                 </div>
-
-                                {/* 
-                                <ArticlesButton
-                                    className={`w-50`}
-                                    small
-                                >
-                                    Steam
-                                </ArticlesButton>
-                                <ArticlesButton
-                                    className={`w-50`}
-                                    small
-                                >
-                                    Epic Games
-                                </ArticlesButton>
-                                <ArticlesButton
-                                    className={`w-50`}
-                                    small
-                                >
-                                    Custom
-                                </ArticlesButton> */}
 
                             </div>
                         }

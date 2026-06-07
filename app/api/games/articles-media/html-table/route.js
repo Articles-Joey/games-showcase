@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
-import games from '@/components/constants/games';
+import { getGames } from '../getGames';
 
 // Used for Articles-Joey repo README.md
 
 export async function GET(req) {
+    try {
+        const games = await getGames();
 
-    let filteredGames = games
-        .filter(game => game.public !== false)
-        .filter(game => game.preview !== true);
+        let filteredGames = games
+            .filter(game => game.public !== false)
+            .filter(game => game.preview !== true);
 
     const columns = 3;
     let finalHtml = `<table width="100%">`;
@@ -54,4 +56,10 @@ export async function GET(req) {
     // response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     // response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     return response;
+    } catch (err) {
+        console.log("Error fetching games:", err);
+        return NextResponse.json({ 
+            error: 'Server error' 
+        }, { status: 500 });
+    }
 }

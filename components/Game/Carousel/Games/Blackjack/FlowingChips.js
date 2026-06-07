@@ -1,5 +1,6 @@
 import { Physics, useCylinder, usePlane } from "@react-three/cannon";
 import { useState, useEffect } from "react";
+import LowPolyBlackjackTable from "./LowPolyBlackjackTable";
 
 const Chip = ({ position, color }) => {
     const [ref] = useCylinder(() => ({
@@ -25,10 +26,10 @@ const Chip = ({ position, color }) => {
     );
 };
 
-const Floor = () => {
+const Floor = () => {r
     const [ref] = usePlane(() => ({
         rotation: [-Math.PI / 2, 0, 0],
-        position: [0, -5, 0]
+        position: [0, -4, 0]
     }));
     return (
         <mesh ref={ref} visible={false}>
@@ -76,7 +77,8 @@ export default function FlowingChips() {
     return (
         <Physics gravity={[0, -9.8, 0]}>
             <Floor />
-            <ChipSpawner />
+            {/* <ChipSpawner /> */}
+            <LowPolyBlackjackTable position={[0, -5, 0]} />
         </Physics>
     );
 }

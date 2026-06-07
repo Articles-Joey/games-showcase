@@ -4,7 +4,7 @@ import { useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, } from "@react-three/drei";
 
 import useCameraStore from '../hooks/useCameraStore';
-import { useStore } from '@/hooks/useStore';
+import { useStore } from '@/components/hooks/useStore';
 import { Vector3 } from 'three';
 
 const CameraControls = (props) => {

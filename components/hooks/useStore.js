@@ -8,6 +8,13 @@ function generateRandomNickname() {
   return null
 }
 
+const initialControlSettings = {
+  "Move 1 Space": false,
+  "Move 2 Space": false,
+  "Move 3 Space": false,
+  "Move 4 Space": false,
+}
+
 export const useStore = create()(
   persist(
     (set, get, store) => ({
@@ -67,12 +74,8 @@ export const useStore = create()(
       },
       setAudioSettings: (settings) => set({ audioSettings: settings }),
 
-      controlSettings: {
-        "Move 1 Space": false,
-        "Move 2 Space": false,
-        "Move 3 Space": false,
-        "Move 4 Space": false,
-      },
+      initialControlSettings: initialControlSettings,
+      controlSettings: initialControlSettings,
       setControlSettings: (settings) => set({ controlSettings: settings }),
 
       reset: () => {
@@ -85,10 +88,13 @@ export const useStore = create()(
       },
       setLobbyDetails: (details) => set({ lobbyDetails: details }),
 
+      listenForKey: false,
+      setListenForKey: (value) => set({ listenForKey: value }),
+
     }),
     {
       name: 'games-showcase-storage',
-      version: 2,
+      version: 4,
       onRehydrateStorage: (state) => {
         return () => state.setHasHydrated(true)
       },
@@ -99,6 +105,7 @@ export const useStore = create()(
             "gameInfoModal",
             "activeGameIndex",
             "loginInfoModal",
+            "listenForKey",
             // "lobbyDetails",
           ].includes(key))
         ),

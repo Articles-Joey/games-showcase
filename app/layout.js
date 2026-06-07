@@ -11,9 +11,9 @@ import "@articles-media/articles-dev-box/dist/style.css";
 
 import "@articles-media/articles-gamepad-helper/dist/articles-gamepad-helper.css";
 
-import AudioHandler from '@/components/AudioHandler';
-import GlobalClientModals from '@/components/UI/GlobalClientModals';
-import DarkModeHandler from '@/components/UI/DarkModeHandler';
+import AudioHandler from '@/components/Handlers/AudioHandler';
+// import GlobalClientModals from '@/components/UI/GlobalClientModals';
+// import DarkModeHandler from '@/components/UI/DarkModeHandler';
 import { Suspense } from 'react';
 import LayoutClient from './layout-client';
 import SocketLogicHandler from '@/components/Handlers/SocketLogicHandler';
@@ -42,11 +42,12 @@ export default function RootLayout({ children }) {
       // className={`${geistSans.variable} ${geistMono.variable}`}
       >
 
+        <LayoutClient />
+
         <Suspense>
           <AudioHandler />
-          <DarkModeHandler />
-          <GlobalClientModals />
-          <LayoutClient />
+          {/* <DarkModeHandler /> */}
+          {/* <GlobalClientModals /> */}
           <SocketLogicHandler />
         </Suspense>
 

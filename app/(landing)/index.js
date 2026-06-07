@@ -21,8 +21,8 @@ import Popover from 'react-bootstrap/Popover';
 
 import PieMenu from '@articles-media/articles-gamepad-helper/PieMenu';
 
-import { useLandingNavigation } from '@/hooks/useLandingNavigation';
-import InfoModal from '@/components/UI/InfoModal';
+import { useLandingNavigation } from '@/components/hooks/useLandingNavigation';
+// import InfoModal from '@/components/UI/InfoModal';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useSocketStore } from '@/components/hooks/useSocketStore';
 import OnlinePlayerCount from '@/components/UI/OnlinePlayerCount';
@@ -118,7 +118,7 @@ export default function LandingPage() {
                 />
             </Suspense>
 
-            {showCreditsModal &&
+            {/* {showCreditsModal &&
                 <CreditsModal
                     show={showCreditsModal}
                     setShow={setShowCreditsModal}
@@ -131,7 +131,7 @@ export default function LandingPage() {
                     show={showInfoModal}
                     setShow={setShowInfoModal}
                 />
-            }
+            } */}
 
             <div className='background-wrap'>
                 <Image

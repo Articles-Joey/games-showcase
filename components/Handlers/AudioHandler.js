@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useStore } from "./hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 
 export default function AudioHandler() {
 

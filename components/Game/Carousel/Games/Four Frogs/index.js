@@ -15,7 +15,7 @@ import Zone from './Zone';
 import Ocean from './Ocean';
 import { Sunflower } from './Sunflower';
 import { OrangeFlower } from './OrangeFlower';
-import { useStore } from '@/hooks/useStore';
+// import { useStore } from '@/hooks/useStore';
 import Tree from '@/components/Game/Tree';
 
 // import Center from './Center';

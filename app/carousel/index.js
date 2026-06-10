@@ -28,6 +28,7 @@ import GameMenu from '@articles-media/articles-dev-box/GameMenu';
 
 import GamepadKeyboard from "@articles-media/articles-gamepad-helper/GamepadKeyboard"
 import { useStore } from '@/components/hooks/useStore';
+import TouchControls from '@/components/UI/TouchControls';
 // const GamepadKeyboard = lazy(() => import('@articles-media/articles-gamepad-helper/GamepadKeyboard'));
 
 export default function PageContent() {
@@ -144,60 +145,9 @@ export default function PageContent() {
                 }}
             />
 
-            {/* <div className="menu-bar card card-articles p-1 justify-content-center">
-
-                <div className='d-flex justify-content-center align-items-center'>
-
-                    <ArticlesButton
-                        small
-                        active={showMenu}
-                        className="px-5"
-                        onClick={() => {
-                            setShowMenu(prev => !prev)
-                        }}
-                    >
-                        <i className="fad fa-bars"></i>
-                        <span>Menu</span>
-                    </ArticlesButton>
-
-                    <div>
-                    </div>
-
-                </div>
-
-            </div> */}
-
-            {/* <div className={`mobile-menu ${showMenu && 'show'}`}>
-                <LeftPanelContent
-                    {...panelProps}
-                />
-            </div> */}
-
-            {/* <TouchControls
-                // touchControlsEnabled={touchControlsEnabled}
-            /> */}
-
-            {/* <div className='panel-left card rounded-0 d-none d-lg-flex'>
-
-                <LeftPanelContent
-                    {...panelProps}
-                />
-
-            </div> */}
-
-            {/* <div className='game-info'>
-                <div className="card card-articles card-sm">
-                    <div className="card-body">
-                        <pre> 
-                            {JSON.stringify(playerData, undefined, 2)}
-                        </pre>
-                    </div>
-                </div>
-            </div> */}
-
-            {/* <ControlsOverlay /> */}
-
             <div className='canvas-wrap'>
+
+                <TouchControls />
 
                 <div className='controller-only controls-helper'>
 

@@ -13,12 +13,17 @@ import { useAudioStore } from '@/components/hooks/useAudioStore';
 import { useSocketStore } from '@/components/hooks/useSocketStore';
 import ArticlesButton from '@/components/UI/Button';
 import ControlsSetting from '@/components/UI/ControlsSetting';
+import GameInfoModal from '@/components/UI/GameInfoModal';
+import useTouchControlsStore from '@/components/hooks/useTouchControlsStore';
 
 export default function LayoutClient({ children }) {
 
     const darkMode = useStore((state) => state?.darkMode);
     const renderUniqueGameSceneRange = useStore((state) => state.renderUniqueGameSceneRange);
     const setRenderUniqueGameSceneRange = useStore((state) => state.setRenderUniqueGameSceneRange);
+
+    const gameInfoModal = useStore((state) => state.gameInfoModal);
+    const setGameInfoModal = useStore((state) => state.setGameInfoModal);
 
     useHotkeys('r', () => {
         console.log("Reloading Scene")
@@ -32,10 +37,11 @@ export default function LayoutClient({ children }) {
                 useStore={useStore}
             />
             <Suspense>
+
                 <GlobalClientModals
                     useStore={useStore}
                     useAudioStore={useAudioStore}
-                    // useTouchControlsStore={useTouchControlsStore}
+                    useTouchControlsStore={useTouchControlsStore}
                     useSocketStore={useSocketStore}
                     packageInfo={packageInfo}
                     settingsModalConfig={{
@@ -135,6 +141,14 @@ export default function LayoutClient({ children }) {
                         previewImage: darkMode ? "img/preview.webp" : "img/preview.webp",
                     }}
                 />
+
+                {gameInfoModal &&
+                    <GameInfoModal
+                        show={gameInfoModal}
+                        setShow={setGameInfoModal}
+                    />
+                }
+
             </Suspense>
         </>
     );

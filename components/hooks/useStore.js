@@ -51,6 +51,8 @@ export const useStore = create()(
 
       activeGameIndex: 0,
       setActiveGameIndex: (index) => set({ activeGameIndex: index }),
+      incrementActiveGameIndex: () => set((state) => ({ activeGameIndex: state.activeGameIndex + 1 })),
+      decrementActiveGameIndex: () => set((state) => ({ activeGameIndex: state.activeGameIndex - 1 })),
 
       loginInfoModal: false,
       setLoginInfoModal: (value) => set({ loginInfoModal: value }),

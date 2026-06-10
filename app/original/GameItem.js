@@ -500,6 +500,7 @@ export default function GameItem({ item, toontownImages }) {
 
                             <ArticlesButton
                                 onClick={() => {
+                                    console.log('Clicked gameInfoModal', item);
                                     setGameInfoModal(item);
                                 }}
                                 className='flex-grow-1 text-center w-50 py-0'
@@ -524,6 +525,7 @@ export default function GameItem({ item, toontownImages }) {
                             className='d-flex border-bottom px-1 align-items-center'
                             style={{ fontSize: '0.65rem', cursor: 'pointer' }}
                             onClick={() => {
+                                console.log('Clicked gameInfoModal', item);
                                 // setActiveDeveloper(item)
                                 setGameInfoModal(item);
                             }}

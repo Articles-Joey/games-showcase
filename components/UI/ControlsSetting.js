@@ -15,6 +15,7 @@ export default function ControlsSetting() {
     useEffect(() => {
         if (listenForKey) {
             const handleKeyDown = (e) => {
+                console.log('Key pressed:', e.key);
                 e.preventDefault()
                 setListenForKey({ ...listenForKey, lastKey: e.key })
             }

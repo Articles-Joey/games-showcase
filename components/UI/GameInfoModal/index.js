@@ -3,6 +3,8 @@ import { useEffect, useState, lazy, useRef, Suspense } from "react";
 
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap"
 
+import { sendGAEvent } from "@next/third-parties/google";
+
 import ArticlesButton from "../Button";
 import { useStore } from "../../hooks/useStore";
 
@@ -328,7 +330,13 @@ export default function GameInfoModal({
                                     <ArticlesButton
                                         key={index}
                                         active={activeTab === section.name}
-                                        onClick={() => setActiveTab(section.name)}
+                                        onClick={() => {
+                                            setActiveTab(section.name)
+                                            sendGAEvent('event', 'Game tab clicked', { 
+                                                value: section.name,
+                                                game: gameInfoModal?.name
+                                            });
+                                        }}
                                         className=""
                                     >
                                         <i className={`fad fa-${section.icon} me-0 px-1`}></i>

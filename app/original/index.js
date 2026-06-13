@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 
 import Link from 'next/link'
 
+import { sendGAEvent } from "@next/third-parties/google";
+
 import ArticlesButton from '@/components/UI/Button';
 import classNames from 'classnames';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -159,6 +161,7 @@ export default function GamesPage(props) {
                                 onClick={() => {
                                     // setModalShow(true)
                                     setModalPublishWithUs(true)
+                                    sendGAEvent('event', 'Clicked Publish With Us', { value: "" });
                                 }}
                                 className="d-block mt-auto"
                                 small

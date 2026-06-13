@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-// import { useSelector } from 'react-redux'
+import { sendGAEvent } from "@next/third-parties/google";
 
 import Modal from 'react-bootstrap/Modal';
 
@@ -14,21 +14,12 @@ import { Textfit } from '@/components/UI/Textfit';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useStore } from '@/components/hooks/useStore';
 
-// const InfoModal = dynamic(
-//     () => import('@/components/UI/InfoModal'),
-//     { ssr: false }
-// )
-
 const ArticlesModal = dynamic(
     () => import('@/components/UI/ArticlesModal'),
     { ssr: false }
 )
 
 export default function GameItem({ item, toontownImages }) {
-
-    // const userReduxState = useSelector((state) => state.auth.user_details);
-
-    // const [showInfoModal, setShowInfoModal] = useState(false)
 
     const setGameInfoModal = useStore((state) => state.setGameInfoModal);
 
@@ -45,13 +36,6 @@ export default function GameItem({ item, toontownImages }) {
 
     return (
         <div className='game-item'>
-
-            {/* {showInfoModal &&
-                <InfoModal
-                    show={showInfoModal}
-                    setShow={setShowInfoModal}
-                />
-            } */}
 
             {/* TODO - Move into info modal */}
             {showOfflineModal &&
@@ -238,6 +222,7 @@ export default function GameItem({ item, toontownImages }) {
                                 rel="noopener noreferrer"
                                 onClick={(e) => {
                                     window.open(item.github_repo, '_blank');
+                                    sendGAEvent('event', 'Clicked GitHub Action', { value: item.name });
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }}
@@ -501,6 +486,7 @@ export default function GameItem({ item, toontownImages }) {
                             <ArticlesButton
                                 onClick={() => {
                                     console.log('Clicked gameInfoModal', item);
+                                    sendGAEvent('event', 'Opened gameInfoModal', { value: item.name });
                                     setGameInfoModal(item);
                                 }}
                                 className='flex-grow-1 text-center w-50 py-0'

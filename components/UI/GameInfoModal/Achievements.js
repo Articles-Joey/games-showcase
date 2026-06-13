@@ -30,12 +30,16 @@ export default function GameAchievements() {
             </div>
 
             <div className="card-body">
-                {fakeAchievements.map((achievement, index) => (
-                    <div key={index} className="mb-3">
-                        <div><b>{achievement.name}</b></div>
-                        <div>{achievement.description}</div>
-                    </div>
-                ))}
+                {gameInfoModal?.achievements ?
+                    gameInfoModal.achievements.map((achievement, index) => (
+                        <div key={index} className="mb-3">
+                            <div><b>{achievement.name}</b></div>
+                            <div>{achievement.description}</div>
+                        </div>
+                    ))
+                    :
+                    <div>No achievements available for this game yet. Check back later.</div>
+                }
             </div>
 
         </div>

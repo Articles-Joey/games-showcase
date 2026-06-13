@@ -1,0 +1,1 @@
+Hooks only used by Articles Media games in launcher.

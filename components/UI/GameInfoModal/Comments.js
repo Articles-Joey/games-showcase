@@ -2,35 +2,22 @@ import { useState } from "react";
 import { useStore } from "../../hooks/useStore";
 import ArticlesButton from "../Button";
 import { Accordion } from "react-bootstrap";
+import useGameComments from "@/components/hooks/Articles Media/useGameComments";
 
 export default function GameComments() {
 
-    const [ expandComments, setExpandComments ] = useState(true)
+    const [expandComments, setExpandComments] = useState(true)
 
     const gameInfoModal = useStore((state) => state?.gameInfoModal);
 
-    const fakeComments = [
-        {
-            username: "PlayerOne",  
-            text: "This game is amazing! I love the graphics and gameplay."
-        },
-        {
-            username: "GamerGirl42",
-            text: "I had a lot of fun playing this game with my friends. Highly recommend!"
-        },  
-        {
-            username: "CasualGamer",
-            text: "It's a decent game, but I wish there were more levels and challenges."
-        },
-        {
-            username: "HardcoreGamer99",
-            text: "The game is too easy. I finished it in a day. Needs more difficulty."
-        },
-        {
-            username: "IndieGameFan",
-            text: "I appreciate the creativity and effort that went into making this game. It's a hidden gem!"
-        }
-    ];
+    const {
+        data: fetchedGameComments,
+        isLoading,
+        isError,
+        mutate
+    } = useGameComments({
+        game_id: gameInfoModal?._id
+    });
 
     return (
         <div className="game-comments card card-articles card-sm mt-4">
@@ -41,23 +28,34 @@ export default function GameComments() {
 
                     <ArticlesButton
                         size="sm"
-                        active={expandComments}
-                        onClick={() => setExpandComments(!expandComments)}
+                        // active={expandComments}
+                        onClick={() => {
+                            mutate();
+                        }}
                     >
-                        <i className={`fas fa-${expandComments ? "minus" : "plus"}`}></i>
-                        {expandComments ? "Collapse" : "Expand"}
+                        <i className={`fas fa-undo`}></i>
                     </ArticlesButton>
 
                 </div>
 
                 <Accordion.Collapse eventKey="0">
                     <div className="card-body">
-                        {fakeComments.map((comment, index) => (
-                            <div key={index} className="mb-3">
-                                <div><b>{comment.username}</b> says:</div>
-                                <div>{comment.text}</div>
+                        {fetchedGameComments ?
+                            fetchedGameComments?.map((comment, index) => (
+                                <div key={index} className="mb-3">
+                                    <div style={{ fontSize: '0.85rem' }}>
+                                        {new Date(comment.date).toLocaleString()}
+                                    </div>
+                                    <div><b>{comment.user_id}</b> says:</div>
+                                    <div>{comment.comment}</div>
+                                </div>
+                            ))
+                            :
+                            <div>
+                                {isLoading ? "Loading comments..." : "No comments found."}
+                                {isError && "Error loading comments."}
                             </div>
-                        ))}
+                        }
                     </div>
                 </Accordion.Collapse>
             </Accordion>

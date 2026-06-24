@@ -3,7 +3,7 @@ import { memo, useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Html, Image, OrbitControls, Sky, Text, useDetectGPU, useTexture } from "@react-three/drei";
 // import BleacherBox from "./Games/Race Game/BleacherBox";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 import { degToRad, MathUtils } from "three/src/math/MathUtils";
 import RenderUniqueGameScene from "./RenderUniqueGameScene";
 import Tree from "../Tree";
@@ -324,9 +324,9 @@ function RockWrappedRandomizer({
     const { randomScale, randomRotation } = useMemo(() => ({
         randomScale: 18 + Math.random() * 20,
         randomRotation: [
+            // Math.random() * Math.PI * 2,
             Math.random() * Math.PI * 2,
-            Math.random() * Math.PI * 2,
-            Math.random() * Math.PI * 2
+            // Math.random() * Math.PI * 2
         ]
     }), [])
 

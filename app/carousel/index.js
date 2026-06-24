@@ -139,7 +139,9 @@ export default function PageContent() {
                 menuBarConfig={{
                     // style: "Corner Button",
                     style: "Bar",
-                    menuBarButtonPosition: "Left"
+                    menuBarButtonPosition: "Center",
+                    settingsWithMenuButton: true,
+                    darkModeButton: true
                 }}
                 sidebarConfig={{
                     style: "Static Panel",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 import ArticlesButton from "../Button";
 import useGameNews from "@/components/hooks/Articles Media/useGameNews";
 
@@ -36,13 +36,17 @@ export default function GameNews() {
             </div>
 
             <div className="card-body">
-                {fetchedGameNews ? 
+
+                {isError && <div className="text-danger">Error loading news.</div>}
+
+                {fetchedGameNews?.length > 0 ? 
                 fetchedGameNews?.map((news, index) => (
                     <div key={index} className="mb-3">
                         <div><b>{news.title}</b> - {new Date(news.date).toDateString()}</div>
                         <div>{news.content}</div>
                     </div>
-                )) : <div className="text-muted">No news available.</div>}
+                )) : <div className="">No news available.</div>}
+
             </div>
 
         </div>

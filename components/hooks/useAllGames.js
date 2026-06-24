@@ -107,13 +107,15 @@ export default function useAllGames() {
             ...filters.launchers?.User ? userGames || [] : [],
             ...filters.launchers?.Steam ? steamGames || [] : [],
             ...filters.launchers?.Epic ? epicGames || [] : [],
-            ...publicGames || [],
+            ...filters.launchers?.Articles ? publicGames || [] : [],
+            // ...publicGames || [],
         ],
         filteredGames: filtered([
             ...filters.launchers?.User ? userGames || [] : [],
             ...filters.launchers?.Steam ? steamGames || [] : [],
             ...filters.launchers?.Epic ? epicGames || [] : [],
-            ...publicGames || [],
+            ...filters.launchers?.Articles ? publicGames || [] : [],
+            // ...publicGames || [],
         ]),
         // userGameInjections,
     });

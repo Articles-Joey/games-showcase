@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 import ArticlesButton from "../Button";
 import { Accordion } from "react-bootstrap";
 import useGameComments from "@/components/hooks/Articles Media/useGameComments";
@@ -33,14 +33,14 @@ export default function GameComments() {
                             mutate();
                         }}
                     >
-                        <i className={`fas fa-undo`}></i>
+                        <i className={`fas fa-redo`}></i>
                     </ArticlesButton>
 
                 </div>
 
                 <Accordion.Collapse eventKey="0">
                     <div className="card-body">
-                        {fetchedGameComments ?
+                        {fetchedGameComments?.length > 0 ?
                             fetchedGameComments?.map((comment, index) => (
                                 <div key={index} className="mb-3">
                                     <div style={{ fontSize: '0.85rem' }}>

@@ -1,7 +1,11 @@
 import { Dropdown } from "react-bootstrap";
-import { useFilterStore } from "../hooks/useFilterStore";
+import { useFilterStore } from "@/components/hooks/useFilterStore";
+import { useStore } from "@/components/hooks/useStore";
 
 export default function FilterDropdowns() {
+
+    const activeGameIndex = useStore((state) => state?.activeGameIndex);
+    const setActiveGameIndex = useStore((state) => state?.setActiveGameIndex);
 
     const playerFilter = useFilterStore((state) => state.playerFilter);
     const setPlayerFilter = useFilterStore((state) => state.setPlayerFilter);
@@ -12,21 +16,23 @@ export default function FilterDropdowns() {
 
     return (
 
-        <>
+        <div className="d-flex justify-content-between position-relative" style={{ zIndex: 2 }}>
+
             {/* Player Type */}
-            <Dropdown className="dropdown-articles" drop={'down'}>
+            <Dropdown className="dropdown-articles w-50" drop={'down'}>
 
                 <Dropdown.Toggle
-                    variant="articles align-items-center d-flex "
+                    variant="articles"
+                    className="w-100 align-items-center d-flex "
                     disabled={search !== ''}
                 >
 
-                    <div>
+                    <div style={{ fontSize: "0.65rem" }}>
 
                         <i className="fad fa-filter fa-lg me-2"></i>
                         {/* <i className="fad fa-sort-shapes-up fa-lg me-2"></i> */}
 
-                        <span className='small me-2'>Type</span>
+                        <span className='small me-2'>Play Type</span>
 
                         <span className='badge bg-dark shadow-articles me-1 d-none d-lg-inline-block'>
                             {playerFilter}
@@ -49,6 +55,7 @@ export default function FilterDropdowns() {
                             onClick={() => {
 
                                 setPlayerFilter(item)
+                                setActiveGameIndex(0)
 
                             }}
                         >
@@ -63,14 +70,15 @@ export default function FilterDropdowns() {
             </Dropdown>
 
             {/* Availability Type */}
-            <Dropdown className="dropdown-articles" drop={'down'}>
+            <Dropdown className="dropdown-articles w-50" drop={'down'}>
 
                 <Dropdown.Toggle
-                    variant="articles align-items-center d-flex "
+                    variant="articles"
+                    className="w-100 align-items-center d-flex "
                     disabled={search !== ''}
                 >
 
-                    <div>
+                    <div style={{ fontSize: "0.65rem" }}>
 
                         {/* <i className="fad fa-filter"></i> */}
                         <i className="fad fa-sort-shapes-up fa-lg me-2"></i>
@@ -98,6 +106,7 @@ export default function FilterDropdowns() {
                             onClick={() => {
 
                                 setAvailabilityFilter(item)
+                                setActiveGameIndex(0)
 
                             }}
                         >
@@ -110,7 +119,8 @@ export default function FilterDropdowns() {
                 </Dropdown.Menu>
 
             </Dropdown>
-        </>
+
+        </div>
 
     )
 

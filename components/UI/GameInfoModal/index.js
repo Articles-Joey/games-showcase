@@ -6,7 +6,7 @@ import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { sendGAEvent } from "@next/third-parties/google";
 
 import ArticlesButton from "../Button";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 
 // import XboxIcons from '@articles-media/articles-gamepad-helper/XboxIcons';
 import B from "@articles-media/articles-gamepad-helper/dist/img/Xbox UI/B.svg";
@@ -284,12 +284,12 @@ export default function GameInfoModal({
 
                             </div>
 
-                            <hr />
+                            <hr />                            
 
                             {/* {gameInfoModal.github_public && */}
                             <div className="d-flex">
 
-                                {gameInfoModal.github_public && <div className="w-50">
+                                <div className="w-50">
                                     <div className="mb-2">
                                         Developer: {gameInfoModal?.developer || 'Unknown'}
                                     </div>
@@ -297,26 +297,30 @@ export default function GameInfoModal({
                                     <div className="mb-0">
                                         Publisher: {gameInfoModal?.publisher || 'Unknown'}
                                     </div>
-                                </div>}
+                                </div>
 
-                                <div className={`w-50 d-flex flex-column justify-content-start align-items-end`}>
-                                    <div>
-                                        Public on GitHub!
-                                    </div>
-                                    <div>
-                                        <a
-                                            href={gameInfoModal.github_repo}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <ArticlesButton
-                                                small
+                                <div className={`w-50 d-flex flex-column justify-content-start align-items-start`}>
+
+                                    {gameInfoModal?.github_repo && gameInfoModal?.github_public && <div className="">
+                                        <div>
+                                            Public on GitHub!
+                                        </div>
+                                        <div>
+                                            <a
+                                                href={gameInfoModal.github_repo}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
-                                                <i className="fab fa-github me-1"></i>
-                                                View Repo
-                                            </ArticlesButton>
-                                        </a>
-                                    </div>
+                                                <ArticlesButton
+                                                    small
+                                                >
+                                                    <i className="fab fa-github me-1"></i>
+                                                    View Repo
+                                                </ArticlesButton>
+                                            </a>
+                                        </div>                                        
+                                    </div>}
+                                    
                                 </div>
 
                             </div>

@@ -18,7 +18,7 @@ import Dog from './PlayerModels/Dog';
 import Witch from './PlayerModels/Witch';
 import Bear from './PlayerModels/Bear';
 import { Billboard, Text } from '@react-three/drei';
-import useGameStore from '../hooks/useGameStore';
+import useGameStore from '@/components/hooks/useGameStore';
 
 function RenderCharacter({ character }) {
 

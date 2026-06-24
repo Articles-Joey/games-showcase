@@ -152,10 +152,10 @@ function RenderUniqueGameScene({
             return (
                 <TagScene />
             );
-        case "Cannon":
-            return (
-                <CannonScene />
-            );
+        // case "Cannon":
+        //     return (
+        //         <CannonScene />
+        //     );
         case "Move Match":
             return (
                 <MoveMatchScene />
@@ -164,10 +164,10 @@ function RenderUniqueGameScene({
             return (
                 <OceanRingsScene />
             );
-        case "Battle Trap":
-            return (
-                <BattleTrapScene />
-            );
+        // case "Battle Trap":
+        //     return (
+        //         <BattleTrapScene />
+        //     );
         case "Plinko":
             return (
                 <PlinkoScene />
@@ -204,10 +204,10 @@ function RenderUniqueGameScene({
             return (
                 <CatchingGameScene />
             );
-        case "Assassin":
-            return (
-                <AssassinScene />
-            );
+        // case "Assassin":
+        //     return (
+        //         <AssassinScene />
+        //     );
         case "Trash Chute":
             return (
                 <TrashChuteScene />
@@ -216,26 +216,26 @@ function RenderUniqueGameScene({
             return (
                 <StopTheThievesScene />
             );
-        case "Platformer Escape":
-            return (
-                <PlatformerEscapeScene />
-            );
-        case "Slingshot":
-            return (
-                <SlingshotScene />
-            );
+        // case "Platformer Escape":
+        //     return (
+        //         <PlatformerEscapeScene />
+        //     );
+        // case "Slingshot":
+        //     return (
+        //         <SlingshotScene />
+        //     );
         case "USA Tycoon":
             return (
                 <USATycoonScene />
             );
-        case "AMCOT MMO":
-            return (
-                <AMCOTMMOScene />
-            );
-        case "AMCOT Spaces":
-            return (
-                <AMCOTSpacesScene />
-            );
+        // case "AMCOT MMO":
+        //     return (
+        //         <AMCOTMMOScene />
+        //     );
+        // case "AMCOT Spaces":
+        //     return (
+        //         <AMCOTSpacesScene />
+        //     );
         case "Glass Ceiling":
             return (
                 <GlassCeilingScene />
@@ -286,10 +286,6 @@ function RenderUniqueGameScene({
                         <FortniteScene />
                     </group>
                 </>
-            );
-        case "Battlefield 4":
-            return (
-                <Battlefield4Scene />
             );
         case "Battlefield 4":
             return (

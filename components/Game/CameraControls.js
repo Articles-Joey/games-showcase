@@ -3,7 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber"
 
 import { OrbitControls, } from "@react-three/drei";
 
-import useCameraStore from '../hooks/useCameraStore';
+import useCameraStore from '@/components/hooks/useCameraStore';
 import { useStore } from '@/components/hooks/useStore';
 import { Vector3 } from 'three';
 

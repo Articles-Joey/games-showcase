@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
-import useGameControllerKeyboardStore from './hooks/useGameControllerKeyboardStore';
+import useGameControllerKeyboardStore from '@/components/hooks/useGameControllerKeyboardStore';
 
 // DO NOT USE - In articles-gamepad-helper package now.
 

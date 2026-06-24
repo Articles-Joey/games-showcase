@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 import ArticlesButton from "../Button";
 import { Accordion } from "react-bootstrap";
 
@@ -27,10 +27,22 @@ export default function GameAchievements() {
 
                 <div>Game Achievements</div>
 
+                {/* Hidden spacer to match other tabs */}
+                <ArticlesButton
+                    size="sm"
+                    // active={expandComments}
+                    onClick={() => {
+                        // mutate();
+                    }}
+                    style={{ visibility: 'hidden' }}
+                >
+                    <i className={`fas fa-redo`}></i>
+                </ArticlesButton>
+
             </div>
 
             <div className="card-body">
-                {gameInfoModal?.achievements ?
+                {gameInfoModal?.achievements?.length > 0 ?
                     gameInfoModal.achievements.map((achievement, index) => (
                         <div key={index} className="mb-3">
                             <div><b>{achievement.name}</b></div>

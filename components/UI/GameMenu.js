@@ -3,25 +3,28 @@ import ArticlesButton from '@/components/UI/Button';
 
 import { Dropdown, Form } from 'react-bootstrap';
 
-import { useStore } from '../hooks/useStore';
+import { useStore } from '@/components/hooks/useStore';
 import { memo, Suspense, useEffect, useState } from 'react';
-import useFullscreen from '../hooks/useFullScreen';
-import useCameraStore from '../hooks/useCameraStore';
+import useFullscreen from '@/components/hooks/useFullScreen';
+import useCameraStore from '@/components/hooks/useCameraStore';
 import classNames from 'classnames';
-import useGames from '../hooks/useGames';
-import useAllGames from '../hooks/useAllGames';
+import useGames from '@/components/hooks/useGames';
+import useAllGames from '@/components/hooks/useAllGames';
 import { useGameControllerKeyboardStore } from '@articles-media/articles-gamepad-helper';
-import { useFilterStore } from '../hooks/useFilterStore';
+import { useFilterStore } from '@/components/hooks/useFilterStore';
 import FilterDropdowns from './FilterDropdowns';
 
 import GameMenuPrimaryButtonGroup from '@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup';
 import { useRouter } from 'next/navigation';
 
-function GameMenu({}) {
+function GameMenu({ }) {
 
     const { games, publicGames } = useGames();
 
-    const { games: allGames } = useAllGames();
+    const {
+        games: allGames,
+        filteredGames
+    } = useAllGames();
 
     const setCameraUpdate = useCameraStore((state) => state?.setCameraUpdate);
 
@@ -38,9 +41,10 @@ function GameMenu({}) {
 
     const search = useFilterStore((state) => state.search);
     const setSearch = useFilterStore((state) => state.setSearch);
-
+    const setAvailabilityFilter = useFilterStore((state) => state.setAvailabilityFilter);
     const filters = useFilterStore((state) => state.filters);
     const setFilters = useFilterStore((state) => state.setFilters);
+    const setPlayerFilter = useFilterStore((state) => state.setPlayerFilter);
 
     const setInfoModal = useStore((state) => state.setInfoModal)
 
@@ -102,7 +106,7 @@ function GameMenu({}) {
 
                 <div className="card-body d-flex flex-wrap">
 
-                    <GameMenuPrimaryButtonGroup 
+                    <GameMenuPrimaryButtonGroup
                         useStore={useStore}
                         type="GameMenu"
                         useRouter={useRouter}
@@ -114,14 +118,24 @@ function GameMenu({}) {
 
                     <div className='d-flex flex-column mb-2 mt-auto'>
 
-                        <div className='search-bar-'>
+                        <div className='search-bar d-flex'>
                             <input
                                 type="text"
+                                id="game-search"
                                 className='form-control form-control-sm'
                                 placeholder='Search Games...'
                                 value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                onChange={(e) => {
+                                    setSearch(e.target.value)
+                                    setActiveGameIndex(0)
+                                }}
                             />
+                            <ArticlesButton
+                                className={``}
+                                small
+                            >
+                                <i className='fad fa-eraser me-0'></i>
+                            </ArticlesButton>
                         </div>
 
                         {process.env.NODE_ENV === 'development' &&
@@ -150,9 +164,14 @@ function GameMenu({}) {
                                             small
                                             active={filters.launchers[launcher]}
                                             onClick={() => {
+
                                                 const newLaunchers = { ...filters.launchers };
                                                 newLaunchers[launcher] = !newLaunchers[launcher];
+
                                                 setFilters({ ...filters, launchers: newLaunchers });
+
+                                                setActiveGameIndex(0)
+
                                             }}
                                         >
                                             {launcher}
@@ -175,96 +194,113 @@ function GameMenu({}) {
 
                         <div className='d-flex flex-wrap mb-2'>
 
+
+
+                        </div>
+
+                        <div className="d-flex justify-content-between">
+
+                            <div>
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                    // active={devDebug}
+                                    onClick={() => {
+                                        setActiveGameIndex(activeGameIndex - 1)
+                                    }}
+                                >
+                                    <i className="fad fa-arrow-circle-left"></i>
+
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                    // active={devDebug}
+                                    onClick={() => {
+
+                                    }}
+                                    disabled
+                                >
+                                    {activeGameIndex}/{(filteredGames?.length - 1) || 0}
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                    // active={devDebug}
+                                    onClick={() => {
+                                        setActiveGameIndex(activeGameIndex + 1)
+                                    }}
+                                >
+                                    <i className="fad fa-arrow-circle-right"></i>
+                                </ArticlesButton>
+                            </div>
+
+                            <div>
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                    // active={devDebug}
+                                    onClick={() => {
+                                        setZoomLevel(zoomLevel - 1)
+                                    }}
+                                >
+                                    <i className="fad fa-arrow-circle-down"></i>
+
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                    disabled
+                                    onClick={() => {
+
+                                    }}
+                                >
+                                    {zoomLevel}
+                                </ArticlesButton>
+                                <ArticlesButton
+                                    className={``}
+                                    small
+                                    onClick={() => {
+                                        setZoomLevel(zoomLevel + 1)
+                                    }}
+                                >
+                                    <i className="fad fa-arrow-circle-up"></i>
+                                </ArticlesButton>
+                            </div>
+
                             <ArticlesButton
-                                className={`w-50`}
+                                // className={`w-50`}
                                 small
                                 // active={devDebug}
                                 onClick={() => {
-                                    reloadScene()
+
+                                    setSearch("");
+                                    setAvailabilityFilter("Available");
+                                    setPlayerFilter("All");
+                                    setActiveGameIndex(0)
                                     console.log("games", games)
-                                }}
-                            >
-                                <i className="fad fa-info-square"></i>
-                                Reset
-                            </ArticlesButton>
 
-                        </div>
-
-                        <div>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                // active={devDebug}
-                                onClick={() => {
-                                    setActiveGameIndex(activeGameIndex - 1)
-                                }}
-                            >
-                                <i className="fad fa-arrow-circle-down"></i>
-
-                            </ArticlesButton>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                // active={devDebug}
-                                onClick={() => {
-
-                                }}
-                                disabled
-                            >
-                                {activeGameIndex}/{(allGames?.length - 1) || 0}
-                            </ArticlesButton>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                // active={devDebug}
-                                onClick={() => {
-                                    setActiveGameIndex(activeGameIndex + 1)
-                                }}
-                            >
-                                <i className="fad fa-arrow-circle-up"></i>
-                            </ArticlesButton>
-                        </div>
-
-                        <div>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                // active={devDebug}
-                                onClick={() => {
-                                    setZoomLevel(zoomLevel - 1)
-                                }}
-                            >
-                                <i className="fad fa-arrow-circle-down"></i>
-
-                            </ArticlesButton>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                disabled
-                                onClick={() => {
+                                    reloadScene()
 
                                 }}
                             >
-                                {zoomLevel}
+                                <i className="fad fa-eraser"></i>
+                                {/* Reset */}
                             </ArticlesButton>
-                            <ArticlesButton
-                                className={``}
-                                small
-                                onClick={() => {
-                                    setZoomLevel(zoomLevel + 1)
-                                }}
-                            >
-                                <i className="fad fa-arrow-circle-up"></i>
-                            </ArticlesButton>
+
                         </div>
 
                     </div>
 
                     <hr className='my-2' />
 
-                    <Dropdown className="d-flex w-100 text-center">
+                    {process.env.NODE_ENV === 'development' && <Dropdown
+                        className="d-flex w-100 text-center"
+                    >
 
-                        <Dropdown.Toggle variant='articles w-100 d-flex justify-content-center align-items-center text-center'>
+                        <Dropdown.Toggle
+                            variant='articles w-100 d-flex justify-content-center align-items-center text-center'
+                        >
                             Camera Presets
                         </Dropdown.Toggle>
 
@@ -311,6 +347,7 @@ function GameMenu({}) {
                         </Dropdown.Menu>
 
                     </Dropdown>
+                    }
 
                 </div>
 

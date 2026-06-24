@@ -1,21 +1,24 @@
 import { useFrame } from "@react-three/fiber";
-import { useStore } from "../hooks/useStore";
+import { useStore } from "@/components/hooks/useStore";
 import { memo, useRef } from "react";
 
 import { useHotkeys } from "react-hotkeys-hook";
-import useGames from "../hooks/useGames";
+import useGames from "@/components/hooks/useGames";
 
-// import useGameControllerKeyboardStore from "../hooks/useGameControllerKeyboardStore";
+// import useGameControllerKeyboardStore from "@/components/hooks/useGameControllerKeyboardStore";
 import useGameControllerKeyboardStore from "@articles-media/articles-gamepad-helper/useGameControllerKeyboardStore";
 
-import useAllGames from "../hooks/useAllGames";
+import useAllGames from "@/components/hooks/useAllGames";
 
 const ControllerManager = () => {
 
     // const { games, publicGames } = useGames();
-    const { games: allGames } = useAllGames();
+    const { 
+        games: allGames,
+        filteredGames
+    } = useAllGames();
 
-    let activeGames = allGames;
+    let activeGames = filteredGames || allGames;
 
     const visible = useGameControllerKeyboardStore((state) => state.visible);
     // const visible = false

@@ -5,7 +5,7 @@
     "name": "ArticlesJoey"
   },
   "homepage": "https://games.articles.media",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "scripts": {
     "dev": "next dev --webpack -p 3048",
@@ -14,7 +14,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@articles-media/articles-dev-box": "^1.5.1",
+    "@articles-media/articles-dev-box": "^1.6.1",
     "@articles-media/articles-gamepad-helper": "^0.0.13",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",

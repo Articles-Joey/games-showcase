@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useRef, useState } from "react"
-import { useSocketStore } from "../hooks/useSocketStore"
-import { useStore } from "../hooks/useStore"
+import { useSocketStore } from "@/components/hooks/useSocketStore"
+import { useStore } from "@/components/hooks/useStore"
 import { usePathname } from "next/navigation"
 
 export default function SocketLogicHandler({

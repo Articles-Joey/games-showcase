@@ -8,6 +8,8 @@
         .touch-controls-area {
             @include media-breakpoint-up(lg) {
                 left: 300px;
+                bottom: 0px;
+                width: calc(100% - 300px);
             }
         }
     }

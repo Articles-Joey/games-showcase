@@ -4,7 +4,7 @@ import ArticlesButton from "@/components/UI/Button"
 // import { useStore } from "@/hooks/useStore";
 import useTouchControlsStore from "@/components/hooks/useTouchControlsStore";
 import { useStore } from "@/components/hooks/useStore";
-import useAllGames from "../hooks/useAllGames";
+import useAllGames from "@/components/hooks/useAllGames";
 
 const arePropsEqual = (prevProps, nextProps) => {
     // Compare all props for equality

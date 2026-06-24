@@ -1,5 +1,5 @@
-import { useSocketStore } from "../hooks/useSocketStore"
-import { useStore } from "../hooks/useStore"
+import { useSocketStore } from "@/components/hooks/useSocketStore"
+import { useStore } from "@/components/hooks/useStore"
 
 export default function OnlinePlayerCount() {
 

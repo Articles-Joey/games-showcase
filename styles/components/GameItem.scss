@@ -1,10 +1,19 @@
 @use "@/styles/components/global.scss" as *;
 
+.games-page, .games-showcase-wall-page {
+
+    .game-item {
+        
+    }
+
+}
+
 .game-item {
 
     .card-game {
         height: 100%;
         border: 0px solid cyan;
+        border: 1px solid aqua;
         border-radius: 0;
         @include shadow-articles;
 

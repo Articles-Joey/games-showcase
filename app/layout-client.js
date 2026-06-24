@@ -15,8 +15,12 @@ import ArticlesButton from '@/components/UI/Button';
 import ControlsSetting from '@/components/UI/ControlsSetting';
 import GameInfoModal from '@/components/UI/GameInfoModal';
 import useTouchControlsStore from '@/components/hooks/useTouchControlsStore';
+import { usePathname } from 'next/navigation';
+import FloatingDarkModeButton from '@/components/UI/FloatingDarkModeButton';
 
 export default function LayoutClient({ children }) {
+
+    const pathname = usePathname();
 
     const darkMode = useStore((state) => state?.darkMode);
     const renderUniqueGameSceneRange = useStore((state) => state.renderUniqueGameSceneRange);
@@ -147,6 +151,11 @@ export default function LayoutClient({ children }) {
                         show={gameInfoModal}
                         setShow={setGameInfoModal}
                     />
+                }
+
+                {/* pathname: {pathname} */}
+
+                {(pathname == "/wall" || pathname == "/original") && <FloatingDarkModeButton />
                 }
 
             </Suspense>

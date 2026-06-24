@@ -123,7 +123,7 @@ function GameMenu({ }) {
                                 type="text"
                                 id="game-search"
                                 className='form-control form-control-sm'
-                                placeholder='Search Games...'
+                                placeholder='Search games...'
                                 value={search}
                                 onChange={(e) => {
                                     setSearch(e.target.value)

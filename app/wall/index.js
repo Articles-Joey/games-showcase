@@ -63,8 +63,9 @@ export default function PageContent() {
                     <FilterDropdowns />
 
                     <input
-                        placeholder='Search'
+                        placeholder='Search games...'
                         value={search}
+                        className='px-2'
                         onChange={(e) => setSearch(e.target.value)}
                     />
                     <ArticlesButton

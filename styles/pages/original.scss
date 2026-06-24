@@ -4,7 +4,6 @@
     position: relative;
     // display: grid;
     // grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-
     padding-bottom: 50px;
 
     .sub-header {
@@ -128,11 +127,11 @@
         padding: 0rem 1rem;
         z-index: 1;
 
-        .games .card,
-        .card-extra {
-            border: 1px solid cyan;
-            border-radius: 0;
-        }
+        // .games .card,
+        // .card-extra {
+        //     border: 1px solid cyan;
+        //     border-radius: 0;
+        // }
 
         .games {
             display: grid;

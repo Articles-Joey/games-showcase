@@ -137,7 +137,8 @@ export default function PageContent() {
                 useStore={useStore}
                 LeftPanelContent={LeftPanelContent}
                 menuBarConfig={{
-                    style: "Corner Button",
+                    // style: "Corner Button",
+                    style: "Bar",
                     menuBarButtonPosition: "Left"
                 }}
                 sidebarConfig={{

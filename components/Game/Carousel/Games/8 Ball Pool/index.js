@@ -29,15 +29,15 @@ import { useEightBallStore } from "./useEightBallStore";
 // import { degToRad } from "three/src/math/MathUtils";
 // import { useHotkeys } from "react-hotkeys-hook";
 // import { MathUtils } from "three";
-import PlayerProjectile from "./components/PlayerProjectile";
+// import PlayerProjectile from "./components/PlayerProjectile";
 // import Dartboard from "@/components/Game/Dartboard";
 import { Table, TableBottom, TableLegs } from "./components/Table";
-import Balls from "./components/Balls";
+// import Balls from "./components/Balls";
 import WoodFloor from "./components/WoodFloor";
 // import FlickerFireLight from "@/components/Game/FlickerFireLight";
 // import { degToRad } from "three/src/math/MathUtils";
 // import CameraControls from "@/components/Game/CameraControls";
-import RoomWalls from "./components/RoomWalls";
+// import RoomWalls from "./components/RoomWalls";
 // import { degToRad } from "three/src/math/MathUtils";
 
 export default function EightBallPoolScene() {

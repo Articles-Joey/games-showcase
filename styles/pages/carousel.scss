@@ -4,6 +4,14 @@
     position: relative;
     display: flex;
 
+    &.show-sidebar {
+        .touch-controls-area {
+            @include media-breakpoint-up(lg) {
+                left: 300px;
+            }
+        }
+    }
+
     &.fullscreen {
         // .mobile-menu {
         //     top: 0px;
@@ -142,6 +150,13 @@
         // @include media-breakpoint-up(lg) {
         //     display: none;
         // }
+
+        .zoom-controls {
+            position: absolute;
+            top: 0%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
     }
 
     .debug-info,

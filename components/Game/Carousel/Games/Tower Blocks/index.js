@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import { useState } from "react";
 
 export default function TowerBlocksScene() {
-    const cubes = useMemo(() => {
+    const [cubes] = useState(() => {
         const items = [];
         let height = 0;
 
@@ -27,7 +27,7 @@ export default function TowerBlocksScene() {
             });
         }
         return items;
-    }, []);
+    });
 
     return (
         <group position={[3, 0.5, 0]}>

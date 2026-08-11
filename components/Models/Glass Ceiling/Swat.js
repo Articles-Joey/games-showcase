@@ -4,10 +4,15 @@ Command: npx gltfjsx@6.5.0 models\Swat.gltf --output output\Swat.js --transform
 Files: models\Swat.gltf [3.37MB] > E:\Downloads\men\output\Swat-transformed.glb [772.98KB] (77%)
 */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
+
+const startDesyncedAction = (action) => {
+  action.time = Math.random() * action.getClip().duration;
+  action.play();
+};
 
 export function ModelGlassCeilingSwat(props) {
   const group = React.useRef()
@@ -20,24 +25,23 @@ export function ModelGlassCeilingSwat(props) {
   console.log("Available animations:", Object.keys(actions));
 
   useEffect(() => {
-      if (actions["Sword_Slash"]) {
-        const action = actions['Sword_Slash'];
-        // Randomize start time to desync multiple instances
-        action.time = Math.random() * action.getClip().duration;
-        action.play();
+    const action = actions?.['Sword_Slash'];
+
+    if (action) {
+      startDesyncedAction(action);
+    }
+
+    const handleLoop = (e) => {
+      if (e.action === action) {
+        // setFlash(true);
+        // setTimeout(() => setFlash(false), 50);
       }
+    };
 
-      const handleLoop = (e) => {
-        if (e.action === actions['Sword_Slash']) {
-          // setFlash(true);
-          // setTimeout(() => setFlash(false), 50);
-        }
-      };
+    mixer?.addEventListener('loop', handleLoop);
+    return () => mixer?.removeEventListener('loop', handleLoop);
 
-      mixer.addEventListener('loop', handleLoop);
-      return () => mixer.removeEventListener('loop', handleLoop);
-
-    }, [actions, mixer]);
+  }, [actions, mixer]);
 
   return (
     <group ref={group} {...props} dispose={null}>

@@ -44,7 +44,13 @@ export const useStore = create()(
         const game = get().gameInfoModal;
 
         if (game?.link) {
-          window.location.href = `${game.link}?controller=1&utm_source=games.articles.media&utm_medium=carousel`;
+
+          // TODO: Make a setting for this behavior
+
+          window.open(`https://${game.link.replace("https://", "")}?controller=1&utm_source=games.articles.media&utm_medium=carousel`, '_blank', 'noopener,noreferrer');
+
+          // window.location.href = `https://${game.link.replace("https://", "")}?controller=1&utm_source=games.articles.media&utm_medium=carousel`;
+
         }
 
       },

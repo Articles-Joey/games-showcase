@@ -15,9 +15,15 @@ export default function Ocean(props) {
 
     const darkMode = useStore((state) => state.darkMode)
 
-    const waterNormals = useLoader(THREE.TextureLoader, link)
-
-    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
+    const loadedWaterNormals = useLoader(THREE.TextureLoader, link)
+    const waterNormals = useMemo(() => {
+        const texture = loadedWaterNormals.clone()
+        texture.wrapS = THREE.RepeatWrapping
+        texture.wrapT = THREE.RepeatWrapping
+        texture.needsUpdate = true
+        return texture
+    }, [loadedWaterNormals])
+    
     const geom = useMemo(() => new THREE.PlaneGeometry(10000, 10000), [])
     const config = useMemo(
         () => ({
@@ -31,7 +37,7 @@ export default function Ocean(props) {
             fog: false,
             format: gl.encoding
         }),
-        [waterNormals, darkMode]
+        [waterNormals, darkMode, gl.encoding]
     )
     useFrame((state, delta) => (ref.current.material.uniforms.time.value += delta))
     return <water ref={ref} args={[geom, config]} {...props} rotation-x={-Math.PI / 2} />

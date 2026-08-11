@@ -27,19 +27,13 @@ export default function CarouselGameItem({
 
     useEffect(() => {
         let timer;
-        if (isActive) {
+        if (isActive) console.log("Activating game image for:", game);
 
-            console.log("Activating game image for:", game);
-
-            timer = setTimeout(() => {
-                setShowActiveImage(true);
-            }, 1000);
-
-        } else {
-            setShowActiveImage(false);
-        }
+        timer = setTimeout(() => {
+            setShowActiveImage(isActive);
+        }, isActive ? 1000 : 0);
         return () => clearTimeout(timer);
-    }, [isActive]);
+    }, [isActive, game]);
 
     const materialRef = useRef();
     const groupRef = useRef();
@@ -137,7 +131,7 @@ export default function CarouselGameItem({
                 />
             </Html>
         )
-    }, [game?.image, game?.active_image, showActiveImage, gameInfoModal])
+    }, [game?.image, game?.active_image, game?.name, showActiveImage, gameInfoModal])
 
     if (Math.abs(activeGameIndex - i) >= 15) return null;
 
@@ -321,14 +315,14 @@ function RockWrappedRandomizer({
     scale
 }) {
     const group = useRef()
-    const { randomScale, randomRotation } = useMemo(() => ({
+    const [{ randomScale, randomRotation }] = useState(() => ({
         randomScale: 18 + Math.random() * 20,
         randomRotation: [
             // Math.random() * Math.PI * 2,
             Math.random() * Math.PI * 2,
             // Math.random() * Math.PI * 2
         ]
-    }), [])
+    }))
 
     return (
         <group ref={group}>
@@ -346,11 +340,11 @@ function TreeWrappedRandomizer({
     scale
 }) {
     const group = useRef()
-    const { randomScale, randomSpeed, randomOffset } = useMemo(() => ({
+    const [{ randomScale, randomSpeed, randomOffset }] = useState(() => ({
         randomScale: 0.2 + Math.random() * 0.6,
         randomSpeed: 1 + Math.random(),
         randomOffset: Math.random() * 100
-    }), [])
+    }))
 
     // useFrame(({ clock }) => {
     //     if (group.current) {

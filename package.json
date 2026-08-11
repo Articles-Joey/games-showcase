@@ -11,7 +11,7 @@
     "dev": "next dev -p 3048",
     "build": "next build",
     "start": "next start -p 3048",
-    "lint": "next lint"
+    "lint": "eslint"
   },
   "dependencies": {
     "@articles-media/articles-dev-box": "^1.6.2",

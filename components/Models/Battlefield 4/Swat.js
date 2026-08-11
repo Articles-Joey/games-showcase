@@ -9,6 +9,11 @@ import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
+const startDesyncedAction = (action) => {
+  action.time = Math.random() * action.getClip().duration;
+  action.play();
+};
+
 export function ModelBattlefield4Swat(props) {
   const group = React.useRef()
   const { scene, animations } = useGLTF('models/Battlefield 4/Swat-transformed.glb')
@@ -20,15 +25,14 @@ export function ModelBattlefield4Swat(props) {
   console.log("Available animations:", Object.keys(actions));
 
   useEffect(() => {
-      if (actions['Run_Shoot']) {
-        const action = actions['Run_Shoot'];
-        // Randomize start time to desync multiple instances
-        action.time = Math.random() * action.getClip().duration;
-        action.play();
+      const action = actions?.['Run_Shoot'];
+
+      if (action) {
+        startDesyncedAction(action);
       }
 
       const handleLoop = (e) => {
-        if (e.action === actions['Run_Shoot']) {
+        if (e.action === action) {
           setFlash(true);
           setTimeout(() => setFlash(false), 50);
         }

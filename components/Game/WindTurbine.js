@@ -7,7 +7,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 
 const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/wind-turbine.gltf`
 
-export function WindTurbine(props) {
+export function WindTurbine({ disableAnimation = false, ...props }) {
 
     const group = useRef();
     const { nodes, materials, animations } = useGLTF(link);
@@ -17,11 +17,11 @@ export function WindTurbine(props) {
 
         console.log("Actions", actions)
 
-        if (!props?.disableAnimation) {
+        if (!disableAnimation) {
             actions.Wind_turbine_001_BladesAction.play();
         }
 
-    }, [actions]);
+    }, [actions, disableAnimation]);
 
     // useEffect(() => {
         

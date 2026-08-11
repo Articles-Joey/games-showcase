@@ -34,7 +34,7 @@ const CameraControls = (props) => {
     const targetLookAt = useRef(new Vector3(14 + (activeGameIndex * 10), 0, 0));
 
     // Base camera offset when zoomLevel is 0
-    const baseOffset = new Vector3(0, 10, 20);
+    
 
     useFrame((state, delta) => {
         state.camera.position.lerp(targetPosition.current, 3 * delta)
@@ -59,10 +59,11 @@ const CameraControls = (props) => {
                 cameraUpdate.position[2]
             );
         }
-    }, [cameraUpdate])
+    }, [cameraUpdate , camera.position]);
 
     useEffect(() => {
-
+        
+        const baseOffset = new Vector3(0, 10, 20);
         console.log("New cameraUpdate", cameraUpdate)
 
         if (controls.current) {
@@ -84,7 +85,7 @@ const CameraControls = (props) => {
             baseOffset.z * zoomFactor
         );
 
-    }, [activeGameIndex, zoomLevel])
+    }, [activeGameIndex, zoomLevel, cameraUpdate]);
 
     return (
         <OrbitControls

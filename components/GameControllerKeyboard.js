@@ -110,7 +110,7 @@ const GameControllerKeyboard = ({ onFinish, onCancel }) => {
             lastInputTime.current = now;
         }
 
-    }, [visible, currentRow, currentCol, text, onFinish, onCancel]);
+    }, [visible, currentRow, currentCol, text, onFinish, onCancel, setVisible]);
 
     useEffect(() => {
         const loop = () => {

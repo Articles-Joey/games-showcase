@@ -1,4 +1,5 @@
 import { useTexture } from "@react-three/drei";
+import { useMemo } from "react";
 
 import * as THREE from 'three'
 
@@ -6,7 +7,7 @@ export default function WoodFloor(props) {
 
     const base_link = `${process.env.NEXT_PUBLIC_CDN}games/US Tycoon/Textures/WoodFloor041_1K-JPG/`
 
-    const texture = useTexture({
+    const loadedTexture = useTexture({
         map: `${base_link}WoodFloor041_1K-JPG_Color.jpg`,
         // displacementMap: `${base_link}GroundSand005_DISP_1K.jpg`,
         // normalMap: `${base_link}GroundSand005_NRM_1K.jpg`,
@@ -14,8 +15,14 @@ export default function WoodFloor(props) {
         // aoMap: `${base_link}GroundSand005_AO_1K.jpg`,
     })
 
-    texture.map.repeat.set(6, 6);
-    texture.map.wrapS = texture.map.wrapT = THREE.RepeatWrapping;
+    const texture = useMemo(() => {
+        const map = loadedTexture.map.clone()
+        map.repeat.set(6, 6)
+        map.wrapS = THREE.RepeatWrapping
+        map.wrapT = THREE.RepeatWrapping
+        map.needsUpdate = true
+        return { ...loadedTexture, map }
+    }, [loadedTexture])
 
     return (
         <group {...props}>

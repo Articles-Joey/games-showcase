@@ -22,7 +22,7 @@ export default function ControlsSetting() {
             window.addEventListener('keydown', handleKeyDown)
             return () => window.removeEventListener('keydown', handleKeyDown)
         }
-    }, [listenForKey])
+    }, [listenForKey, setListenForKey])
 
     return (
         <>

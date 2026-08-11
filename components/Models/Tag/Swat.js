@@ -4,10 +4,15 @@ Command: npx gltfjsx@6.5.0 models\Swat.gltf --output output\Swat.js --transform
 Files: models\Swat.gltf [3.37MB] > E:\Downloads\men\output\Swat-transformed.glb [772.98KB] (77%)
 */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
+
+const startDesyncedAction = (action) => {
+  action.time = Math.random() * action.getClip().duration;
+  action.play();
+};
 
 export function ModelTagSwat(props) {
   const group = React.useRef()
@@ -20,15 +25,14 @@ export function ModelTagSwat(props) {
   console.log("Available animations:", Object.keys(actions));
 
   useEffect(() => {
-      if (actions['Run']) {
-        const action = actions['Run'];
-        // Randomize start time to desync multiple instances
-        action.time = Math.random() * action.getClip().duration;
-        action.play();
+      const action = actions?.['Run'];
+
+      if (action) {
+        startDesyncedAction(action);
       }
 
       const handleLoop = (e) => {
-        if (e.action === actions['Run']) {
+        if (e.action === action) {
           // setFlash(true);
           // setTimeout(() => setFlash(false), 50);
         }

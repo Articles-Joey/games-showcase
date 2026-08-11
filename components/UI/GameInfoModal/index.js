@@ -402,7 +402,7 @@ export default function GameInfoModal({
                                 setShow(false)
                             }}
                         >
-                            <img width={20} className="controller-only me-2" src={B.src}></img>
+                            <img width={20} alt="" className="controller-only me-2" src={B.src}></img>
                             <span className="">Close</span>
                         </ArticlesButton>
                         <ArticlesButton
@@ -412,7 +412,7 @@ export default function GameInfoModal({
                                 // setShow(false)
                             }}
                         >
-                            <img width={20} className="controller-only me-2" src={B.src}></img>
+                            <img width={20} alt="" className="controller-only me-2" src={B.src}></img>
                             <i className="fad fa-arrow-up me-0 px-1"></i>
                             {/* <span className="">To Top</span> */}
                         </ArticlesButton>
@@ -436,7 +436,7 @@ export default function GameInfoModal({
                                 launchGame()
                             }}
                         >
-                            <img width={20} className="controller-only me-2" src={A.src}></img>
+                            <img width={20} alt="" className="controller-only me-2" src={A.src}></img>
                             <span className="">Launch</span>
                         </ArticlesButton>
 

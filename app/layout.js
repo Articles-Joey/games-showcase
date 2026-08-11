@@ -1,6 +1,7 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Tiny5 } from 'next/font/google';
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -21,6 +22,12 @@ import { Suspense } from 'react';
 import LayoutClient from './layout-client';
 import SocketLogicHandler from '@/components/Handlers/SocketLogicHandler';
 
+const tiny5 = Tiny5({
+  subsets: ['latin'],
+  variable: '--font-tiny5',
+  weight: '400',
+});
+
 export const metadata = {
   title: "Games Showcase",
   description: "A 3D collection of games I developed, this serves as a portfolio/another 3D example project/game launcher.",
@@ -29,15 +36,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
-    <html lang="en">
-
-      <head>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet"></link>
-
-      </head>
+    <html lang="en" className={tiny5.variable}>
 
       <GoogleAnalytics gaId="G-BSWV4HR4VG" />
 

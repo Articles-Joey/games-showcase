@@ -119,7 +119,13 @@ const ControllerManager = () => {
 
                 // Navigation logic - needs work
                 if (selectedGame?.link) {
-                    window.location.href = `${selectedGame.link}?controller=1&utm_source=games.articles.media&utm_medium=carousel`;
+
+                    // TODO: Make a setting for this behavior
+
+                    window.open(`https://${selectedGame.link.replace("https://", "")}?controller=1&utm_source=games.articles.media&utm_medium=carousel`, '_blank', 'noopener,noreferrer');
+
+                    // window.location.href = `${selectedGame.link}?controller=1&utm_source=games.articles.media&utm_medium=carousel`;
+
                 }
 
                 if (selectedGame?.launch_command) {

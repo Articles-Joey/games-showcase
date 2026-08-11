@@ -30,7 +30,7 @@ import * as THREE from 'three'
 
 function getBallDetails(ball) {
 
-    let defaultEmissiveValue = 10;
+    const defaultEmissiveValue = 10;
 
     const ballProperties = [
         {
@@ -127,8 +127,6 @@ function getBallDetails(ball) {
 
     const ballObj = ballProperties.find(b => b.ball === ball);
     return ballObj || { name: "white", emissiveLightIntensity: defaultEmissiveValue, emissiveLightColor: "white" };
-
-    return colors[ball] || "white"; // Default to white if the ball number is invalid
 }
 
 const ballConfigs = [
@@ -149,75 +147,6 @@ const ballConfigs = [
     { position: [-4.5, 10, -27.25], ball: 12 },
 ];
 
-let ballsState = ballConfigs.map(cfg => ({
-    ball: cfg.ball,
-    position: cfg.position
-}))
-
-export default function Balls() {
-
-    const ballsRef = useRef([]);
-
-    const [finalBallPositions, setFinalBallPositions] = useState([]);
-
-    const ballPositionsUpdated = useEightBallStore(state => state.ballPositionsUpdated);
-    const setBallPositionsUpdated = useEightBallStore(state => state.setBallPositionsUpdated);
-
-    const spacing = 1.15;
-
-    // Store ball positions in a global store
-    const ballPositions = useEightBallStore(state => state.ballPositions);
-    const setBallPositions = useEightBallStore(state => state.setBallPositions);
-
-    const isHost = useEightBallStore(state => state.isHost);
-
-    // This effect runs once to initialize positions in the store
-    useEffect(() => {
-
-        let ballsState = ballConfigs.map(cfg => ({
-            ball: cfg.ball,
-            position: cfg.position
-        }))
-
-        console.log("Setting up balls", ballsState)
-
-        ballsRef.current = ballsState
-
-        setBallPositions(ballsState)
-
-
-    }, [setBallPositions]);
-
-    // useEffect(() => {
-    //     console.log("ballPositions", ballPositions)
-    // }, [ballPositions]);
-
-    useEffect(() => {
-        if (ballPositionsUpdated && ballsRef?.current) {
-            console.log("Ball positions updated detected, overriding state", ballPositionsUpdated);
-            ballsRef.current = ballPositionsUpdated;
-            setBallPositionsUpdated(false);
-            // ballConfigs = ballPositions
-        }
-    }, [ballPositionsUpdated, ballsRef]);
-
-    return (
-        <group>
-            {!ballPositionsUpdated && ballsRef?.current?.map(cfg => (
-                <Ball
-                    key={cfg.ball}
-                    position={cfg.position}
-                    velocity={cfg.velocity}
-                    angularVelocity={cfg.angularVelocity}
-                    rotation={cfg.rotation}
-                    ball={cfg.ball}
-                // setBallPositions={setBallPositions}
-                />
-            ))}
-        </group>
-    );
-}
-
 function Ball({
     position,
     velocity,
@@ -228,8 +157,8 @@ function Ball({
 }) {
 
     const theme = useEightBallStore(state => state.theme);
-    const ballPositions = useEightBallStore(state => state.ballPositions);
     const setBallPosition = useEightBallStore(state => state.setBallPosition);
+    const apiRef = useRef(null);
 
     const [isVisible, setIsVisible] = useState(true); // Track visibility
 
@@ -242,14 +171,21 @@ function Ball({
         angularDamping: 0.2, // Adds a slight resistance to spinning
         onCollide: (e) => {
             if (e?.body?.userData?.isTableBottom) {
-                api.mass.set(0);
-                api.velocity.set(0, 0, 0);
-                api.angularVelocity.set(0, 0, 0);
-                api.position.set(0, -100, 0);
+                apiRef.current?.mass.set(0);
+                apiRef.current?.velocity.set(0, 0, 0);
+                apiRef.current?.angularVelocity.set(0, 0, 0);
+                apiRef.current?.position.set(0, -100, 0);
                 setIsVisible(false);
             }
         }
     }));
+
+    useEffect(() => {
+        apiRef.current = api;
+        return () => {
+            apiRef.current = null;
+        };
+    }, [api]);
 
     const pos = useRef(new THREE.Vector3(0, 0, 0));
     const rot = useRef(new THREE.Vector3(0, 0, 0));
@@ -280,10 +216,10 @@ function Ball({
         return () => {
             unsubPos();
             unsubVel();
-            // unsubAngVel();
-            // unsubRot();
+            unsubAngVel();
+            unsubRot();
         };
-    }, [api.position, api.velocity, api.rotation, api.angularVelocity]);
+    }, [api]);
 
     // Update ball position and velocity in store as it moves
     useFrame(() => {
@@ -299,7 +235,7 @@ function Ball({
         api.velocity.set(velocity?.[0], velocity?.[1], velocity?.[2]);
         api.rotation.set(rotation?.[0], rotation?.[1], rotation?.[2]);
         api.angularVelocity.set(angularVelocity?.[0], angularVelocity?.[1], angularVelocity?.[2]);
-    }, []);
+    }, [angularVelocity, api, rotation, velocity]);
 
     if (!isVisible) return null;
 
@@ -315,7 +251,7 @@ function Ball({
                     emissiveIntensity={0.02} // adjust for subtle glow
                 />
 
-                {theme == "Dark" && (
+                {theme === "Dark" && (
                     <pointLight
                         position={[0, 0, 0]}
                         intensity={getBallDetails(ball).emissiveLightIntensity}

@@ -430,41 +430,11 @@ const useGameStore = create((set, get) => ({
         conn.on('data', (data) => {
             console.log('Received data from host:', data);
 
-            if (data?.event === 'Kicked') {
-                console.log('Kicked by host!!!!!!!!!!');
-                window.location.href = '/?kicked=true'
-                // router.push('/');
-                // set({ isKicked: true });
-            }
-
-            if (data?.event === 'GameStateUpdate') {
-                set({ gameState: data.gameState });
-            }
+            // Handle game state updates here
 
             if (data?.event === 'ChatMessage') {
                 console.log('Chat message received:', data);
             }
-
-            if (data?.event === 'ReturnToLobby') {
-                // TODO
-            }
-
-            // if (data?.event === 'CharacterUpdate') {
-
-            //     const newCharacterState = data.characterState;
-
-            //     set({
-            //         gameState: {
-            //             ...get().gameState,
-            //             players: {
-            //                 ...get().gameState.players,
-            //                 [conn.peer]: newCharacterState
-            //             }
-            //         }
-            //     });
-            // }
-
-            // Handle game state updates here
         });
 
         conn.on('close', () => {

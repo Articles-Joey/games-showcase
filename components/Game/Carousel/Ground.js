@@ -1,5 +1,5 @@
 import { useLoader } from "@react-three/fiber";
-import { memo, useEffect } from "react";
+import { memo, useMemo } from "react";
 import { NearestFilter, RepeatWrapping, TextureLoader } from "three";
 
 function GrassPlane(props) {
@@ -19,16 +19,20 @@ function GrassPlane(props) {
     //     return () => clearInterval(interval);
     // }, [texture]);
 
-    texture.magFilter = NearestFilter;
-    texture.wrapS = RepeatWrapping
-    texture.wrapT = RepeatWrapping
-    texture.repeat.set(1, 10)
+    const configuredTexture = useMemo(() => {
+        const nextTexture = texture.clone();
+        nextTexture.magFilter = NearestFilter;
+        nextTexture.wrapS = RepeatWrapping
+        nextTexture.wrapT = RepeatWrapping
+	    nextTexture.repeat.set(1, 10)
+        return nextTexture;
+    }, [texture])
 
     return (
         <group {...props}>
             <mesh position={[0, 0, 0]}>
                 <planeGeometry attach="geometry" args={[width, height]} />
-                <meshStandardMaterial attach="material" map={texture} />
+                <meshStandardMaterial attach="material" map={configuredTexture} />
             </mesh>
         </group>
     );

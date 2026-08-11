@@ -1,7 +1,9 @@
 import * as THREE from 'three'
-import { useRef, useMemo } from 'react'
-import { extend, useThree, useLoader, useFrame } from '@react-three/fiber'
+import React, { Suspense, useRef, useMemo } from 'react'
+import { Canvas, extend, useThree, useLoader, useFrame } from '@react-three/fiber'
+import { OrbitControls, Sky } from '@react-three/drei'
 import { Water } from 'three-stdlib'
+import { useStore } from '@/components/hooks/useStore'
 
 extend({ Water })
 
@@ -11,23 +13,31 @@ export default function Ocean(props) {
     const ref = useRef()
     const gl = useThree((state) => state.gl)
 
-    const waterNormals = useLoader(THREE.TextureLoader, link)
+    const darkMode = useStore((state) => state.darkMode)
 
-    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
-    const geom = useMemo(() => new THREE.PlaneGeometry(800, 800), [])
+    const loadedWaterNormals = useLoader(THREE.TextureLoader, link)
+    const waterNormals = useMemo(() => {
+        const texture = loadedWaterNormals.clone()
+        texture.wrapS = THREE.RepeatWrapping
+        texture.wrapT = THREE.RepeatWrapping
+        texture.needsUpdate = true
+        return texture
+    }, [loadedWaterNormals])
+
+    const geom = useMemo(() => new THREE.PlaneGeometry(10000, 10000), [])
     const config = useMemo(
         () => ({
             textureWidth: 512,
             textureHeight: 512,
             waterNormals,
             sunDirection: [1000, 10, 0],
-            sunColor: 0xffffff,
-            waterColor: 0x001e0f,
+            sunColor: darkMode ? 0x222222 : 0xffffff,
+            waterColor: darkMode ? 0x011111 : 0x001e0f,
             distortionScale: 3.7,
             fog: false,
             format: gl.encoding
         }),
-        [waterNormals]
+        [waterNormals, darkMode, gl.encoding]
     )
     useFrame((state, delta) => (ref.current.material.uniforms.time.value += delta))
     return <water ref={ref} args={[geom, config]} {...props} rotation-x={-Math.PI / 2} />

@@ -37,13 +37,13 @@ export default function SocketLogicHandler({
     const debug = true
     const nickname = useStore(state => state.nickname)
 
-    function debugLog(...args) {
-        if (debug) {
-            console.log("[📶SocketLogicHandler]", ...args)
-        }
-    }
-
     useEffect(() => {
+
+        function debugLog(...args) {
+            if (debug) {
+                console.log("[📶SocketLogicHandler]", ...args)
+            }
+        }
 
         // Makes sure connect is only called once during reactStrictMode
         if (!initialized.current) {
@@ -115,7 +115,17 @@ export default function SocketLogicHandler({
             // socket.off(`game-update`);
         };
 
-    }, [socket]);
+    }, [
+        socket,
+        connectSocket,
+        setConnected,
+        setAuthenticated,
+        landingConfig?.onLandingDetails,
+        gameConfig?.onGameUpdate,
+        setLobbyDetails,
+        landingConfig,
+        debug
+    ]);
 
     const isLandingPage = [
         "/",
@@ -150,6 +160,9 @@ export default function SocketLogicHandler({
         connected,
         landingConfig?.handleLandingDetails,
         isLandingPage,
+        pathname,
+        setLobbyDetails,
+        socket,
     ]);
 
     // Authentication Logic
@@ -189,7 +202,11 @@ export default function SocketLogicHandler({
             }, debugConfig.autoHideDelay);
             return () => clearTimeout(timer);
         }
-    }, [debugConfig.enabled]);
+    }, [
+        debugConfig.enabled,
+        debugConfig.autoHide,
+        debugConfig.autoHideDelay
+    ]);
 
     if (
         debugConfig.enabled

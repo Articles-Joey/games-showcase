@@ -101,7 +101,7 @@ function Box(props) {
             // ])
         }
 
-    }, [hovered])
+    }, [hovered, clickable])
 
     // Return the view, these are regular ThreeJS elements expressed in JSX
     return (

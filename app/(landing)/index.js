@@ -165,6 +165,7 @@ export default function LandingPage() {
                     src={"img/icon.svg"}
                     width={200}
                     className='landing-logo-image'
+                    alt=""
                 />
 
                 <div
@@ -327,6 +328,7 @@ export default function LandingPage() {
                             src={"https://cdn.articles.media/profile_photos/starter/articles.jpg"}
                             width={10}
                             className='me-3'
+                            alt=""
                         />
                         Visit articles.media
                     </ArticlesButton>

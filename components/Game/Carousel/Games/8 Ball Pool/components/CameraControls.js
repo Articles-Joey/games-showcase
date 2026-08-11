@@ -37,7 +37,7 @@ const CameraControls = (props) => {
             // You might also want to update other camera properties like rotation, etc.
         }
         setResetCameraRequest(false)
-    }, [resetCameraRequest])
+    }, [resetCameraRequest, camera.position, camera.rotation, setResetCameraRequest]);
 
     return (
         <OrbitControls

@@ -22,7 +22,7 @@ export default function SearchParamsHandler() {
             router.replace(`${pathname}${query}`);
         }
 
-    }, [searchParams, router, pathname])
+    }, [searchParams, router, pathname, utm_source, utm_medium]);
 
     return null
 

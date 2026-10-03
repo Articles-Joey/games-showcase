@@ -8,34 +8,48 @@ Source: https://sketchfab.com/3d-models/the-perfect-steve-rigged-0cffc39bdab0455
 Title: The Perfect Steve Rigged
 */
 
-import React, { useEffect } from 'react'
-import { useGraph } from '@react-three/fiber'
-import { useGLTF, useAnimations } from '@react-three/drei'
-import { SkeletonUtils } from 'three-stdlib'
+import React, { useEffect } from "react";
+import { useGraph } from "@react-three/fiber";
+import { useGLTF, useAnimations } from "@react-three/drei";
+import { SkeletonUtils } from "three-stdlib";
 
 export function ModelMinecraftSteve(props) {
-  const group = React.useRef()
-  const { scene, animations } = useGLTF('models/Minecraft/steve-transformed.glb')
-  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
-  const { nodes, materials } = useGraph(clone)
-  const { actions } = useAnimations(animations, group)
+    const group = React.useRef();
+    const { scene, animations } = useGLTF(
+        "models/Minecraft/steve-transformed.glb",
+    );
+    const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
+    const { nodes, materials } = useGraph(clone);
+    const { actions } = useAnimations(animations, group);
 
-  // console.log("Available animations for Steve:", Object.keys(actions));
+    // console.log("Available animations for Steve:", Object.keys(actions));
 
-  useEffect(() => {
-    if (actions['Armature.001|Walk']) {
-      actions['Armature.001|Walk'].play();
-    }
-  }, [actions]);
+    useEffect(() => {
+        if (actions["Armature.001|Walk"]) {
+            actions["Armature.001|Walk"].play();
+        }
+    }, [actions]);
 
-  return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <primitive object={nodes._rootJoint} />
-        <skinnedMesh name="Object_27" geometry={nodes.Object_27.geometry} material={materials['Scene_-_Root']} skeleton={nodes.Object_27.skeleton} position={[-0.347, -204.182, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={100} />
-      </group>
-    </group>
-  )
+    return (
+        <group
+            ref={group}
+            {...props}
+            dispose={null}
+        >
+            <group name="Sketchfab_Scene">
+                <primitive object={nodes._rootJoint} />
+                <skinnedMesh
+                    name="Object_27"
+                    geometry={nodes.Object_27.geometry}
+                    material={materials["Scene_-_Root"]}
+                    skeleton={nodes.Object_27.skeleton}
+                    position={[-0.347, -204.182, 0]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    scale={100}
+                />
+            </group>
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/steve-transformed.glb')
+useGLTF.preload("models/Minecraft/steve-transformed.glb");

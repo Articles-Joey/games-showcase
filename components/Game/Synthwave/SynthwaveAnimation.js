@@ -5,7 +5,7 @@ import { memo, Suspense, useEffect, useRef, useState } from "react";
 // import TerrainManager from "@/components/Games/Terrain Example/TerrainManager";
 // import { Leva } from "leva";
 
-import { renderer } from './renderer';
+import { renderer } from "./renderer";
 
 function SynthwaveAnimation() {
     const canvasRef = useRef(null);
@@ -13,7 +13,6 @@ function SynthwaveAnimation() {
     // const [color, setColor] = useState(false)
 
     useEffect(() => {
-
         let freezeTime = 0;
         let animationFrameId;
 
@@ -21,14 +20,14 @@ function SynthwaveAnimation() {
             const freezeMatch = location.hash.match(/freeze=(\d+)/);
             freezeTime = freezeMatch ? +freezeMatch[1] * 1000 : 0;
         }
-        window.addEventListener('hashchange', hashchange);
+        window.addEventListener("hashchange", hashchange);
         hashchange();
 
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        const ctx = canvas.getContext('2d', { alpha: false });
-        if (ctx === null) throw new Error('canvas does not support context 2d');
+        const ctx = canvas.getContext("2d", { alpha: false });
+        if (ctx === null) throw new Error("canvas does not support context 2d");
 
         function createRenderer() {
             const canvasRect = canvas.getBoundingClientRect();
@@ -44,7 +43,7 @@ function SynthwaveAnimation() {
             render = createRenderer();
         }
 
-        window.addEventListener('resize', onResize);
+        window.addEventListener("resize", onResize);
 
         const start = performance.now();
 
@@ -57,28 +56,25 @@ function SynthwaveAnimation() {
         tick();
 
         return () => {
-            window.removeEventListener('hashchange', hashchange);
-            window.removeEventListener('resize', onResize);
+            window.removeEventListener("hashchange", hashchange);
+            window.removeEventListener("resize", onResize);
             cancelAnimationFrame(animationFrameId);
         };
-
-    }, [])
+    }, []);
 
     return (
-        <canvas 
-        ref={canvasRef}
-        id="canvas" 
-        width="0" 
-        height="0" 
-        style={{ 
-            height: '100%', 
-            maxHeight: 'calc(100vh - 0px)', 
-            width: '100vw' 
-        }}
-        >
-
-        </canvas>
+        <canvas
+            ref={canvasRef}
+            id="canvas"
+            width="0"
+            height="0"
+            style={{
+                height: "100%",
+                maxHeight: "calc(100vh - 0px)",
+                width: "100vw",
+            }}
+        ></canvas>
     );
-};
+}
 
 export default memo(SynthwaveAnimation);

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 
@@ -14,7 +14,8 @@ const Textfit = ({ children, maxFontSize = 18, minFontSize = 10 }) => {
             textRef.current.style.fontSize = `${currentFontSize}px`;
 
             while (
-                textRef.current.scrollWidth > containerRef.current.clientWidth &&
+                textRef.current.scrollWidth >
+                    containerRef.current.clientWidth &&
                 currentFontSize > minFontSize
             ) {
                 currentFontSize -= 1;
@@ -35,8 +36,20 @@ const Textfit = ({ children, maxFontSize = 18, minFontSize = 10 }) => {
     }, [children, maxFontSize, minFontSize]);
 
     return (
-        <Box ref={containerRef} sx={{ width: "100%", display: "flex", justifyContent: "center", overflow: "hidden" }}>
-            <Box component="span" ref={textRef} sx={{ fontSize, whiteSpace: "nowrap", lineHeight: 1 }}>
+        <Box
+            ref={containerRef}
+            sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                overflow: "hidden",
+            }}
+        >
+            <Box
+                component="span"
+                ref={textRef}
+                sx={{ fontSize, whiteSpace: "nowrap", lineHeight: 1 }}
+            >
                 {children}
             </Box>
         </Box>

@@ -9,13 +9,16 @@ Title: Seating | Bleacher
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
-const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/bleacher.glb`
+const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/bleacher.glb`;
 
 export function Bleacher({ rotation, ...props }) {
     const { nodes, materials } = useGLTF(link);
     return (
-        <group {...props} dispose={null} rotation={rotation}>
-
+        <group
+            {...props}
+            dispose={null}
+            rotation={rotation}
+        >
             <group scale={0.0005}>
                 {/* Assuming that the original position of the component in the GLTF file is [0, 0, 0] */}
                 <mesh
@@ -24,7 +27,7 @@ export function Bleacher({ rotation, ...props }) {
                     geometry={nodes.bleacher20_Bleacher_0.geometry}
                     material={materials.Bleacher}
                     // scale={0.5}
-                    position={[2500, 0, 1000]}  // Adjust this position based on the original position of the component
+                    position={[2500, 0, 1000]} // Adjust this position based on the original position of the component
                 />
             </group>
         </group>

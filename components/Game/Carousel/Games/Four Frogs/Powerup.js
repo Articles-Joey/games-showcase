@@ -1,15 +1,16 @@
-import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import { Billboard, Text } from "@react-three/drei";
-import { TextureLoader, Vector3 } from 'three';
+import { TextureLoader, Vector3 } from "three";
 
-const frogSize = 40
+const frogSize = 40;
 
-const texture = new TextureLoader().load(`${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Powerups/powerup.jpg`)
+const texture = new TextureLoader().load(
+    `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Powerups/powerup.jpg`,
+);
 
 export default function Powerup(props) {
-
-    const { powerup } = props
+    const { powerup } = props;
 
     const textRef = useRef();
 
@@ -23,10 +24,7 @@ export default function Powerup(props) {
     // });
 
     return (
-        <group
-            position={props.position}
-        >
-
+        <group position={props.position}>
             {/* Body */}
             <mesh position={[40, 0, 40]}>
                 <boxGeometry args={[frogSize, frogSize, frogSize]} />
@@ -43,11 +41,10 @@ export default function Powerup(props) {
                 lockZ={false} // Lock the rotation on the z axis (default=false)
                 position={[40, 50, 40]}
             >
-
                 <mesh position={[0, 0, -1]}>
                     <boxGeometry args={[120, 25, 1]} />
                     <meshStandardMaterial
-                        color={'white'}
+                        color={"white"}
                         transparent
                         opacity={0.5}
                     />
@@ -60,19 +57,15 @@ export default function Powerup(props) {
                     fontSize={18}
                     color="black"
                     anchorX="center"
-                    backgroundColor='white'
-                    fontWeight='bold'
+                    backgroundColor="white"
+                    fontWeight="bold"
                     anchorY="middle"
-                    side={'both'}
+                    side={"both"}
                     rotation={[0, 0, 0]}
                 >
                     {powerup.name}
                 </Text>
-
             </Billboard>
-
-
-
         </group>
     );
-};
+}

@@ -3,7 +3,7 @@ import { useSphere } from "@react-three/cannon";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 
-import * as THREE from 'three'
+import * as THREE from "three";
 
 // function getBallColor(ball) {
 
@@ -29,7 +29,6 @@ import * as THREE from 'three'
 // }
 
 function getBallDetails(ball) {
-
     const defaultEmissiveValue = 10;
 
     const ballProperties = [
@@ -37,96 +36,102 @@ function getBallDetails(ball) {
             ball: 1,
             name: "yellow",
             emissiveLightIntensity: 20,
-            emissiveLightColor: "yellow"
+            emissiveLightColor: "yellow",
         },
         {
             ball: 2,
             name: "blue",
             emissiveLightIntensity: 500,
-            emissiveLightColor: "blue"
+            emissiveLightColor: "blue",
         },
         {
             ball: 3,
             name: "red",
             emissiveLightIntensity: 200,
-            emissiveLightColor: "red"
+            emissiveLightColor: "red",
         },
         {
             ball: 4,
             name: "purple",
             emissiveLightIntensity: 1000,
-            emissiveLightColor: "purple"
+            emissiveLightColor: "purple",
         },
         {
             ball: 5,
             name: "orange",
             emissiveLightIntensity: 50,
-            emissiveLightColor: "orange"
+            emissiveLightColor: "orange",
         },
         {
             ball: 6,
             name: "green",
             emissiveLightIntensity: 30,
-            emissiveLightColor: "#32CD32"
+            emissiveLightColor: "#32CD32",
         },
         {
             ball: 7,
             name: "maroon",
             emissiveLightIntensity: 500,
-            emissiveLightColor: "maroon"
+            emissiveLightColor: "maroon",
         },
         {
             ball: 8,
             name: "black",
             emissiveLightIntensity: 100,
-            emissiveLightColor: "#333333"
+            emissiveLightColor: "#333333",
         },
         {
             ball: 9,
             name: "yellow",
             emissiveLightIntensity: 20,
-            emissiveLightColor: "yellow"
+            emissiveLightColor: "yellow",
         },
         {
             ball: 10,
             name: "blue",
             emissiveLightIntensity: 500,
-            emissiveLightColor: "blue"
+            emissiveLightColor: "blue",
         },
         {
             ball: 11,
             name: "red",
             emissiveLightIntensity: 200,
-            emissiveLightColor: "red"
+            emissiveLightColor: "red",
         },
         {
             ball: 12,
             name: "purple",
             emissiveLightIntensity: 1000,
-            emissiveLightColor: "purple"
+            emissiveLightColor: "purple",
         },
         {
             ball: 13,
             name: "orange",
             emissiveLightIntensity: 50,
-            emissiveLightColor: "orange"
+            emissiveLightColor: "orange",
         },
         {
             ball: 14,
             name: "green",
             emissiveLightIntensity: 30,
-            emissiveLightColor: "#32CD32"
+            emissiveLightColor: "#32CD32",
         },
         {
             ball: 15,
             name: "maroon",
             emissiveLightIntensity: 500,
-            emissiveLightColor: "maroon"
-        }
+            emissiveLightColor: "maroon",
+        },
     ];
 
-    const ballObj = ballProperties.find(b => b.ball === ball);
-    return ballObj || { name: "white", emissiveLightIntensity: defaultEmissiveValue, emissiveLightColor: "white" };
+    const ballObj = ballProperties.find((b) => b.ball === ball);
+    return (
+        ballObj || {
+            name: "white",
+            emissiveLightIntensity: defaultEmissiveValue,
+            emissiveLightColor: "white",
+        }
+    );
 }
 
 const ballConfigs = [
@@ -153,11 +158,10 @@ function Ball({
     angularVelocity,
     rotation,
     ball,
-    // setBallPositions 
+    // setBallPositions
 }) {
-
-    const theme = useEightBallStore(state => state.theme);
-    const setBallPosition = useEightBallStore(state => state.setBallPosition);
+    const theme = useEightBallStore((state) => state.theme);
+    const setBallPosition = useEightBallStore((state) => state.setBallPosition);
     const apiRef = useRef(null);
 
     const [isVisible, setIsVisible] = useState(true); // Track visibility
@@ -177,7 +181,7 @@ function Ball({
                 apiRef.current?.position.set(0, -100, 0);
                 setIsVisible(false);
             }
-        }
+        },
     }));
 
     useEffect(() => {
@@ -199,7 +203,6 @@ function Ball({
             if (v?.[1] < -10) {
                 api.sleep();
             }
-
         });
         const unsubRot = api.rotation.subscribe((v) => {
             // console.log("velocity.current", velocity.current)
@@ -223,7 +226,13 @@ function Ball({
 
     // Update ball position and velocity in store as it moves
     useFrame(() => {
-        setBallPosition(ball, pos.current, vel.current, rot.current, angVel.current);
+        setBallPosition(
+            ball,
+            pos.current,
+            vel.current,
+            rot.current,
+            angVel.current,
+        );
     });
 
     const color = getBallDetails(ball)?.name;
@@ -231,17 +240,24 @@ function Ball({
 
     useEffect(() => {
         // console.log("Passed velocity", velocity)
-        if (!velocity) return
+        if (!velocity) return;
         api.velocity.set(velocity?.[0], velocity?.[1], velocity?.[2]);
         api.rotation.set(rotation?.[0], rotation?.[1], rotation?.[2]);
-        api.angularVelocity.set(angularVelocity?.[0], angularVelocity?.[1], angularVelocity?.[2]);
+        api.angularVelocity.set(
+            angularVelocity?.[0],
+            angularVelocity?.[1],
+            angularVelocity?.[2],
+        );
     }, [angularVelocity, api, rotation, velocity]);
 
     if (!isVisible) return null;
 
     return (
         <group>
-            <mesh castShadow ref={ref}>
+            <mesh
+                castShadow
+                ref={ref}
+            >
                 <sphereGeometry args={[1, 10, 10]} />
 
                 {/* <meshStandardMaterial color={color} /> */}
@@ -261,28 +277,26 @@ function Ball({
                     />
                 )}
 
-                {ball > 8 && <group>
-                    <mesh
-                        castShadow
-                        rotation={[-Math.PI / 2, 0, 0]}
-                        position={[0, 0, -0.2]}
-                    >
-                        <cylinderGeometry
-                            args={[1.00, 1.00, 0.2]}
-                        />
-                        <meshStandardMaterial color="white" />
-                    </mesh>
-                    <mesh
-                        castShadow
-                        rotation={[-Math.PI / 2, 0, 0]}
-                        position={[0, 0, 0.2]}
-                    >
-                        <cylinderGeometry
-                            args={[1.00, 1.00, 0.2]}
-                        />
-                        <meshStandardMaterial color="white" />
-                    </mesh>
-                </group>}
+                {ball > 8 && (
+                    <group>
+                        <mesh
+                            castShadow
+                            rotation={[-Math.PI / 2, 0, 0]}
+                            position={[0, 0, -0.2]}
+                        >
+                            <cylinderGeometry args={[1.0, 1.0, 0.2]} />
+                            <meshStandardMaterial color="white" />
+                        </mesh>
+                        <mesh
+                            castShadow
+                            rotation={[-Math.PI / 2, 0, 0]}
+                            position={[0, 0, 0.2]}
+                        >
+                            <cylinderGeometry args={[1.0, 1.0, 0.2]} />
+                            <meshStandardMaterial color="white" />
+                        </mesh>
+                    </group>
+                )}
             </mesh>
         </group>
     );

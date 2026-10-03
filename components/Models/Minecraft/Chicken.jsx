@@ -8,16 +8,26 @@ Source: https://sketchfab.com/3d-models/chicken-from-minecraft-8e9159f320624de19
 Title: Chicken from Minecraft
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelMinecraftChicken(props) {
-  const { nodes, materials } = useGLTF('models/Minecraft/chicken-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_4.geometry} material={materials['Scene_-_Root']} position={[-0.107, -0.214, 0.214]} scale={[0.053, 0.214, 0.053]} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Minecraft/chicken-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.Object_4.geometry}
+                material={materials["Scene_-_Root"]}
+                position={[-0.107, -0.214, 0.214]}
+                scale={[0.053, 0.214, 0.053]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/chicken-transformed.glb')
+useGLTF.preload("models/Minecraft/chicken-transformed.glb");

@@ -5,7 +5,13 @@ import Menu from "@mui/material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArticlesButton from "./Button";
 
-export default function ButtonDropdown({ id, label, Icon, children, disabled = false }) {
+export default function ButtonDropdown({
+    id,
+    label,
+    Icon,
+    children,
+    disabled = false,
+}) {
     const [anchorElement, setAnchorElement] = useState(null);
     const isOpen = Boolean(anchorElement);
     const closeMenu = () => setAnchorElement(null);
@@ -23,7 +29,10 @@ export default function ButtonDropdown({ id, label, Icon, children, disabled = f
                 onClick={(event) => setAnchorElement(event.currentTarget)}
                 size="small"
                 startIcon={<Icon fontSize="small" />}
-                sx={{ justifyContent: "flex-start", "& .MuiButton-endIcon": { marginLeft: "auto" } }}
+                sx={{
+                    justifyContent: "flex-start",
+                    "& .MuiButton-endIcon": { marginLeft: "auto" },
+                }}
                 variant="contained"
             >
                 {label}
@@ -36,7 +45,10 @@ export default function ButtonDropdown({ id, label, Icon, children, disabled = f
                 onClose={closeMenu}
                 open={isOpen}
                 slotProps={{
-                    list: { "aria-labelledby": `${id}-button`, style: { margin: 0, padding: 0 } },
+                    list: {
+                        "aria-labelledby": `${id}-button`,
+                        style: { margin: 0, padding: 0 },
+                    },
                     paper: { sx: { maxHeight: 600, margin: 0, width: 200 } },
                 }}
                 transformOrigin={{ horizontal: "left", vertical: "top" }}
@@ -46,4 +58,3 @@ export default function ButtonDropdown({ id, label, Icon, children, disabled = f
         </>
     );
 }
-

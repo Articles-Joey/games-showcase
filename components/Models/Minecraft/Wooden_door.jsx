@@ -8,17 +8,30 @@ Source: https://sketchfab.com/3d-models/minecraft-wooden-door-b5e5426ac8554d6690
 Title: Minecraft Wooden Door
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelMinecraftWoodenDoor(props) {
-  const { nodes, materials } = useGLTF('models/Minecraft/wooden_door-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <lineSegments geometry={nodes.Object_2.geometry} material={materials['Material.003']} rotation={[-Math.PI / 2, 0, 0]} />
-      <mesh geometry={nodes.Object_3.geometry} material={materials['Material.003']} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Minecraft/wooden_door-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <lineSegments
+                geometry={nodes.Object_2.geometry}
+                material={materials["Material.003"]}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+            <mesh
+                geometry={nodes.Object_3.geometry}
+                material={materials["Material.003"]}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/wooden_door-transformed.glb')
+useGLTF.preload("models/Minecraft/wooden_door-transformed.glb");

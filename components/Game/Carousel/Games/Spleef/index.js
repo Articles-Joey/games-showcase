@@ -11,11 +11,11 @@ function SpleefTile({ position, color }) {
         if (!mesh.current) return;
 
         if (visible) {
-             // Randomly disappear
-             if (Math.random() < 0.002) {
-                 setVisible(false);
-                 cooldown.current = 2 + Math.random() * 3;
-             }
+            // Randomly disappear
+            if (Math.random() < 0.002) {
+                setVisible(false);
+                cooldown.current = 2 + Math.random() * 3;
+            }
         } else {
             cooldown.current -= delta;
             if (cooldown.current <= 0) {
@@ -25,12 +25,24 @@ function SpleefTile({ position, color }) {
 
         const targetScale = visible ? 1 : 0;
         // Animate scale
-        mesh.current.scale.x = MathUtils.lerp(mesh.current.scale.x, targetScale, delta * 5);
-        mesh.current.scale.z = MathUtils.lerp(mesh.current.scale.z, targetScale, delta * 5);
+        mesh.current.scale.x = MathUtils.lerp(
+            mesh.current.scale.x,
+            targetScale,
+            delta * 5,
+        );
+        mesh.current.scale.z = MathUtils.lerp(
+            mesh.current.scale.z,
+            targetScale,
+            delta * 5,
+        );
     });
 
     return (
-        <mesh ref={mesh} position={position} rotation={[0, Math.PI / 6, 0]}>
+        <mesh
+            ref={mesh}
+            position={position}
+            rotation={[0, Math.PI / 6, 0]}
+        >
             <cylinderGeometry args={[0.45, 0.45, 0.2, 6]} />
             <meshStandardMaterial color={color} />
         </mesh>
@@ -64,7 +76,11 @@ function SpleefLayer({ y, color }) {
     return (
         <group>
             {tiles.map((tile, i) => (
-                <SpleefTile key={i} position={tile.position} color={color} />
+                <SpleefTile
+                    key={i}
+                    position={tile.position}
+                    color={color}
+                />
             ))}
         </group>
     );
@@ -73,10 +89,22 @@ function SpleefLayer({ y, color }) {
 export default function SpleefScene() {
     return (
         <group position={[4, 3, 0]}>
-            <SpleefLayer y={0} color="#ff6b6b" />
-            <SpleefLayer y={-0.5} color="#4ecdc4" />
-            <SpleefLayer y={-1.0} color="#ffe66d" />
-            <SpleefLayer y={-1.5} color="#1a535c" />
+            <SpleefLayer
+                y={0}
+                color="#ff6b6b"
+            />
+            <SpleefLayer
+                y={-0.5}
+                color="#4ecdc4"
+            />
+            <SpleefLayer
+                y={-1.0}
+                color="#ffe66d"
+            />
+            <SpleefLayer
+                y={-1.5}
+                color="#1a535c"
+            />
         </group>
     );
 }

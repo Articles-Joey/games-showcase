@@ -1,33 +1,33 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    transpilePackages: ['@articles-media/articles-dev-box'],
+    transpilePackages: ["@articles-media/articles-dev-box"],
     reactCompiler: true,
     images: {
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: 'cdn.articles.media',
-                port: '',
+                protocol: "https",
+                hostname: "cdn.articles.media",
+                port: "",
                 // pathname: '',
             },
             {
-                protocol: 'https',
-                hostname: 'articles-website.s3.amazonaws.com',
-                port: '',
+                protocol: "https",
+                hostname: "articles-website.s3.amazonaws.com",
+                port: "",
                 // pathname: '',
             },
         ],
     },
     async headers() {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === "development") {
             return [];
         }
         return [
             {
-                source: '/(.*)',
+                source: "/(.*)",
                 headers: [
                     {
-                        key: 'Content-Security-Policy',
+                        key: "Content-Security-Policy",
                         value: "frame-ancestors 'self' https://articles.media",
                     },
                 ],

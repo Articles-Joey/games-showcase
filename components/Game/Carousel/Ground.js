@@ -3,7 +3,7 @@ import { memo, useMemo } from "react";
 import { NearestFilter, RepeatWrapping, TextureLoader } from "three";
 
 function GrassPlane(props) {
-    const texture = useLoader(TextureLoader, `img/grass.webp`)
+    const texture = useLoader(TextureLoader, `img/grass.webp`);
 
     const width = 10; // Set the width of the plane
     const height = 80; // Set the height of the plane
@@ -22,20 +22,26 @@ function GrassPlane(props) {
     const configuredTexture = useMemo(() => {
         const nextTexture = texture.clone();
         nextTexture.magFilter = NearestFilter;
-        nextTexture.wrapS = RepeatWrapping
-        nextTexture.wrapT = RepeatWrapping
-	    nextTexture.repeat.set(1, 10)
+        nextTexture.wrapS = RepeatWrapping;
+        nextTexture.wrapT = RepeatWrapping;
+        nextTexture.repeat.set(1, 10);
         return nextTexture;
-    }, [texture])
+    }, [texture]);
 
     return (
         <group {...props}>
             <mesh position={[0, 0, 0]}>
-                <planeGeometry attach="geometry" args={[width, height]} />
-                <meshStandardMaterial attach="material" map={configuredTexture} />
+                <planeGeometry
+                    attach="geometry"
+                    args={[width, height]}
+                />
+                <meshStandardMaterial
+                    attach="material"
+                    map={configuredTexture}
+                />
             </mesh>
         </group>
     );
-};
+}
 
-export default memo(GrassPlane)
+export default memo(GrassPlane);

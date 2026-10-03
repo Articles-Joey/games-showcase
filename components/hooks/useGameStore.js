@@ -1,15 +1,15 @@
 // README - Zustand store to manage game state and peer-to-peer connections using PeerJS. Also handles the game loop for peer games.
 
-"use client"
-import { create } from 'zustand';
-import Peer from 'peerjs';
-import { useStore } from './useStore';
+"use client";
+import { create } from "zustand";
+import Peer from "peerjs";
+import { useStore } from "./useStore";
 // import useChatStore from './useChatStore';
 
 function getFirstAvailableRow(players) {
     if (!players || players.length === 0) return 1;
 
-    const occupiedRows = new Set(players.map(p => p.row));
+    const occupiedRows = new Set(players.map((p) => p.row));
     let row = 1;
     while (occupiedRows.has(row)) {
         row++;
@@ -19,12 +19,11 @@ function getFirstAvailableRow(players) {
 
 // Shared function to minimize code
 function createPlayer(id, players, bot, nickname, character) {
-
     let firstAvailableRow = getFirstAvailableRow(players);
 
     let duplicateStructure = {
         position: 0,
-        nickname: nickname || 'Guest',
+        nickname: nickname || "Guest",
         character: character || false,
         x: 0,
         row: firstAvailableRow,
@@ -32,33 +31,28 @@ function createPlayer(id, players, bot, nickname, character) {
         model: "Duck",
         color: "Yellow",
         bot: bot || false,
-    }
+    };
 
     return {
         peer: id,
         ...duplicateStructure,
         race_game: {
-            ...duplicateStructure
-        }
-    }
-
+            ...duplicateStructure,
+        },
+    };
 }
 
 function setPlayerMove(peerId, spaces) {
-
     const urlParams = new URLSearchParams(window.location.search);
-    const server_type = urlParams.get('server_type');
+    const server_type = urlParams.get("server_type");
 
-    if (server_type == 'online-peer') {
-
+    if (server_type == "online-peer") {
     }
 
-    if (server_type == 'room-play') {
-
+    if (server_type == "room-play") {
     }
 
-    if (server_type == 'online-socket') {
-
+    if (server_type == "online-socket") {
     }
 
     return;
@@ -67,7 +61,7 @@ function setPlayerMove(peerId, spaces) {
 
     const tempPlayers = get().gameState.players;
 
-    const newPlayers = tempPlayers.map(player => {
+    const newPlayers = tempPlayers.map((player) => {
         if (player.peer === peerId) {
             return {
                 ...player,
@@ -80,10 +74,9 @@ function setPlayerMove(peerId, spaces) {
     set({
         gameState: {
             ...get().gameState,
-            players: newPlayers
-        }
+            players: newPlayers,
+        },
     });
-
 }
 
 const initialGameStoreState = {
@@ -92,14 +85,14 @@ const initialGameStoreState = {
     // If user is one away from winning, they must make exact moves to finish, so four would not win
     strictMovesToFinish: false,
     time: 0,
-    status: 'In Lobby', // 'In Lobby', 'In Progress', 'Finished'
+    status: "In Lobby", // 'In Lobby', 'In Progress', 'Finished'
     players: [],
     movesShown: 0,
     boardLength: 15,
     mysterySpots: [
         // Generate on game start
     ],
-}
+};
 
 const useGameStore = create((set, get) => ({
     peer: null,
@@ -109,41 +102,32 @@ const useGameStore = create((set, get) => ({
     connections: [],
     timerInterval: null,
     gameState: {
-        ...initialGameStoreState
+        ...initialGameStoreState,
     },
     setGameState: (newState) => {
-
         set({
-            gameState: newState
+            gameState: newState,
         });
 
         get().handleGameTimer();
-
     },
     resetGameState: () => {
         set({
             gameState: {
-                ...initialGameStoreState
-            }
+                ...initialGameStoreState,
+            },
         });
     },
     createBot: () => {
         const botId = `Bot_${Math.floor(Math.random() * 10000)}`;
 
         let newPlayers = get().gameState.players;
-        newPlayers.push(
-            createPlayer(
-                botId,
-                newPlayers,
-                true,
-                botId
-            ),
-        );
+        newPlayers.push(createPlayer(botId, newPlayers, true, botId));
         set({
             gameState: {
                 ...get().gameState,
-                players: newPlayers
-            }
+                players: newPlayers,
+            },
         });
     },
     kickedIds: [],
@@ -151,29 +135,27 @@ const useGameStore = create((set, get) => ({
 
     startPeer: (isHost = false) => {
         // Ensure we are in the browser
-        if (typeof window === 'undefined') return;
+        if (typeof window === "undefined") return;
 
         const oldPeer = get().peer;
         if (oldPeer) oldPeer.destroy();
 
         const peer = new Peer();
 
-        peer.on('open', (id) => {
-
-            console.log('Peer opened with ID:', id);
+        peer.on("open", (id) => {
+            console.log("Peer opened with ID:", id);
 
             const urlParams = new URLSearchParams(window.location.search);
-            const server_type = urlParams.get('server_type')
-            console.log('server_type:', server_type);
+            const server_type = urlParams.get("server_type");
+            console.log("server_type:", server_type);
 
             set({ peer, myId: id, isHost });
 
-            if (server_type == 'online-peer') {
-
-                let newPlayers = get().gameState.players
+            if (server_type == "online-peer") {
+                let newPlayers = get().gameState.players;
 
                 const nickname = useStore.getState().nickname || "Guest";
-                const character = useStore.getState().character
+                const character = useStore.getState().character;
 
                 newPlayers.push(
                     createPlayer(
@@ -181,41 +163,40 @@ const useGameStore = create((set, get) => ({
                         newPlayers,
                         false,
                         nickname,
-                        character || false
+                        character || false,
                     ),
                 );
 
-                console.log('New players with injected host for online-peer game!:', newPlayers);
+                console.log(
+                    "New players with injected host for online-peer game!:",
+                    newPlayers,
+                );
 
                 set({
                     gameState: {
                         ...get().gameState,
-                        players: newPlayers
-                    }
+                        players: newPlayers,
+                    },
                 });
-
             }
-
         });
 
-        peer.on('connection', (conn) => {
-
-            console.log('Incoming connection from:', conn.peer);
+        peer.on("connection", (conn) => {
+            console.log("Incoming connection from:", conn.peer);
 
             if (get().kickedIds.includes(conn.peer)) {
-                console.log('Connection rejected (kicked):', conn.peer);
-                conn.on('open', () => {
-                    conn.send({ event: 'Kicked' });
+                console.log("Connection rejected (kicked):", conn.peer);
+                conn.on("open", () => {
+                    conn.send({ event: "Kicked" });
                     setTimeout(() => conn.close(), 500);
                 });
                 return;
             }
 
-            conn.on('open', () => {
+            conn.on("open", () => {
+                console.log("Connection opened:", conn.peer);
 
-                console.log('Connection opened:', conn.peer);
-
-                let newPlayers = get().gameState.players
+                let newPlayers = get().gameState.players;
 
                 // let firstAvailableRow = getFirstAvailableRow(newPlayers);
 
@@ -237,62 +218,48 @@ const useGameStore = create((set, get) => ({
                 //     }
                 // });
 
-                newPlayers.push(
-                    createPlayer(
-                        conn.peer,
-                        newPlayers
-                    ),
-                );
+                newPlayers.push(createPlayer(conn.peer, newPlayers));
 
                 const arcadeMode = useStore.getState().arcadeMode;
 
-                if (
-                    newPlayers?.length >= 2
-                    &&
-                    arcadeMode
-                ) {
+                if (newPlayers?.length >= 2 && arcadeMode) {
                     console.log("TODO - Arcade mode logic");
                     // Let any user start game in arcade mode or auto start when enough players?
                 }
 
                 set((state) => ({
-
                     connections: [...state.connections, conn],
 
                     gameState: {
                         ...get().gameState,
-                        players: newPlayers
-                    }
-
+                        players: newPlayers,
+                    },
                 }));
 
                 const { broadcastGameState } = get();
                 broadcastGameState();
-
             });
 
-            conn.on('data', (data) => {
-
-                console.log('Received data from client:', data);
+            conn.on("data", (data) => {
+                console.log("Received data from client:", data);
                 // Handle game state updates here if needed
 
-                if (data?.event === 'PlayerMove') {
-
+                if (data?.event === "PlayerMove") {
                     console.log("PlayerMove data received", conn.peer, data);
 
                     // const newCharacterState = data.characterState;
 
                     let tempPlayers = get().gameState.players;
 
-                    const newPlayers = tempPlayers.map(player => {
+                    const newPlayers = tempPlayers.map((player) => {
                         if (player.peer === conn.peer) {
                             return {
                                 ...player,
                                 spaces: data.spaces,
                                 race_game: {
                                     ...player.race_game,
-                                    spaces: data.spaces
-                                }
+                                    spaces: data.spaces,
+                                },
                             };
                         }
                         return player;
@@ -301,22 +268,24 @@ const useGameStore = create((set, get) => ({
                     set({
                         gameState: {
                             ...get().gameState,
-                            players: newPlayers
-                        }
+                            players: newPlayers,
+                        },
                     });
-
                 }
 
                 // Does nickname and character state update
-                if (data?.event === 'PlayerNickname') {
-
-                    console.log("PlayerNickname data received", conn.peer, data);
+                if (data?.event === "PlayerNickname") {
+                    console.log(
+                        "PlayerNickname data received",
+                        conn.peer,
+                        data,
+                    );
 
                     // const newCharacterState = data.characterState;
 
                     let tempPlayers = get().gameState.players;
 
-                    const newPlayers = tempPlayers.map(player => {
+                    const newPlayers = tempPlayers.map((player) => {
                         if (player.peer === conn.peer) {
                             return {
                                 ...player,
@@ -325,8 +294,8 @@ const useGameStore = create((set, get) => ({
                                 race_game: {
                                     ...player.race_game,
                                     nickname: data.nickname,
-                                    character: data.character
-                                }
+                                    character: data.character,
+                                },
                             };
                         }
                         return player;
@@ -335,23 +304,28 @@ const useGameStore = create((set, get) => ({
                     set({
                         gameState: {
                             ...get().gameState,
-                            players: newPlayers
-                        }
+                            players: newPlayers,
+                        },
                     });
 
                     const { broadcastGameState } = get();
                     broadcastGameState();
-
                 }
 
-                if (data?.event === 'ChatMessage') {
+                if (data?.event === "ChatMessage") {
+                    let players = get().gameState.players;
+                    let playerNicknameLookup = players.find(
+                        (p) => p.peer === conn.peer,
+                    );
 
-                    let players = get().gameState.players
-                    let playerNicknameLookup = players.find(p => p.peer === conn.peer);
+                    console.log(
+                        "ChatMessage data received",
+                        conn.peer,
+                        data,
+                        playerNicknameLookup,
+                    );
 
-                    console.log("ChatMessage data received", conn.peer, data, playerNicknameLookup);
-
-                    return
+                    return;
 
                     const simpleCensor = (text) => {
                         // TODO - Use package for better censorship
@@ -363,7 +337,7 @@ const useGameStore = create((set, get) => ({
                         //     }
                         // }
                         return text;
-                    }
+                    };
 
                     let finalMessage = simpleCensor(data.message);
 
@@ -379,35 +353,34 @@ const useGameStore = create((set, get) => ({
                     broadcastPeerChatMessage(
                         conn.peer,
                         finalMessage,
-                        playerNicknameLookup?.nickname || null
+                        playerNicknameLookup?.nickname || null,
                     );
-
                 }
-
             });
 
-            conn.on('close', () => {
-
-                console.log('Connection closed:', conn.peer);
+            conn.on("close", () => {
+                console.log("Connection closed:", conn.peer);
 
                 set((state) => ({
-                    connections: state.connections.filter((c) => c.peer !== conn.peer),
+                    connections: state.connections.filter(
+                        (c) => c.peer !== conn.peer,
+                    ),
                     gameState: {
                         ...state.gameState,
-                        players: state.gameState.players.filter((p) => p.peer !== conn.peer)
-                    }
+                        players: state.gameState.players.filter(
+                            (p) => p.peer !== conn.peer,
+                        ),
+                    },
                 }));
-
             });
 
-            conn.on('error', (err) => {
-                console.error('Connection error:', err);
+            conn.on("error", (err) => {
+                console.error("Connection error:", err);
             });
-
         });
 
-        peer.on('error', (err) => {
-            console.error('Peer error:', err);
+        peer.on("error", (err) => {
+            console.error("Peer error:", err);
         });
     },
 
@@ -415,35 +388,35 @@ const useGameStore = create((set, get) => ({
         set({ isKicked: false });
         const { peer } = get();
         if (!peer) {
-            console.error('Peer not initialized');
+            console.error("Peer not initialized");
             return;
         }
 
-        console.log('Connecting to host:', hostId);
+        console.log("Connecting to host:", hostId);
         const conn = peer.connect(hostId);
 
-        conn.on('open', () => {
-            console.log('Connected to host');
+        conn.on("open", () => {
+            console.log("Connected to host");
             set({ hostConn: conn });
         });
 
-        conn.on('data', (data) => {
-            console.log('Received data from host:', data);
+        conn.on("data", (data) => {
+            console.log("Received data from host:", data);
 
             // Handle game state updates here
 
-            if (data?.event === 'ChatMessage') {
-                console.log('Chat message received:', data);
+            if (data?.event === "ChatMessage") {
+                console.log("Chat message received:", data);
             }
         });
 
-        conn.on('close', () => {
-            console.log('Disconnected from host');
+        conn.on("close", () => {
+            console.log("Disconnected from host");
             set({ hostConn: null });
         });
 
-        conn.on('error', (err) => {
-            console.error('Connection to host error:', err);
+        conn.on("error", (err) => {
+            console.error("Connection to host error:", err);
         });
     },
 
@@ -452,7 +425,7 @@ const useGameStore = create((set, get) => ({
         if (hostConn) {
             hostConn.send(data);
         } else {
-            console.warn('Cannot send: No connection to host');
+            console.warn("Cannot send: No connection to host");
         }
     },
 
@@ -466,24 +439,21 @@ const useGameStore = create((set, get) => ({
     },
 
     removeConnection: (peerId) => {
-
         console.log("Removing connection for peerId:", peerId);
 
         const { connections } = get();
         const conn = connections.find((c) => c.peer === peerId);
         if (conn) {
-            conn.send({ event: 'Kicked' });
+            conn.send({ event: "Kicked" });
             setTimeout(() => conn.close(), 500);
         }
         set((state) => ({ kickedIds: [...state.kickedIds, peerId] }));
 
         const { broadcastGameState } = get();
         broadcastGameState();
-
     },
 
     removeBot: (id) => {
-
         console.log("Removing bot for id:", id);
 
         // const { connections } = get();
@@ -499,44 +469,40 @@ const useGameStore = create((set, get) => ({
         set({
             gameState: {
                 ...get().gameState,
-                players: newPlayers
-            }
+                players: newPlayers,
+            },
         });
 
         const { broadcastGameState } = get();
         broadcastGameState();
-
     },
 
     broadcastGameState: () => {
-
         const { connections, gameState } = get();
 
         connections.forEach((conn) => {
             if (conn.open) {
                 conn.send({
-                    event: 'GameStateUpdate',
-                    gameState
+                    event: "GameStateUpdate",
+                    gameState,
                 });
             }
         });
     },
 
     broadcastPeerChatMessage: (id, message, nickname) => {
-
         const { connections } = get();
 
         connections.forEach((conn) => {
             if (conn.open) {
                 conn.send({
-                    event: 'ChatMessage',
+                    event: "ChatMessage",
                     id,
                     message,
-                    nickname
+                    nickname,
                 });
             }
         });
-
     },
 
     disconnect: () => {
@@ -556,7 +522,7 @@ const useGameStore = create((set, get) => ({
             kickedIds: [],
             gameState: {
                 ...get().gameState,
-                status: 'In Lobby'
+                status: "In Lobby",
             },
         });
     },
@@ -570,27 +536,24 @@ const useGameStore = create((set, get) => ({
         const interval = setInterval(() => {
             const { gameState, broadcastGameState } = get();
 
-            if (gameState.status !== 'In Progress') {
+            if (gameState.status !== "In Progress") {
                 clearInterval(get().timerInterval);
                 set({ timerInterval: null });
                 return;
             }
 
             if (gameState.movesShown > 0) {
-
                 const newMovesShown = gameState.movesShown - 1;
 
                 if (newMovesShown === 0) {
-
                     const currentPlayers = get().gameState.players;
 
                     const updatedPlayers = currentPlayers.map((player) => {
-
                         let newPlayer = { ...player };
                         let newPlayerRaceGame = { ...player?.race_game };
 
                         if (newPlayer.canMove) {
-                            let tempNewPlayerX = (newPlayer.spaces)
+                            let tempNewPlayerX = newPlayer.spaces;
                             newPlayer.x += tempNewPlayerX;
                             newPlayerRaceGame.x += tempNewPlayerX;
                         }
@@ -604,23 +567,25 @@ const useGameStore = create((set, get) => ({
 
                     // Check for mystery spots
                     let activeMysterySpot = null;
-                    let updatedMysterySpots = [...(get().gameState.mysterySpots || [])];
+                    let updatedMysterySpots = [
+                        ...(get().gameState.mysterySpots || []),
+                    ];
 
                     for (const player of updatedPlayers) {
-
-                        const spotIndex = updatedMysterySpots.findIndex(s => s.x === player.x && s.row === player.row);
+                        const spotIndex = updatedMysterySpots.findIndex(
+                            (s) => s.x === player.x && s.row === player.row,
+                        );
 
                         if (spotIndex !== -1) {
                             const spot = updatedMysterySpots[spotIndex];
                             activeMysterySpot = {
                                 mysterySpot: spot,
                                 player: player,
-                                timer: 5
+                                timer: 5,
                             };
                             updatedMysterySpots.splice(spotIndex, 1);
                             break;
                         }
-
                     }
 
                     // TODO - If two people win at same time it just picks first one in list, fix that
@@ -642,21 +607,20 @@ const useGameStore = create((set, get) => ({
                             movesShown: 0,
                             time: 10,
                             winner: winner || state.gameState.winner,
-                            status: winner ? 'Finished' : state.gameState.status,
+                            status: winner
+                                ? "Finished"
+                                : state.gameState.status,
                             activeMysterySpot: activeMysterySpot || null,
-                            mysterySpots: updatedMysterySpots
-                        }
+                            mysterySpots: updatedMysterySpots,
+                        },
                     }));
-
                 } else {
-
                     set((state) => ({
                         gameState: {
                             ...state.gameState,
-                            movesShown: newMovesShown
-                        }
+                            movesShown: newMovesShown,
+                        },
                     }));
-
                 }
 
                 broadcastGameState();
@@ -667,38 +631,49 @@ const useGameStore = create((set, get) => ({
                 const newTimer = gameState.activeMysterySpot.timer - 1;
 
                 if (newTimer <= 0) {
+                    console.log(
+                        "gameState.activeMysterySpot.target",
+                        gameState.activeMysterySpot.target,
+                    );
 
-                    console.log("gameState.activeMysterySpot.target", gameState.activeMysterySpot.target)
-
-                    if (gameState.activeMysterySpot.target === 'Player') {
-                        console.log("Apply player mystery spot effect of", gameState.activeMysterySpot.spaces)
-                    } else if (gameState.activeMysterySpot.target === 'Others') {
-                        console.log("Apply others mystery spot effect of", gameState.activeMysterySpot.spaces)
+                    if (gameState.activeMysterySpot.target === "Player") {
+                        console.log(
+                            "Apply player mystery spot effect of",
+                            gameState.activeMysterySpot.spaces,
+                        );
+                    } else if (
+                        gameState.activeMysterySpot.target === "Others"
+                    ) {
+                        console.log(
+                            "Apply others mystery spot effect of",
+                            gameState.activeMysterySpot.spaces,
+                        );
                     }
 
                     set((state) => ({
                         gameState: {
                             ...state.gameState,
-                            activeMysterySpot: null
-                        }
+                            activeMysterySpot: null,
+                        },
                     }));
-
                 } else {
                     set((state) => ({
                         gameState: {
                             ...state.gameState,
                             activeMysterySpot: {
                                 ...state.gameState.activeMysterySpot,
-                                timer: newTimer
-                            }
-                        }
+                                timer: newTimer,
+                            },
+                        },
                     }));
                 }
                 broadcastGameState();
                 return;
             }
 
-            const allPlayersPicked = gameState.players.length > 0 && gameState.players.every(p => p.bot || p.spaces !== 0);
+            const allPlayersPicked =
+                gameState.players.length > 0 &&
+                gameState.players.every((p) => p.bot || p.spaces !== 0);
 
             let newTime = gameState.time - 1;
 
@@ -720,8 +695,8 @@ const useGameStore = create((set, get) => ({
                             spaces: randomSpaces,
                             race_game: {
                                 ...player.race_game,
-                                spaces: randomSpaces
-                            }
+                                spaces: randomSpaces,
+                            },
                         };
                     }
                     return player;
@@ -731,7 +706,8 @@ const useGameStore = create((set, get) => ({
                 const spacesCounts = {};
                 currentPlayers.forEach((p) => {
                     if (p.spaces > 0) {
-                        spacesCounts[p.spaces] = (spacesCounts[p.spaces] || 0) + 1;
+                        spacesCounts[p.spaces] =
+                            (spacesCounts[p.spaces] || 0) + 1;
                     }
                 });
 
@@ -750,53 +726,54 @@ const useGameStore = create((set, get) => ({
                     gameState: {
                         ...state.gameState,
                         players: playersWithStatus,
-                        movesShown: 3
-                    }
+                        movesShown: 3,
+                    },
                 }));
-
             } else {
                 set((state) => ({
                     gameState: {
                         ...state.gameState,
-                        time: newTime
-                    }
+                        time: newTime,
+                    },
                 }));
             }
 
             broadcastGameState();
-
         }, 1000);
 
         set({ timerInterval: interval });
     },
 
     startGame: () => {
-
         const currentPlayers = get().gameState.players;
         const currentBoardLength = get().gameState.boardLength;
 
-        const mysterySpots = Array.from({ length: currentPlayers.length }, () => ({
-            x: Math.floor(Math.random() * currentBoardLength) + 1,
-            row: Math.floor(Math.random() * currentPlayers.length) + 1,
+        const mysterySpots = Array.from(
+            { length: currentPlayers.length },
+            () => ({
+                x: Math.floor(Math.random() * currentBoardLength) + 1,
+                row: Math.floor(Math.random() * currentPlayers.length) + 1,
 
-            // -4 to 4, excluding 0
-            target: Math.random() < 0.5 ? 'Player' : 'Others',
-            spaces: (Math.floor(Math.random() * 4) + 1) * (Math.random() < 0.5 ? -1 : 1),
-        }));
+                // -4 to 4, excluding 0
+                target: Math.random() < 0.5 ? "Player" : "Others",
+                spaces:
+                    (Math.floor(Math.random() * 4) + 1) *
+                    (Math.random() < 0.5 ? -1 : 1),
+            }),
+        );
 
         console.log("Starting game:", currentPlayers, mysterySpots);
 
         set({
             gameState: {
                 ...get().gameState,
-                status: 'In Progress',
+                status: "In Progress",
                 time: 10,
                 mysterySpots,
-            }
+            },
         });
 
         get().handleGameTimer();
-
     },
 
     toggleRoomPlayClientRender: () => {
@@ -806,11 +783,10 @@ const useGameStore = create((set, get) => ({
             gameState: {
                 ...state.gameState,
                 roomPlayClientRender: !state.gameState.roomPlayClientRender,
-            }
+            },
         }));
 
         broadcastGameState();
-
     },
 
     setBoardLength: (size) => {
@@ -820,11 +796,10 @@ const useGameStore = create((set, get) => ({
             gameState: {
                 ...state.gameState,
                 boardLength: size,
-            }
+            },
         }));
 
         broadcastGameState();
-
     },
 
     restartGame: () => {
@@ -832,32 +807,31 @@ const useGameStore = create((set, get) => ({
         if (timerInterval) clearInterval(timerInterval);
 
         const currentPlayers = get().gameState.players;
-        const resetPlayers = currentPlayers.map(player => ({
+        const resetPlayers = currentPlayers.map((player) => ({
             ...player,
             x: 0,
             spaces: 0,
             race_game: {
                 ...player.race_game,
                 x: 0,
-                spaces: 0
-            }
+                spaces: 0,
+            },
         }));
 
         set((state) => ({
             timerInterval: null,
             gameState: {
                 ...state.gameState,
-                status: 'In Lobby',
+                status: "In Lobby",
                 time: 0,
                 movesShown: 0,
                 winner: null,
-                players: resetPlayers
-            }
+                players: resetPlayers,
+            },
         }));
 
         broadcastGameState();
-    }
-
+    },
 }));
 
 export default useGameStore;

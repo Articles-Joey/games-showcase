@@ -9,16 +9,24 @@ import LayoutClient from "./layout-client";
 
 import "@articles-media/articles-gamepad-helper/dist/articles-gamepad-helper.css";
 
-const tiny5 = Tiny5({ subsets: ["latin"], variable: "--font-tiny5", weight: "400" });
+const tiny5 = Tiny5({
+    subsets: ["latin"],
+    variable: "--font-tiny5",
+    weight: "400",
+});
 
 export const metadata = {
     title: "Games Showcase",
-    description: "A 3D collection of games I developed, this serves as a portfolio/another 3D example project/game launcher.",
+    description:
+        "A 3D collection of games I developed, this serves as a portfolio/another 3D example project/game launcher.",
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en" className={tiny5.variable}>
+        <html
+            lang="en"
+            className={tiny5.variable}
+        >
             <body id="carousel-game-page">
                 <GoogleAnalytics gaId="G-BSWV4HR4VG" />
                 <AppRouterCacheProvider options={{ enableCssLayer: true }}>
@@ -35,4 +43,3 @@ export default function RootLayout({ children }) {
         </html>
     );
 }
-

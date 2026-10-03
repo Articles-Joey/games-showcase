@@ -1,55 +1,55 @@
 {
-  "name": "games-showcase",
-  "description": "Half portfolio and half game launcher. Features a collection of web games built by members of the Articles Media community. Also serves as a game launcher for local games like Steam and other platforms.",
-  "author": {
-    "name": "ArticlesJoey"
-  },
-  "homepage": "https://games.articles.media",
-  "version": "1.0.1",
-  "private": false,
-  "scripts": {
-    "dev": "next dev -p 3048",
-    "build": "next build",
-    "start": "next start -p 3048",
-    "lint": "eslint",
-    "format": "prettier . --write"
-  },
-  "dependencies": {
-    "@articles-media/articles-dev-box": "2.0.0",
-    "@articles-media/articles-gamepad-helper": "^0.0.13",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^9.4.0",
-    "@mui/material": "^9.4.0",
-    "@mui/material-nextjs": "^9.4.0",
-    "@next/third-parties": "^16.3.8",
-    "@react-three/cannon": "^6.6.0",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.8.1",
-    "classnames": "^2.5.1",
-    "date-fns": "^4.4.0",
-    "next": "^16.3.8",
-    "peerjs": "^1.5.5",
-    "qrcode.react": "^4.2.0",
-    "react": "^19.3.0",
-    "react-color": "^2.19.3",
-    "react-countdown": "^2.3.6",
-    "react-dom": "^19.3.0",
-    "react-hotkeys-hook": "^5.1.0",
-    "socket.io-client": "^4.8.1",
-    "swr": "^2.5.1",
-    "three": "^0.186.1",
-    "three-stdlib": "^2.36.1",
-    "zustand": "^5.0.15",
-    "@emotion/cache": "^11.14.0"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "^16.3.8",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.9.6"
-  },
-  "packageManager": "pnpm@12.0.0"
+    "name": "games-showcase",
+    "description": "Half portfolio and half game launcher. Features a collection of web games built by members of the Articles Media community. Also serves as a game launcher for local games like Steam and other platforms.",
+    "author": {
+        "name": "ArticlesJoey"
+    },
+    "homepage": "https://games.articles.media",
+    "version": "1.0.1",
+    "private": false,
+    "scripts": {
+        "dev": "next dev -p 3048",
+        "build": "next build",
+        "start": "next start -p 3048",
+        "lint": "eslint",
+        "format": "prettier . --write"
+    },
+    "dependencies": {
+        "@articles-media/articles-dev-box": "2.0.0",
+        "@articles-media/articles-gamepad-helper": "^0.0.13",
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.1",
+        "@mui/icons-material": "^9.4.0",
+        "@mui/material": "^9.4.0",
+        "@mui/material-nextjs": "^9.4.0",
+        "@next/third-parties": "^16.3.8",
+        "@react-three/cannon": "^6.6.0",
+        "@react-three/drei": "^10.7.7",
+        "@react-three/fiber": "^9.8.1",
+        "classnames": "^2.5.1",
+        "date-fns": "^4.4.0",
+        "next": "^16.3.8",
+        "peerjs": "^1.5.5",
+        "qrcode.react": "^4.2.0",
+        "react": "^19.3.0",
+        "react-color": "^2.19.3",
+        "react-countdown": "^2.3.6",
+        "react-dom": "^19.3.0",
+        "react-hotkeys-hook": "^5.1.0",
+        "socket.io-client": "^4.8.1",
+        "swr": "^2.5.1",
+        "three": "^0.186.1",
+        "three-stdlib": "^2.36.1",
+        "zustand": "^5.0.15",
+        "@emotion/cache": "^11.14.0"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "babel-plugin-react-compiler": "^1.0.0",
+        "eslint": "^9",
+        "eslint-config-next": "^16.3.8",
+        "eslint-config-prettier": "^10.1.8",
+        "prettier": "^3.9.6"
+    },
+    "packageManager": "pnpm@12.0.0"
 }

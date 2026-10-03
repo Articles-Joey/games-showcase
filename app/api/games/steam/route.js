@@ -1,30 +1,36 @@
+import { NextResponse } from "next/server";
 
-import { NextResponse } from 'next/server';
-
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 // 1. Common default path (You should ideally check Registry for actual install path)
 // const steamPath = 'C:\\Program Files (x86)\\Steam\\steamapps';
-const steamPath = 'D:\\Programs\\Steam\\steamapps';
+const steamPath = "D:\\Programs\\Steam\\steamapps";
 
 function getSteamGames(libraryPath) {
     const files = fs.readdirSync(libraryPath);
     const games = [];
 
-    const libraryCachePath = path.join(path.dirname(libraryPath), 'appcache', 'librarycache');
+    const libraryCachePath = path.join(
+        path.dirname(libraryPath),
+        "appcache",
+        "librarycache",
+    );
     let cacheFiles = [];
     try {
         if (fs.existsSync(libraryCachePath)) {
             cacheFiles = fs.readdirSync(libraryCachePath);
         }
     } catch (err) {
-        console.error('Error reading library cache:', err);
+        console.error("Error reading library cache:", err);
     }
 
-    files.forEach(file => {
-        if (file.startsWith('appmanifest_') && file.endsWith('.acf')) {
-            const content = fs.readFileSync(path.join(libraryPath, file), 'utf8');
+    files.forEach((file) => {
+        if (file.startsWith("appmanifest_") && file.endsWith(".acf")) {
+            const content = fs.readFileSync(
+                path.join(libraryPath, file),
+                "utf8",
+            );
 
             // Simple Regex to grab name and ID without a full VDF parser
             const nameMatch = content.match(/"name"\s+"(.+)"/);
@@ -32,25 +38,34 @@ function getSteamGames(libraryPath) {
 
             if (nameMatch && idMatch) {
                 const appId = idMatch[1];
-                const gameCacheFiles = cacheFiles.filter(f => f.startsWith(`${appId}_`));
+                const gameCacheFiles = cacheFiles.filter((f) =>
+                    f.startsWith(`${appId}_`),
+                );
 
                 let imageBase64 = null;
-                const headerFilename = gameCacheFiles.find(f => f.endsWith('_header.jpg'));
+                const headerFilename = gameCacheFiles.find((f) =>
+                    f.endsWith("_header.jpg"),
+                );
 
                 if (headerFilename) {
-                    const imagePath = path.join(path.dirname(libraryPath), 'appcache', 'librarycache', headerFilename);
+                    const imagePath = path.join(
+                        path.dirname(libraryPath),
+                        "appcache",
+                        "librarycache",
+                        headerFilename,
+                    );
                     try {
                         const imageBuffer = fs.readFileSync(imagePath);
-                        imageBase64 = `data:image/jpeg;base64,${imageBuffer.toString('base64')}`;
+                        imageBase64 = `data:image/jpeg;base64,${imageBuffer.toString("base64")}`;
                     } catch (err) {
-                        console.error('Error reading image:', err);
+                        console.error("Error reading image:", err);
                     }
                 }
 
                 games.push({
                     name: nameMatch[1],
                     id: appId,
-                    platform: 'Steam',
+                    platform: "Steam",
                     cacheFiles: gameCacheFiles,
                     image: imageBase64,
                 });
@@ -61,13 +76,15 @@ function getSteamGames(libraryPath) {
 }
 
 export async function GET(request) {
-
-    if (process.env.NODE_ENV !== 'development') {
-        return NextResponse.json({
-            message: "Only available in development mode."
-        }, {
-            status: 403
-        });
+    if (process.env.NODE_ENV !== "development") {
+        return NextResponse.json(
+            {
+                message: "Only available in development mode.",
+            },
+            {
+                status: 403,
+            },
+        );
     }
 
     const cookies = request.cookies ? Object.fromEntries(request.cookies) : {};

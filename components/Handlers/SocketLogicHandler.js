@@ -1,9 +1,9 @@
-"use client"
-import { useEffect, useRef, useState } from "react"
-import { useSocketStore } from "@/components/hooks/useSocketStore"
-import { useStore } from "@/components/hooks/useStore"
-import { usePathname } from "next/navigation"
-import Box from "@mui/material/Box"
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { useSocketStore } from "@/components/hooks/useSocketStore";
+import { useStore } from "@/components/hooks/useStore";
+import { usePathname } from "next/navigation";
+import Box from "@mui/material/Box";
 
 export default function SocketLogicHandler({
     // pathname,
@@ -19,47 +19,45 @@ export default function SocketLogicHandler({
     gameConfig,
     server,
 }) {
+    const pathname = usePathname();
 
-    const pathname = usePathname()
+    const initialized = useRef(false);
+    const [isVisible, setIsVisible] = useState(true);
 
-    const initialized = useRef(false)
-    const [isVisible, setIsVisible] = useState(true)
+    const socket = useSocketStore((state) => state.socket);
+    const connectSocket = useSocketStore((state) => state.connectSocket);
+    const loginSocket = useSocketStore((state) => state.loginSocket);
+    const connected = useSocketStore((state) => state.connected);
+    const setConnected = useSocketStore((state) => state.setConnected);
+    const authenticated = useSocketStore((state) => state.authenticated);
+    const setAuthenticated = useSocketStore((state) => state.setAuthenticated);
 
-    const socket = useSocketStore((state) => state.socket)
-    const connectSocket = useSocketStore((state) => state.connectSocket)
-    const loginSocket = useSocketStore((state) => state.loginSocket)
-    const connected = useSocketStore((state) => state.connected)
-    const setConnected = useSocketStore((state) => state.setConnected)
-    const authenticated = useSocketStore((state) => state.authenticated)
-    const setAuthenticated = useSocketStore((state) => state.setAuthenticated)
-
-    const setLobbyDetails = useStore(state => state.setLobbyDetails)
+    const setLobbyDetails = useStore((state) => state.setLobbyDetails);
     // const debug = useStore(state => state.debug)
-    const debug = true
-    const nickname = useStore(state => state.nickname)
+    const debug = true;
+    const nickname = useStore((state) => state.nickname);
 
     useEffect(() => {
-
         function debugLog(...args) {
             if (debug) {
-                console.log("[📶SocketLogicHandler]", ...args)
+                console.log("[📶SocketLogicHandler]", ...args);
             }
         }
 
         // Makes sure connect is only called once during reactStrictMode
         if (!initialized.current) {
-            initialized.current = true
-            connectSocket()
+            initialized.current = true;
+            connectSocket();
         }
 
         // if (!socket.connected) return
 
-        socket.on('connect', () => {
+        socket.on("connect", () => {
             debugLog("Connected to server!");
             setConnected(true);
         });
 
-        socket.on('disconnect', () => {
+        socket.on("disconnect", () => {
             debugLog("Disconnected from server!");
             setConnected(false);
             setAuthenticated(false);
@@ -70,23 +68,23 @@ export default function SocketLogicHandler({
         //     window.location.href = data.page
         // });
 
-        socket.on('authenticated', (data) => {
-            debugLog("Socket authenticated with server!")
-            setAuthenticated(true)
+        socket.on("authenticated", (data) => {
+            debugLog("Socket authenticated with server!");
+            setAuthenticated(true);
         });
 
         // console.log(`[📶 Socket] Page change emit`)
         // socket.emit('activePage', pathname);
 
         socket.on(`landing-details`, function (msg) {
-            debugLog(`landing-details`, msg)
+            debugLog(`landing-details`, msg);
             if (landingConfig?.onLandingDetails) {
-                landingConfig.onLandingDetails(msg)
+                landingConfig.onLandingDetails(msg);
             }
 
-            const currentLobbyDetails = useStore.getState().lobbyDetails
+            const currentLobbyDetails = useStore.getState().lobbyDetails;
             if (JSON.stringify(msg) !== JSON.stringify(currentLobbyDetails)) {
-                setLobbyDetails(msg)
+                setLobbyDetails(msg);
             }
         });
 
@@ -108,14 +106,13 @@ export default function SocketLogicHandler({
         // });
 
         return () => {
-            socket.off('connect');
-            socket.off('disconnect');
+            socket.off("connect");
+            socket.off("disconnect");
             // socket.off('force-page');
-            socket.off('authenticated');
+            socket.off("authenticated");
             socket.off(`landing-details`);
             // socket.off(`game-update`);
         };
-
     }, [
         socket,
         connectSocket,
@@ -125,38 +122,41 @@ export default function SocketLogicHandler({
         gameConfig?.onGameUpdate,
         setLobbyDetails,
         landingConfig,
-        debug
+        debug,
     ]);
 
-    const isLandingPage = [
-        "/",
-        "/original",
-        "/carousel",
-        "/wall",
-    ].includes(pathname)
+    const isLandingPage = ["/", "/original", "/carousel", "/wall"].includes(
+        pathname,
+    );
 
     // Landing Room Logic
     useEffect(() => {
-
         if (isLandingPage) {
-
-            console.log(`[📶 Socket] Joining landing room: game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing (pathname: ${pathname})`)
+            console.log(
+                `[📶 Socket] Joining landing room: game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing (pathname: ${pathname})`,
+            );
 
             if (connected) {
-                socket.emit('join-room', `game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing`);
+                socket.emit(
+                    "join-room",
+                    `game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing`,
+                );
             }
 
             return function cleanup() {
-                console.log(`[📶 Socket] Leaving landing room: game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing`)
-                socket.emit('leave-room', `game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing`);
+                console.log(
+                    `[📶 Socket] Leaving landing room: game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing`,
+                );
+                socket.emit(
+                    "leave-room",
+                    `game:${process.env.NEXT_PUBLIC_GAME_KEY}-landing`,
+                );
                 setLobbyDetails({
                     players: [],
                     games: [],
-                })
+                });
             };
-
         }
-
     }, [
         connected,
         landingConfig?.handleLandingDetails,
@@ -203,18 +203,12 @@ export default function SocketLogicHandler({
             }, debugConfig.autoHideDelay);
             return () => clearTimeout(timer);
         }
-    }, [
-        debugConfig.enabled,
-        debugConfig.autoHide,
-        debugConfig.autoHideDelay
-    ]);
+    }, [debugConfig.enabled, debugConfig.autoHide, debugConfig.autoHideDelay]);
 
     if (
-        debugConfig.enabled
-        &&
-        isVisible
-        &&
-        process.env.NODE_ENV !== 'production'
+        debugConfig.enabled &&
+        isVisible &&
+        process.env.NODE_ENV !== "production"
     ) {
         return (
             <Box
@@ -233,18 +227,18 @@ export default function SocketLogicHandler({
             >
                 <Box>Connected: {connected ? "Yes" : "No"}</Box>
                 <Box>Authenticated: {authenticated ? "Yes" : "No"}</Box>
-                {connected ?
+                {connected ? (
                     <>
                         <Box>ID: {socket.id}</Box>
                         <Box>Host: {socket.io.uri}</Box>
                     </>
-                    :
+                ) : (
                     <>
                         <Box>ID: No</Box>
                         <Box>Host: No</Box>
                     </>
-                }
+                )}
             </Box>
-        )
+        );
     }
 }

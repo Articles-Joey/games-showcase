@@ -22,8 +22,12 @@ import FloatingDarkModeButton from "@/components/UI/FloatingDarkModeButton";
 export default function LayoutClient() {
     const pathname = usePathname();
     const darkMode = useStore((state) => state.darkMode);
-    const renderUniqueGameSceneRange = useStore((state) => state.renderUniqueGameSceneRange);
-    const setRenderUniqueGameSceneRange = useStore((state) => state.setRenderUniqueGameSceneRange);
+    const renderUniqueGameSceneRange = useStore(
+        (state) => state.renderUniqueGameSceneRange,
+    );
+    const setRenderUniqueGameSceneRange = useStore(
+        (state) => state.setRenderUniqueGameSceneRange,
+    );
     const gameInfoModal = useStore((state) => state.gameInfoModal);
     const setGameInfoModal = useStore((state) => state.setGameInfoModal);
 
@@ -45,43 +49,101 @@ export default function LayoutClient() {
                             Graphics: {
                                 darkMode: true,
                                 landingAnimation: true,
-                                children: <Box sx={{ mb: 2 }}>
-                                    <Box>Render Unique Game Scene Range</Box>
-                                    <Box sx={{ display: "flex", mb: 2 }}>
-                                        <ArticlesButton small sx={{ flex: 1 }} aria-label="Decrease scene range" onClick={() => setRenderUniqueGameSceneRange(renderUniqueGameSceneRange - 1)}>
-                                            <ArrowDownwardIcon fontSize="small" />
-                                        </ArticlesButton>
-                                        <ArticlesButton small sx={{ flex: 1 }}>{renderUniqueGameSceneRange}</ArticlesButton>
-                                        <ArticlesButton small sx={{ flex: 1 }} aria-label="Increase scene range" onClick={() => setRenderUniqueGameSceneRange(renderUniqueGameSceneRange + 1)}>
-                                            <ArrowUpwardIcon fontSize="small" />
-                                        </ArticlesButton>
+                                children: (
+                                    <Box sx={{ mb: 2 }}>
+                                        <Box>
+                                            Render Unique Game Scene Range
+                                        </Box>
+                                        <Box sx={{ display: "flex", mb: 2 }}>
+                                            <ArticlesButton
+                                                small
+                                                sx={{ flex: 1 }}
+                                                aria-label="Decrease scene range"
+                                                onClick={() =>
+                                                    setRenderUniqueGameSceneRange(
+                                                        renderUniqueGameSceneRange -
+                                                            1,
+                                                    )
+                                                }
+                                            >
+                                                <ArrowDownwardIcon fontSize="small" />
+                                            </ArticlesButton>
+                                            <ArticlesButton
+                                                small
+                                                sx={{ flex: 1 }}
+                                            >
+                                                {renderUniqueGameSceneRange}
+                                            </ArticlesButton>
+                                            <ArticlesButton
+                                                small
+                                                sx={{ flex: 1 }}
+                                                aria-label="Increase scene range"
+                                                onClick={() =>
+                                                    setRenderUniqueGameSceneRange(
+                                                        renderUniqueGameSceneRange +
+                                                            1,
+                                                    )
+                                                }
+                                            >
+                                                <ArrowUpwardIcon fontSize="small" />
+                                            </ArticlesButton>
+                                        </Box>
                                     </Box>
-                                </Box>,
+                                ),
                             },
                             Audio: {
-                                sliders: Object.keys(useAudioStore.getState().audioSettings || {})
+                                sliders: Object.keys(
+                                    useAudioStore.getState().audioSettings ||
+                                        {},
+                                )
                                     .filter((key) => key !== "enabled")
                                     .map((key) => ({
                                         key,
-                                        label: key.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
+                                        label: key
+                                            .split("_")
+                                            .map(
+                                                (word) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1),
+                                            )
+                                            .join(" "),
                                     })),
                             },
-                            Controls: { touchControls: true, children: <ControlsSetting /> },
+                            Controls: {
+                                touchControls: true,
+                                children: <ControlsSetting />,
+                            },
                             Multiplayer: { serverUrl: true },
                             Other: {},
                             Debug: { showStats: true },
                         },
                         reset: () => {
                             useAudioStore.getState().resetAudioSettings();
-                            useStore.getState().setControlSettings(useStore.getState().initialControlSettings);
+                            useStore
+                                .getState()
+                                .setControlSettings(
+                                    useStore.getState().initialControlSettings,
+                                );
                         },
                     }}
-                    infoModalConfig={{ previewImage: darkMode ? "img/preview.webp" : "img/preview.webp" }}
+                    infoModalConfig={{
+                        previewImage: darkMode
+                            ? "img/preview.webp"
+                            : "img/preview.webp",
+                    }}
                 />
-                {gameInfoModal && <GameInfoModal show={gameInfoModal} setShow={setGameInfoModal} />}
-                {(pathname === "/wall" || pathname === "/original") && <FloatingDarkModeButton />}
+                {gameInfoModal && (
+                    <GameInfoModal
+                        show={gameInfoModal}
+                        setShow={setGameInfoModal}
+                    />
+                )}
+                {(pathname === "/wall" || pathname === "/original") && (
+                    <FloatingDarkModeButton />
+                )}
             </Suspense>
         </>
     );
 }
-

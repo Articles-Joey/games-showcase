@@ -8,16 +8,26 @@ Source: https://sketchfab.com/3d-models/minecraft-creeper-fd66182f07e5408eb04fa5
 Title: Minecraft - Creeper
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelMinecraftCreeper(props) {
-  const { nodes, materials } = useGLTF('models/Minecraft/creeper-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes['Creeper_02_-_Default_0'].geometry} material={materials['02_-_Default']} position={[0, -7, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Minecraft/creeper-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes["Creeper_02_-_Default_0"].geometry}
+                material={materials["02_-_Default"]}
+                position={[0, -7, 0]}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/creeper-transformed.glb')
+useGLTF.preload("models/Minecraft/creeper-transformed.glb");

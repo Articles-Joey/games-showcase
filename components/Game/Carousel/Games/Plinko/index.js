@@ -14,14 +14,17 @@ function PlinkoBall({ startPos }) {
         mass: 1,
         args: [BALL_RADIUS],
         position: startPos,
-        material: { restitution: 0.6, friction: 0.1 }
+        material: { restitution: 0.6, friction: 0.1 },
     }));
 
     const pos = useRef([0, 0, 0]);
-    useEffect(() => api.position.subscribe((v) => (pos.current = v)), [api.position]);
+    useEffect(
+        () => api.position.subscribe((v) => (pos.current = v)),
+        [api.position],
+    );
 
     useFrame(() => {
-        if (pos.current[1] < - (ROWS * GAP) / 2 - 5) {
+        if (pos.current[1] < -(ROWS * GAP) / 2 - 5) {
             api.position.set(0, (ROWS * GAP) / 2 + 3, 0);
             api.velocity.set((Math.random() - 0.5) * 2, 0, 0);
             api.angularVelocity.set(0, 0, 0);
@@ -42,7 +45,7 @@ function Peg({ position }) {
         args: [PEG_RADIUS, PEG_RADIUS, 1, 16],
         position: position,
         rotation: [Math.PI / 2, 0, 0],
-        material: { restitution: 0.8, friction: 0.1 }
+        material: { restitution: 0.8, friction: 0.1 },
     }));
 
     return (
@@ -74,7 +77,10 @@ function PlinkoBoard() {
     return (
         <group>
             {pegs.map((pos, i) => (
-                <Peg key={i} position={pos} />
+                <Peg
+                    key={i}
+                    position={pos}
+                />
             ))}
         </group>
     );
@@ -89,7 +95,7 @@ function Bounds() {
         args: [width, height, 0.5],
         position: [0, 0, -0.75],
         type: "Static",
-        material: { friction: 0 }
+        material: { friction: 0 },
     }));
 
     // Front wall
@@ -97,21 +103,29 @@ function Bounds() {
         args: [width, height, 0.5],
         position: [0, 0, 0.75],
         type: "Static",
-        material: { friction: 0 }
+        material: { friction: 0 },
     }));
 
     return (
         <>
             <mesh position={[0, 0, -0.75]}>
                 <boxGeometry args={[width, height, 0.1]} />
-                <meshStandardMaterial color="#333" transparent opacity={0} />
+                <meshStandardMaterial
+                    color="#333"
+                    transparent
+                    opacity={0}
+                />
             </mesh>
             <mesh position={[0, 0, 0.75]}>
                 <boxGeometry args={[width, height, 0.1]} />
-                <meshStandardMaterial color="#333" transparent opacity={0} />
+                <meshStandardMaterial
+                    color="#333"
+                    transparent
+                    opacity={0}
+                />
             </mesh>
         </>
-    )
+    );
 }
 
 export default function PlinkoScene() {
@@ -120,11 +134,7 @@ export default function PlinkoScene() {
             <group
                 position={[2, 3, 0]}
                 scale={0.25}
-                rotation={[
-                    0,
-                    degToRad(90),
-                    0
-                ]}
+                rotation={[0, degToRad(90), 0]}
             >
                 <PlinkoBall startPos={[0, (ROWS * GAP) / 2 + 3, 0]} />
                 <PlinkoBoard />

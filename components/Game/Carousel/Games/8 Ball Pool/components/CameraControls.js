@@ -1,14 +1,17 @@
-import { useRef, useState, useEffect } from 'react';
-import { useFrame, useThree } from "@react-three/fiber"
+import { useRef, useState, useEffect } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 
-import { OrbitControls, } from "@react-three/drei";
-import { useEightBallStore } from '../useEightBallStore';
+import { OrbitControls } from "@react-three/drei";
+import { useEightBallStore } from "../useEightBallStore";
 
 const CameraControls = (props) => {
-
     // const { onCameraChange, cameraUpdate, setCameraUpdate } = props;
-    const resetCameraRequest = useEightBallStore(state => state.resetCameraRequest);
-    const setResetCameraRequest = useEightBallStore(state => state.setResetCameraRequest);
+    const resetCameraRequest = useEightBallStore(
+        (state) => state.resetCameraRequest,
+    );
+    const setResetCameraRequest = useEightBallStore(
+        (state) => state.setResetCameraRequest,
+    );
 
     const {
         camera,
@@ -24,11 +27,9 @@ const CameraControls = (props) => {
     });
 
     useEffect(() => {
-        console.log("New resetCameraRequest", resetCameraRequest)
+        console.log("New resetCameraRequest", resetCameraRequest);
         if (camera.position) {
-            camera.position.set(
-                -60, 80, 0
-            );
+            camera.position.set(-60, 80, 0);
             camera.rotation.set(-Math.PI / 4, -Math.PI / 2, 0);
             if (controls.current) {
                 controls.current.target.set(0, 0, 0);
@@ -36,8 +37,13 @@ const CameraControls = (props) => {
             }
             // You might also want to update other camera properties like rotation, etc.
         }
-        setResetCameraRequest(false)
-    }, [resetCameraRequest, camera.position, camera.rotation, setResetCameraRequest]);
+        setResetCameraRequest(false);
+    }, [
+        resetCameraRequest,
+        camera.position,
+        camera.rotation,
+        setResetCameraRequest,
+    ]);
 
     return (
         <OrbitControls
@@ -46,7 +52,6 @@ const CameraControls = (props) => {
             target={[0, 0, 0]}
         />
     );
-
 };
 
-export default CameraControls
+export default CameraControls;

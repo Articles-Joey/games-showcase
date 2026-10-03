@@ -12,7 +12,6 @@ export default function MinecraftScene() {
         <group
         // scale={0.05}
         >
-
             <ModelMinecraftCreeper
                 position={[5, 2.5, 3]}
                 scale={0.16}
@@ -33,25 +32,24 @@ export default function MinecraftScene() {
                 position={[5, 2.5, -3.2]}
                 scale={0.14}
                 rotation={[0, degToRad(90 + 45), 0]}
-            />        
+            />
 
             <ModelMinecraftDiamondAxe
                 position={[0, 0, 0]}
                 scale={0.01}
             />
-            
+
             <ModelMinecraftSteve
                 position={[0, 3, -2]}
                 scale={0.004}
                 rotation={[0, degToRad(60), 0]}
             />
-            
+
             <ModelMinecraftWoodenDoor
                 position={[-1.2, 3.5, 2]}
                 scale={1.5}
                 rotation={[0, degToRad(90), 0]}
             />
-
         </group>
     );
 }

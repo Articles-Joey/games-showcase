@@ -8,16 +8,25 @@ Source: https://sketchfab.com/3d-models/fortnite-peely-skin-79c243d64f0d4c74a6a7
 Title: Fortnite Peely Skin
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelFortnitePeelySkin(props) {
-  const { nodes, materials } = useGLTF('models/Fortnite/fortnite_peely_skin-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_7.geometry} material={materials.M_MED_Banana_Body} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Fortnite/fortnite_peely_skin-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.Object_7.geometry}
+                material={materials.M_MED_Banana_Body}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Fortnite/fortnite_peely_skin-transformed.glb')
+useGLTF.preload("models/Fortnite/fortnite_peely_skin-transformed.glb");

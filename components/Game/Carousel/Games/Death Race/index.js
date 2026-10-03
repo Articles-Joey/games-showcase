@@ -11,5 +11,5 @@ export default function DeathRaceScene() {
         >
             <ModelBarn />
         </group>
-    )
+    );
 }

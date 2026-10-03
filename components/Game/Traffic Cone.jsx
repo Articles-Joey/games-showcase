@@ -4,17 +4,26 @@ Command: npx gltfjsx@6.5.3 Traffic Cone.glb -T
 Files: Traffic Cone.glb [9.8KB] > D:\Downloads\Traffic Cone-transformed.glb [2.72KB] (72%)
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelTrafficCone(props) {
-  const { nodes, materials } = useGLTF('models/Traffic Cone-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes['Node-Mesh'].geometry} material={materials.mat13} />
-      <mesh geometry={nodes['Node-Mesh_1'].geometry} material={materials.mat21} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF("models/Traffic Cone-transformed.glb");
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes["Node-Mesh"].geometry}
+                material={materials.mat13}
+            />
+            <mesh
+                geometry={nodes["Node-Mesh_1"].geometry}
+                material={materials.mat21}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Traffic Cone-transformed.glb')
+useGLTF.preload("models/Traffic Cone-transformed.glb");

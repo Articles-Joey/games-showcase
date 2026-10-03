@@ -16,7 +16,10 @@ export default function CarouselOfProgressScene() {
     const wallThickness = 0.2;
 
     return (
-        <group ref={groupRef} position={[3, 0.5, 0]}>
+        <group
+            ref={groupRef}
+            position={[3, 0.5, 0]}
+        >
             {/* Base */}
             <mesh rotation={[0, 0, 0]}>
                 <cylinderGeometry args={[radius, radius, 0.2, 64]} />
@@ -32,11 +35,13 @@ export default function CarouselOfProgressScene() {
                         position={[
                             (radius / 2) * Math.cos(angle),
                             wallHeight / 2,
-                            -(radius / 2) * Math.sin(angle)
+                            -(radius / 2) * Math.sin(angle),
                         ]}
                         rotation={[0, angle, 0]}
                     >
-                        <boxGeometry args={[radius, wallHeight, wallThickness]} />
+                        <boxGeometry
+                            args={[radius, wallHeight, wallThickness]}
+                        />
                         <meshStandardMaterial color="#999" />
                     </mesh>
                 );

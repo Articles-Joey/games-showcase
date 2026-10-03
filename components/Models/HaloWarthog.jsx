@@ -8,18 +8,32 @@ Source: https://sketchfab.com/3d-models/halo-warthog-bd3403bc06884260ac31d0e98ee
 Title: Halo Warthog
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelHaloWarthog(props) {
-  const { nodes, materials } = useGLTF('models/Halo/halo_warthog-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.defaultMaterial.geometry} material={materials.Body_Green1} />
-      <mesh geometry={nodes.defaultMaterial_1.geometry} material={materials.Body_Under1} />
-      <mesh geometry={nodes.defaultMaterial_2.geometry} material={materials.Seats1} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Halo/halo_warthog-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.defaultMaterial.geometry}
+                material={materials.Body_Green1}
+            />
+            <mesh
+                geometry={nodes.defaultMaterial_1.geometry}
+                material={materials.Body_Under1}
+            />
+            <mesh
+                geometry={nodes.defaultMaterial_2.geometry}
+                material={materials.Seats1}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Halo/halo_warthog-transformed.glb')
+useGLTF.preload("models/Halo/halo_warthog-transformed.glb");

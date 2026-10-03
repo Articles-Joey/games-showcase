@@ -8,16 +8,27 @@ Source: https://sketchfab.com/3d-models/fortnite-llama-844bafe85de3441fbc65a8c24
 Title: Fortnite "Llama"
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelFortniteLlama(props) {
-  const { nodes, materials } = useGLTF('models/Fortnite/fortnite_llama-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Cube069__0.geometry} material={materials['Scene_-_Root']} position={[-108.343, 153.61, -58.354]} rotation={[-1.237, -0.12, -2.962]} scale={[7.098, 0.829, 4.417]} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Fortnite/fortnite_llama-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.Cube069__0.geometry}
+                material={materials["Scene_-_Root"]}
+                position={[-108.343, 153.61, -58.354]}
+                rotation={[-1.237, -0.12, -2.962]}
+                scale={[7.098, 0.829, 4.417]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Fortnite/fortnite_llama-transformed.glb')
+useGLTF.preload("models/Fortnite/fortnite_llama-transformed.glb");

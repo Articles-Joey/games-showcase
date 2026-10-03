@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import { useFrame, useThree } from "@react-three/fiber"
-import { useTexture } from '@react-three/drei';
+import React, { useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
 
 const bugImages = [
     `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Bugs/bug-1.png`,
@@ -10,14 +10,13 @@ const bugImages = [
     `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Bugs/bug-5.png`,
     `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Bugs/bug-6.png`,
     `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Bugs/bug-7.png`,
-    `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Bugs/bug-8.png`
-]
+    `${process.env.NEXT_PUBLIC_CDN}games/Four%20Frogs/Bugs/bug-8.png`,
+];
 
 export default function Bug(props) {
-
     const { bug } = props;
 
-    const { camera } = useThree()
+    const { camera } = useThree();
 
     const spriteRef = useRef();
 
@@ -48,4 +47,4 @@ export default function Bug(props) {
             />
         </sprite>
     );
-};
+}

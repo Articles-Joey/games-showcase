@@ -1,12 +1,21 @@
-import { createContext, createRef, forwardRef, memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+    createContext,
+    createRef,
+    forwardRef,
+    memo,
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 
 // import { Canvas, useFrame } from "@react-three/fiber"
 // import { Sky, useDetectGPU, useTexture, OrbitControls, Cylinder, QuadraticBezierLine, Text, Image } from "@react-three/drei";
 
 // import { useCannonStore } from "@/components/Games/Cannon/hooks/useCannonStore";
 import { Debug, Physics, useBox, useSphere } from "@react-three/cannon";
-
-
 
 // import { ModelJToastieCouch } from "@/components/Game/Couch";
 
@@ -41,7 +50,6 @@ import WoodFloor from "./components/WoodFloor";
 // import { degToRad } from "three/src/math/MathUtils";
 
 export default function EightBallPoolScene() {
-
     const length = 3;
 
     return (
@@ -73,12 +81,11 @@ export default function EightBallPoolScene() {
 }
 
 function GameCanvas(props) {
-
-    const theme = useEightBallStore(state => state.theme);
+    const theme = useEightBallStore((state) => state.theme);
 
     // const GPUTier = useDetectGPU()
 
-    const [[a, b, c, d, e]] = useState(() => [...Array(5)].map(createRef))
+    const [[a, b, c, d, e]] = useState(() => [...Array(5)].map(createRef));
 
     // const {
     //     debug,
@@ -90,7 +97,6 @@ function GameCanvas(props) {
 
     let gameContent = (
         <>
-
             {/* <PlayerProjectile /> */}
 
             {/* <Balls /> */}
@@ -103,26 +109,18 @@ function GameCanvas(props) {
 
             <Table />
             <TableBottom />
-
         </>
-    )
+    );
 
-    let physicsContent
+    let physicsContent;
     if (debug) {
-        physicsContent = (
-            <Debug>
-                {gameContent}
-            </Debug>
-        )
+        physicsContent = <Debug>{gameContent}</Debug>;
     } else {
-        physicsContent = (
-            gameContent
-        )
+        physicsContent = gameContent;
     }
 
     return (
         <>
-
             {/* <CameraControls /> */}
 
             <WoodFloor
@@ -135,23 +133,16 @@ function GameCanvas(props) {
 
             <TableLegs />
 
-            <Physics>
-
-                {physicsContent}
-
-            </Physics>
-
+            <Physics>{physicsContent}</Physics>
         </>
-    )
+    );
 }
 
 // export default memo(GameCanvas)
 
 function Holes() {
-
     return (
         <group>
-
             {/* Top */}
             <Hole
                 position={[25, -0.79, -50]}
@@ -181,38 +172,35 @@ function Holes() {
                 position={[-25, -0.79, 50]}
                 args={[2, 2, 2.1]}
             />
-
         </group>
-    )
-
+    );
 }
 
 function Hole({ position, args }) {
-
     const [ref, api] = useBox(() => ({
         mass: 0,
-        type: 'Static',
+        type: "Static",
         args: args,
         position: position,
-    }))
+    }));
 
     return (
-        <mesh ref={ref} castShadow>
+        <mesh
+            ref={ref}
+            castShadow
+        >
             <cylinderGeometry args={args} />
             {/* <BeachBall /> */}
             <meshStandardMaterial color="black" />
         </mesh>
-    )
-
+    );
 }
 
 function OuterWalls() {
-
-    const lengthOffsetX = 29
+    const lengthOffsetX = 29;
 
     return (
         <group>
-
             {/* Length Walls */}
             <Wall
                 position={[lengthOffsetX, 1, 0]}
@@ -232,20 +220,16 @@ function OuterWalls() {
                 position={[0, 1, -54]}
                 args={[60, 2, 2]}
             />
-
         </group>
-    )
-
+    );
 }
 
 function InnerWalls() {
-
-    const wallWidth = 3
-    const lengthOffsetX = 26.5
+    const wallWidth = 3;
+    const lengthOffsetX = 26.5;
 
     return (
         <group>
-
             {/* North Length Walls */}
             <Wall
                 position={[lengthOffsetX, 1, -25]}
@@ -281,31 +265,31 @@ function InnerWalls() {
                 args={[46, 2, wallWidth]}
                 inner
             />
-
         </group>
-    )
-
+    );
 }
 
 function Wall({ position, args, inner }) {
-
     const [ref, api] = useBox(() => ({
         mass: 0,
-        type: 'Static',
+        type: "Static",
         args: args,
         position: position,
         material: { friction: 1, restitution: 1 },
-    }))
+    }));
 
     return (
-        <mesh ref={ref} castShadow>
+        <mesh
+            ref={ref}
+            castShadow
+        >
             <boxGeometry args={args} />
             {/* <BeachBall /> */}
             {/* <meshStandardMaterial color={inner ? "#054600" : "chocolate"} /> */}
             <meshStandardMaterial
                 color={inner ? "#054600" : "chocolate"}
                 emissive={"#054600"} // glow color
-                emissiveIntensity={0.90} // adjust for subtle glow
+                emissiveIntensity={0.9} // adjust for subtle glow
             />
             {/* <rectAreaLight
                 width={30}
@@ -317,6 +301,5 @@ function Wall({ position, args, inner }) {
                 rotation={[-Math.PI / 2, 0, 0]}
             /> */}
         </mesh>
-    )
-
+    );
 }

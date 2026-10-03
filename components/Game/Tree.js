@@ -6,17 +6,20 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 export default function Tree(props) {
-  const { nodes, materials } = useGLTF(`models/Tree-transformed.glb`);
-  return (
-    <group {...props} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes["tree-spruce"].geometry}
-        material={materials.color_main}
-      />
-    </group>
-  );
+    const { nodes, materials } = useGLTF(`models/Tree-transformed.glb`);
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                castShadow
+                receiveShadow
+                geometry={nodes["tree-spruce"].geometry}
+                material={materials.color_main}
+            />
+        </group>
+    );
 }
 
 useGLTF.preload(`models/Tree-transformed.glb`);

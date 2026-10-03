@@ -11,7 +11,13 @@ export default function IsDev({ className, noOutline, children, inline }) {
     if (!children || !userDetails?.roles?.isDev || !isMounted) return null;
 
     return (
-        <Box className={className} sx={{ display: inline ? "inline-block" : "block", ...(!noOutline && { border: 1, borderColor: "divider" }) }}>
+        <Box
+            className={className}
+            sx={{
+                display: inline ? "inline-block" : "block",
+                ...(!noOutline && { border: 1, borderColor: "divider" }),
+            }}
+        >
             {children}
         </Box>
     );

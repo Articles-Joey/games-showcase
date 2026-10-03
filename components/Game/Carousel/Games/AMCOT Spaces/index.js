@@ -2,9 +2,5 @@ import { ModelTagSwat } from "@/components/Models/Tag/Swat";
 import { degToRad } from "three/src/math/MathUtils";
 
 export default function AMCOTSpacesScene() {
-    return (
-        <group>
-            
-        </group>
-    )
+    return <group></group>;
 }

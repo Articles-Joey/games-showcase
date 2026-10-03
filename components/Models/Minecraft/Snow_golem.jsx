@@ -8,17 +8,32 @@ Source: https://sketchfab.com/3d-models/minecraft-snow-golem-8421d8b542ae40e0b07
 Title: Minecraft - Snow Golem
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelMinecraftSnowGolem(props) {
-  const { nodes, materials } = useGLTF('models/Minecraft/snow_golem-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Snow_Golem_Snow_Golem_0.geometry} material={materials.Snow_Golem} position={[0, -3, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-      <mesh geometry={nodes['Block_02_-_Default_0'].geometry} material={materials['02_-_Default']} position={[0, 13, -5.976]} scale={0.747} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Minecraft/snow_golem-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.Snow_Golem_Snow_Golem_0.geometry}
+                material={materials.Snow_Golem}
+                position={[0, -3, 0]}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+            <mesh
+                geometry={nodes["Block_02_-_Default_0"].geometry}
+                material={materials["02_-_Default"]}
+                position={[0, 13, -5.976]}
+                scale={0.747}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/snow_golem-transformed.glb')
+useGLTF.preload("models/Minecraft/snow_golem-transformed.glb");

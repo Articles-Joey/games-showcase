@@ -4,13 +4,12 @@ import { useEffect, useRef } from "react";
 import { useStore } from "@/components/hooks/useStore";
 
 export default function AudioHandler() {
-
     const audioSettings = useStore((state) => state?.audioSettings);
     const musicRef = useRef(null);
 
     // Initialize Audio once
     useEffect(() => {
-        if (typeof window !== 'undefined' && !musicRef.current) {
+        if (typeof window !== "undefined" && !musicRef.current) {
             musicRef.current = new Audio(`audio/game-music-loop.mp3`);
             musicRef.current.loop = true;
         }
@@ -26,7 +25,9 @@ export default function AudioHandler() {
     // Handle Volume Changes independently
     useEffect(() => {
         if (musicRef.current) {
-            musicRef.current.volume = audioSettings?.enabled ? (audioSettings?.music_volume / 100) : 0;
+            musicRef.current.volume = audioSettings?.enabled
+                ? audioSettings?.music_volume / 100
+                : 0;
         }
     }, [audioSettings?.music_volume, audioSettings?.enabled]);
 
@@ -48,5 +49,4 @@ export default function AudioHandler() {
     }, [audioSettings?.enabled]);
 
     return null;
-
 }

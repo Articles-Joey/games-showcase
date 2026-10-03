@@ -30,32 +30,112 @@ export default function ControlsSetting() {
 
     return (
         <>
-            <Dialog open={Boolean(listenForKey)} disableEscapeKeyDown aria-labelledby="listen-for-key-title" slotProps={{ backdrop: { sx: { bgcolor: "rgba(0,0,0,0.8)" } } }}>
-                <DialogTitle id="listen-for-key-title">Listening for key...</DialogTitle>
+            <Dialog
+                open={Boolean(listenForKey)}
+                disableEscapeKeyDown
+                aria-labelledby="listen-for-key-title"
+                slotProps={{ backdrop: { sx: { bgcolor: "rgba(0,0,0,0.8)" } } }}
+            >
+                <DialogTitle id="listen-for-key-title">
+                    Listening for key...
+                </DialogTitle>
                 <DialogContent>
-                    <Typography variant="h4" sx={{ border: 1, borderColor: "divider", borderRadius: 1, py: 2, px: 6, bgcolor: "#212529", color: "#fff", textAlign: "center" }}>{listenForKey?.lastKey || "Press a key"}</Typography>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            border: 1,
+                            borderColor: "divider",
+                            borderRadius: 1,
+                            py: 2,
+                            px: 6,
+                            bgcolor: "#212529",
+                            color: "#fff",
+                            textAlign: "center",
+                        }}
+                    >
+                        {listenForKey?.lastKey || "Press a key"}
+                    </Typography>
                 </DialogContent>
                 <DialogActions>
-                    <ArticlesButton variant="warning" startIcon={<UndoIcon />} onClick={() => {
-                        setControlSettings({ ...controlSettings, [listenForKey.action]: false });
-                        setListenForKey(false);
-                    }}>Cancel</ArticlesButton>
-                    <ArticlesButton onClick={() => {
-                        setControlSettings({ ...controlSettings, [listenForKey.action]: listenForKey.lastKey });
-                        setListenForKey(false);
-                    }}>Confirm</ArticlesButton>
+                    <ArticlesButton
+                        variant="warning"
+                        startIcon={<UndoIcon />}
+                        onClick={() => {
+                            setControlSettings({
+                                ...controlSettings,
+                                [listenForKey.action]: false,
+                            });
+                            setListenForKey(false);
+                        }}
+                    >
+                        Cancel
+                    </ArticlesButton>
+                    <ArticlesButton
+                        onClick={() => {
+                            setControlSettings({
+                                ...controlSettings,
+                                [listenForKey.action]: listenForKey.lastKey,
+                            });
+                            setListenForKey(false);
+                        }}
+                    >
+                        Confirm
+                    </ArticlesButton>
                 </DialogActions>
             </Dialog>
             <Box>
-                <Box sx={{ fontSize: "0.875rem", pb: 2, pt: 1, borderBottom: 1, borderColor: "divider" }}>Assign a key to a movement action. 1-4 are the defaults and are already assigned.</Box>
+                <Box
+                    sx={{
+                        fontSize: "0.875rem",
+                        pb: 2,
+                        pt: 1,
+                        borderBottom: 1,
+                        borderColor: "divider",
+                    }}
+                >
+                    Assign a key to a movement action. 1-4 are the defaults and
+                    are already assigned.
+                </Box>
                 {[1, 2, 3, 4].map((spaces) => {
                     const action = `Move ${spaces} Space`;
                     return (
-                        <Box key={action} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: 1, borderColor: "divider", py: 0.5, mb: 0.5 }}>
+                        <Box
+                            key={action}
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                borderBottom: 1,
+                                borderColor: "divider",
+                                py: 0.5,
+                                mb: 0.5,
+                            }}
+                        >
                             <Box>{action}</Box>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                                {controlSettings[action] && <Chip label={controlSettings[action]} size="small" />}
-                                <ArticlesButton small onClick={() => setListenForKey({ action, lastKey: false })}>Select Key</ArticlesButton>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 0.5,
+                                }}
+                            >
+                                {controlSettings[action] && (
+                                    <Chip
+                                        label={controlSettings[action]}
+                                        size="small"
+                                    />
+                                )}
+                                <ArticlesButton
+                                    small
+                                    onClick={() =>
+                                        setListenForKey({
+                                            action,
+                                            lastKey: false,
+                                        })
+                                    }
+                                >
+                                    Select Key
+                                </ArticlesButton>
                             </Box>
                         </Box>
                     );
@@ -64,4 +144,3 @@ export default function ControlsSetting() {
         </>
     );
 }
-

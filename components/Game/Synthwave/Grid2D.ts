@@ -1,10 +1,17 @@
 export class Grid2D {
     readonly points: Float32Array;
-    constructor(readonly width: number, readonly height: number, readonly components: number) {
+    constructor(
+        readonly width: number,
+        readonly height: number,
+        readonly components: number,
+    ) {
         this.points = new Float32Array(width * height * components);
     }
 }
-export function iterateGrid2D(grid: Grid2D, callback: (points: Float32Array, x: number, y: number, i: number) => void) {
+export function iterateGrid2D(
+    grid: Grid2D,
+    callback: (points: Float32Array, x: number, y: number, i: number) => void,
+) {
     const { width, points, components } = grid;
     const height = grid.points.length / width / components;
     for (let y = 0; y < height; y++) {

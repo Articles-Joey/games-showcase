@@ -7,14 +7,13 @@ import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEightBallStore } from "../useEightBallStore";
 
-const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/star.gltf`
+const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/star.gltf`;
 
 export function Star(props) {
-
     const { nodes, materials } = useGLTF(link);
     const starRef = useRef();
 
-    const theme = useEightBallStore(state => state.theme);
+    const theme = useEightBallStore((state) => state.theme);
 
     // Rotation animation
     useFrame(() => {
@@ -26,14 +25,15 @@ export function Star(props) {
     // Bobbing animation
     useFrame(({ clock }) => {
         if (starRef.current) {
-            starRef.current.position.y =
-                Math.sin(clock.elapsedTime) * 0.2 + 1; // Adjust the amplitude (0.1) as needed
+            starRef.current.position.y = Math.sin(clock.elapsedTime) * 0.2 + 1; // Adjust the amplitude (0.1) as needed
         }
     });
 
     return (
-        <group {...props} dispose={null}>
-
+        <group
+            {...props}
+            dispose={null}
+        >
             <mesh
                 ref={starRef}
                 castShadow
@@ -46,7 +46,7 @@ export function Star(props) {
                 emissiveIntensity={10} // adjust for subtle glow
             />
 
-            {theme == "Dark" &&
+            {theme == "Dark" && (
                 <pointLight
                     position={[0.6, 1, 0.6]}
                     intensity={2000}
@@ -54,8 +54,7 @@ export function Star(props) {
                     color={"yellow"}
                     castShadow
                 />
-            }
-
+            )}
         </group>
     );
 }

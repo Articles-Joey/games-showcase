@@ -1,8 +1,7 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 // import Peer from 'peerjs';
 
 const useCameraStore = create((set, get) => ({
-
     cameraState: { position: [0, 0, 5] },
     cameraUpdate: false,
     setCameraState: (cameraState) => set({ cameraState }),
@@ -10,12 +9,11 @@ const useCameraStore = create((set, get) => ({
 
     // startGame: () => {
 
-    //     set({ 
-    //         gameState: { status: 'In Progress' } 
+    //     set({
+    //         gameState: { status: 'In Progress' }
     //     });
 
     // }
-
 }));
 
 export default useCameraStore;

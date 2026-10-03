@@ -1,9 +1,15 @@
 import { memo, useMemo, useRef, useEffect, Suspense } from "react";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { OrbitControls, Sky, Text, useDetectGPU, useTexture } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+    OrbitControls,
+    Sky,
+    Text,
+    useDetectGPU,
+    useTexture,
+} from "@react-three/drei";
 
-import Ocean from "./Ocean"
+import Ocean from "./Ocean";
 
 import CameraControls from "./CameraControls";
 
@@ -41,14 +47,13 @@ import Carousel from "./Carousel/Carousel";
 // };
 
 function GameCanvas(props) {
-
     const darkMode = useStore((state) => state.darkMode);
 
     return (
         <Canvas
             camera={{
                 position: [14, 10, 20],
-                // fov: 50 
+                // fov: 50
             }}
             // onCreated={({ gl }) => {
             //     gl.domElement.addEventListener('webglcontextlost', (event) => {
@@ -60,7 +65,6 @@ function GameCanvas(props) {
             //     });
             // }}
         >
-
             {/* <ContextListeners /> */}
 
             <ControllerManager />
@@ -70,20 +74,19 @@ function GameCanvas(props) {
             <Sky
                 // distance={450000}
                 sunPosition={[0, darkMode ? -1 : 1, 0]}
-            // inclination={0}
-            // azimuth={0.25}
-            // {...props} 
+                // inclination={0}
+                // azimuth={0.25}
+                // {...props}
             />
 
-            <ambientLight intensity={darkMode? 1 : 2} />
+            <ambientLight intensity={darkMode ? 1 : 2} />
 
             <Suspense>
                 <Carousel />
                 <Ocean position={[0, -0.3, 0]} />
             </Suspense>
-
         </Canvas>
-    )
+    );
 }
 
-export default memo(GameCanvas)
+export default memo(GameCanvas);

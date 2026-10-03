@@ -9,11 +9,17 @@ function MemoryCard({ index, color, isOpen, position }) {
         if (!cardRef.current) return;
 
         const targetRotation = isOpen ? Math.PI : 0;
-        cardRef.current.rotation.y += (targetRotation - cardRef.current.rotation.y) * Math.min(1, delta * 8);
+        cardRef.current.rotation.y +=
+            (targetRotation - cardRef.current.rotation.y) *
+            Math.min(1, delta * 8);
     });
 
     return (
-        <group ref={cardRef} position={position} rotation={[degToRad(90), 0, 0]}>
+        <group
+            ref={cardRef}
+            position={position}
+            rotation={[degToRad(90), 0, 0]}
+        >
             {/* <mesh castShadow receiveShadow>
                 <boxGeometry args={[0.9, 0.12, 1.15]} />
                 <meshStandardMaterial attach="material-0" color="#0f172a" />
@@ -23,21 +29,50 @@ function MemoryCard({ index, color, isOpen, position }) {
                 <meshStandardMaterial attach="material-4" color={color} />
                 <meshStandardMaterial attach="material-5" color="#111827" />
             </mesh> */}
-            <mesh position={[0, 0.02, 0]} castShadow receiveShadow>
+            <mesh
+                position={[0, 0.02, 0]}
+                castShadow
+                receiveShadow
+            >
                 <planeGeometry args={[0.72, 0.92]} />
-                <meshStandardMaterial color="#eff6ff" emissive="#1e3a8a" emissiveIntensity={0.16} />
+                <meshStandardMaterial
+                    color="#eff6ff"
+                    emissive="#1e3a8a"
+                    emissiveIntensity={0.16}
+                />
             </mesh>
-            <mesh position={[0, -0.02, 0]} rotation={[Math.PI, 0, 0]} castShadow receiveShadow side='double'>
+            <mesh
+                position={[0, -0.02, 0]}
+                rotation={[Math.PI, 0, 0]}
+                castShadow
+                receiveShadow
+                side="double"
+            >
                 <planeGeometry args={[0.72, 0.92]} />
-                <meshStandardMaterial color="#0b1220" emissive="#0f172a" emissiveIntensity={0.08} />
+                <meshStandardMaterial
+                    color="#0b1220"
+                    emissive="#0f172a"
+                    emissiveIntensity={0.08}
+                />
             </mesh>
             <mesh position={[0, 0, 0.03]}>
                 <circleGeometry args={[0.18, 24]} />
-                <meshStandardMaterial color="#f8fafc" emissive="#38bdf8" emissiveIntensity={0.18} />
+                <meshStandardMaterial
+                    color="#f8fafc"
+                    emissive="#38bdf8"
+                    emissiveIntensity={0.18}
+                />
             </mesh>
-            <mesh position={[0, 0, -0.03]} rotation={[0, Math.PI, 0]}>
+            <mesh
+                position={[0, 0, -0.03]}
+                rotation={[0, Math.PI, 0]}
+            >
                 <circleGeometry args={[0.18, 24]} />
-                <meshStandardMaterial color="#bfdbfe" emissive="#38bdf8" emissiveIntensity={0.15} />
+                <meshStandardMaterial
+                    color="#bfdbfe"
+                    emissive="#38bdf8"
+                    emissiveIntensity={0.15}
+                />
             </mesh>
         </group>
     );
@@ -47,12 +82,19 @@ export default function MemoryGameScene() {
     const totalCards = 32;
     const columns = 8;
     const rows = 4;
-    const cardWidth = .9;
+    const cardWidth = 0.9;
     const cardDepth = 1.15;
     const [activeIndex, setActiveIndex] = useState(0);
 
     const cards = useMemo(() => {
-        const palette = ["#38bdf8", "#818cf8", "#f472b6", "#fbbf24", "#4ade80", "#fb7185"];
+        const palette = [
+            "#38bdf8",
+            "#818cf8",
+            "#f472b6",
+            "#fbbf24",
+            "#4ade80",
+            "#fb7185",
+        ];
         const startX = -((columns * cardWidth) / 2) + cardWidth / 2;
         const startZ = -((rows * cardDepth) / 2) + cardDepth / 2;
 
@@ -63,8 +105,8 @@ export default function MemoryGameScene() {
             position: [
                 startX + (index % columns) * cardWidth,
                 0.06,
-                startZ + Math.floor(index / columns) * cardDepth
-            ]
+                startZ + Math.floor(index / columns) * cardDepth,
+            ],
         }));
     }, []);
 
@@ -77,11 +119,10 @@ export default function MemoryGameScene() {
     }, [totalCards]);
 
     return (
-        <group 
-        position={[5, 1, 0]}
-        rotation={[0, degToRad(-90), 0]}
+        <group
+            position={[5, 1, 0]}
+            rotation={[0, degToRad(-90), 0]}
         >
-
             {/* <ambientLight intensity={0.6} />
             <directionalLight position={[5, 8, 4]} intensity={1.1} castShadow />
             <pointLight position={[-4, 2, -4]} intensity={0.45} color="#38bdf8" /> */}

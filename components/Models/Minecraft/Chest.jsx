@@ -8,25 +8,39 @@ Source: https://sketchfab.com/3d-models/minecraft-chest-83c5b03288e9416fbe65616e
 Title: Minecraft Chest
 */
 
-import React from 'react'
-import { useGraph } from '@react-three/fiber'
-import { useGLTF, useAnimations } from '@react-three/drei'
-import { SkeletonUtils } from 'three-stdlib'
+import React from "react";
+import { useGraph } from "@react-three/fiber";
+import { useGLTF, useAnimations } from "@react-three/drei";
+import { SkeletonUtils } from "three-stdlib";
 
 export function ModelMinecraftChest(props) {
-  const group = React.useRef()
-  const { scene, animations } = useGLTF('models/Minecraft/chest-transformed.glb')
-  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
-  const { nodes, materials } = useGraph(clone)
-  const { actions } = useAnimations(animations, group)
-  return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <primitive object={nodes._rootJoint} />
-        <skinnedMesh name="Object_12" geometry={nodes.Object_12.geometry} material={materials.Material} skeleton={nodes.Object_12.skeleton} position={[-6.365, -87.985, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={1} />
-      </group>
-    </group>
-  )
+    const group = React.useRef();
+    const { scene, animations } = useGLTF(
+        "models/Minecraft/chest-transformed.glb",
+    );
+    const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
+    const { nodes, materials } = useGraph(clone);
+    const { actions } = useAnimations(animations, group);
+    return (
+        <group
+            ref={group}
+            {...props}
+            dispose={null}
+        >
+            <group name="Sketchfab_Scene">
+                <primitive object={nodes._rootJoint} />
+                <skinnedMesh
+                    name="Object_12"
+                    geometry={nodes.Object_12.geometry}
+                    material={materials.Material}
+                    skeleton={nodes.Object_12.skeleton}
+                    position={[-6.365, -87.985, 0]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    scale={1}
+                />
+            </group>
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/chest-transformed.glb')
+useGLTF.preload("models/Minecraft/chest-transformed.glb");

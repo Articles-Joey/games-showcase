@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from "react";
 
 // import { Canvas } from '@react-three/fiber'
 // import { OrbitControls, Sky, CameraShake } from '@react-three/drei'
@@ -6,17 +6,17 @@ import { memo, useEffect, useState } from 'react';
 // import Tree from '@/components/Tree'
 
 // import { useHotkeys } from 'react-hotkeys-hook';
-import GrassPlane from './Ground';
-import Bug from './Bug';
+import GrassPlane from "./Ground";
+import Bug from "./Bug";
 // import Player from './Player';
-import Pad from './Pad';
-import Powerup from './Powerup';
-import Zone from './Zone';
-import Ocean from './Ocean';
-import { Sunflower } from './Sunflower';
-import { OrangeFlower } from './OrangeFlower';
+import Pad from "./Pad";
+import Powerup from "./Powerup";
+import Zone from "./Zone";
+import Ocean from "./Ocean";
+import { Sunflower } from "./Sunflower";
+import { OrangeFlower } from "./OrangeFlower";
 // import { useStore } from '@/hooks/useStore';
-import Tree from '@/components/Game/Tree';
+import Tree from "@/components/Game/Tree";
 
 // import Center from './Center';
 // import Spinner from './Spinner';
@@ -42,16 +42,17 @@ import Tree from '@/components/Game/Tree';
 //     </group>
 // );
 
-function FourFrogsDemo({
-    // scale,
-    // children,
-    // // bugs,
-    // players,
-    // // gameState,
-    // // cameraShakeEnabled
-}) {
-
-    const bugs = []
+function FourFrogsDemo(
+    {
+        // scale,
+        // children,
+        // // bugs,
+        // players,
+        // // gameState,
+        // // cameraShakeEnabled
+    },
+) {
+    const bugs = [];
 
     // const gameState = useStore((state) => state.gameState);
     // const cameraShakeEnabled = useStore((state) => state.cameraShakeEnabled);
@@ -79,135 +80,151 @@ function FourFrogsDemo({
 
     return (
         <>
+            <group
+                // camera={{ position: [0, 200, 200], fov: 50 }}
+                position={[0, 0, 0]}
+            >
+                <group scale={0.25}>
+                    {[...Array(5)].map((item, i) => {
+                        return (
+                            <Tree
+                                key={i}
+                                scale={10}
+                                position={[(i - 2) * 200, 50, -500]}
+                            />
+                        );
+                    })}
 
-                <group 
-                    // camera={{ position: [0, 200, 200], fov: 50 }}
-                    position={[0, 0, 0]}
-                >
-
-                    <group scale={0.25}>
-
-                        {[...Array(5)].map((item, i) => {
+                    <group position={[0, 1, -600]}>
+                        {[...Array(7)].map((item, i) => {
                             return (
                                 <Tree
                                     key={i}
-                                    scale={10}
-                                    position={[((i - 2) * 200), 50, -500]}
+                                    scale={5}
+                                    position={[(i - 3) * 200, 100, -500]}
                                 />
-                            )
+                            );
                         })}
+                    </group>
 
-                        <group
-                            position={[0, 1, -600]}
-                        >
-                            {[...Array(7)].map((item, i) => {
-                                return (
-                                    <Tree
-                                        key={i}
-                                        scale={5}
-                                        position={[((i - 3) * 200), 100, -500]}
-                                    />
-                                )
-                            })}
-                        </group>
+                    <group position={[0, 1, -900]}>
+                        {[...Array(9)].map((item, i) => {
+                            return (
+                                <Tree
+                                    key={i}
+                                    scale={5}
+                                    position={[(i - 4.3) * 200, 100, -500]}
+                                />
+                            );
+                        })}
+                    </group>
 
-                        <group
-                            position={[0, 1, -900]}
-                        >
-                            {[...Array(9)].map((item, i) => {
-                                return (
-                                    <Tree
-                                        key={i}
-                                        scale={5}
-                                        position={[((i - 4.3) * 200), 100, -500]}
-                                    />
-                                )
-                            })}
-                        </group>
-
-                        {/* <group scale={2}>
+                    {/* <group scale={2}>
                             <GrassPlane rotation={[-Math.PI / 2, 0, 0]} position={[0, 50, -800]} />
                         </group> */}
 
-                        <group scale={20} position={[-420, 50, -400]}>
+                    <group
+                        scale={20}
+                        position={[-420, 50, -400]}
+                    >
+                        {[...Array(9)].map((item, i) => {
+                            return (
+                                <OrangeFlower
+                                    key={i}
+                                    position={[0, 0, i * 5]}
+                                />
+                            );
+                        })}
+                    </group>
 
-                            {[...Array(9)].map((item, i) => {
-                                return (
-                                    <OrangeFlower
-                                        key={i}
-                                        position={[0, 0, (i * 5)]}
-                                    />
-                                )
-                            })}
+                    <group
+                        scale={20}
+                        position={[420, 50, -400]}
+                    >
+                        {[...Array(9)].map((item, i) => {
+                            return (
+                                <Sunflower
+                                    key={i}
+                                    position={[0, 0, i * 5]}
+                                />
+                            );
+                        })}
+                    </group>
 
-                        </group>
+                    {/* Bowl - Front Back  */}
+                    <GrassPlane
+                        rotation={[-Math.PI / 3, 0, 0]}
+                        position={[0, -1, -400]}
+                    />
+                    <GrassPlane
+                        rotation={[-Math.PI / 1.5, 0, 0]}
+                        position={[0, -1, 400]}
+                    />
 
-                        <group scale={20} position={[420, 50, -400]}>
+                    {/* Bowl - Left Right */}
+                    <GrassPlane
+                        rotation={[-Math.PI / 2, -Math.PI / 4, Math.PI / 2]}
+                        position={[400, -1, 0]}
+                    />
+                    <GrassPlane
+                        rotation={[-Math.PI / 2, Math.PI / 4, Math.PI / 2]}
+                        position={[-400, -1, 0]}
+                    />
 
-                            {[...Array(9)].map((item, i) => {
-                                return (
-                                    <Sunflower
-                                        key={i}
-                                        position={[0, 0, (i * 5)]}
-                                    />
-                                )
-                            })}
+                    <group position={[200, 0, 200]}>
+                        <Ocean position={[-200, -1, -200]} />
+                    </group>
 
-                        </group>
+                    {/* Zones */}
+                    <group position={[-200, 1, -200]}>
+                        <Zone
+                            color="red"
+                            position={[0, 0, 0]}
+                        />
+                        <Zone
+                            color="blue"
+                            position={[400, 0, 0]}
+                        />
+                        <Zone
+                            color="green"
+                            position={[0, 0, 400]}
+                        />
+                        <Zone
+                            color="yellow"
+                            position={[400, 0, 400]}
+                        />
+                    </group>
 
-                        {/* Bowl - Front Back  */}
-                        <GrassPlane rotation={[-Math.PI / 3, 0, 0]} position={[0, -1, -400]} />
-                        <GrassPlane rotation={[-Math.PI / 1.5, 0, 0]} position={[0, -1, 400]} />
+                    {/* Pads */}
+                    <group position={[-300, 1.25, -300]}>
+                        <Pad
+                            position={[0, 0, 0]}
+                            // rotation={[-Math.PI / 2, 0, Math.PI / 4.5]}
+                            color={"Red"}
+                        />
 
-                        {/* Bowl - Left Right */}
-                        <GrassPlane rotation={[-Math.PI / 2, -Math.PI / 4, Math.PI / 2]} position={[400, -1, 0]} />
-                        <GrassPlane rotation={[-Math.PI / 2, Math.PI / 4, Math.PI / 2]} position={[-400, -1, 0]} />
+                        <Pad
+                            position={[600, 0, 0]}
+                            // rotation={[-Math.PI / 2, 0, -Math.PI / 4.5]}
+                            color={"Blue"}
+                        />
 
-                        <group position={[200, 0, 200]}>
-                            <Ocean position={[-200, -1, -200]} />
-                        </group>
+                        <Pad
+                            position={[0, 0, 600]}
+                            // rotation={[-Math.PI / 2, 0, Math.PI / 1.3]}
+                            color={"Green"}
+                        />
 
-                        {/* Zones */}
-                        <group position={[-200, 1, -200]}>
-                            <Zone color='red' position={[0, 0, 0]} />
-                            <Zone color='blue' position={[400, 0, 0]} />
-                            <Zone color='green' position={[0, 0, 400]} />
-                            <Zone color='yellow' position={[400, 0, 400]} />
-                        </group>
+                        <Pad
+                            position={[600, 0, 600]}
+                            // rotation={[-Math.PI / 2, 0, -Math.PI / 1.3]}
+                            color={"Yellow"}
+                        />
+                    </group>
 
-                        {/* Pads */}
-                        <group position={[-300, 1.25, -300]}>
-
-                            <Pad
-                                position={[0, 0, 0]}
-                                // rotation={[-Math.PI / 2, 0, Math.PI / 4.5]}
-                                color={'Red'}
-                            />
-
-                            <Pad
-                                position={[600, 0, 0]}
-                                // rotation={[-Math.PI / 2, 0, -Math.PI / 4.5]}
-                                color={'Blue'}
-                            />
-
-                            <Pad
-                                position={[0, 0, 600]}
-                                // rotation={[-Math.PI / 2, 0, Math.PI / 1.3]}
-                                color={'Green'}
-                            />
-
-                            <Pad
-                                position={[600, 0, 600]}
-                                // rotation={[-Math.PI / 2, 0, -Math.PI / 1.3]}
-                                color={'Yellow'}
-                            />
-
-                        </group>
-
-                        {/* Players */}
-                        <group position={[-400 + 25, 26, -400 + 25]}>
-
-                            {/* {players.map((server_player_obj, bug_index) => {
+                    {/* Players */}
+                    <group position={[-400 + 25, 26, -400 + 25]}>
+                        {/* {players.map((server_player_obj, bug_index) => {
 
                                 var player = server_player_obj?.fourFrogs;
 
@@ -229,7 +246,7 @@ function FourFrogsDemo({
 
                             })} */}
 
-                            {/* <Player
+                        {/* <Player
                                 position={[0, 0, 0]}
                                 rotation={[0, Math.PI / 4.5, 0]}
                                 color={'Red'}
@@ -252,36 +269,34 @@ function FourFrogsDemo({
                                 rotation={[0, -Math.PI / 1.3, 0]}
                                 color={'Yellow'}
                             /> */}
+                    </group>
 
-                        </group>
+                    {/* Bugs */}
+                    <group position={[-400 + 25, 26, -400 + 25]}>
+                        {bugs.map((server_bug_obj, bug_index) => {
+                            if (!server_bug_obj || server_bug_obj.heldBy) {
+                                // No server data on bug yet
+                                // Bugs being held get rendered with the user carrying it
+                                return;
+                            }
 
-                        {/* Bugs */}
-                        <group position={[-400 + 25, 26, -400 + 25]}>
+                            return (
+                                <Bug
+                                    position={[
+                                        server_bug_obj.x,
+                                        0,
+                                        server_bug_obj.y,
+                                    ]}
+                                    bug={server_bug_obj}
+                                    key={bug_index}
+                                />
+                            );
+                        })}
+                    </group>
 
-                            {bugs.map((server_bug_obj, bug_index) => {
-
-                                if (!server_bug_obj || server_bug_obj.heldBy) {
-                                    // No server data on bug yet
-                                    // Bugs being held get rendered with the user carrying it
-                                    return
-                                }
-
-                                return (
-                                    <Bug
-                                        position={[server_bug_obj.x, 0, server_bug_obj.y]}
-                                        bug={server_bug_obj}
-                                        key={bug_index}
-                                    />
-                                )
-
-                            })}
-
-                        </group>
-
-                        {/* Powerups */}
-                        <group position={[-400 - 20, 0.5, -400 - 20]}>
-
-                            {/* {gameState?.powerups?.active.map(powerup_obj => {
+                    {/* Powerups */}
+                    <group position={[-400 - 20, 0.5, -400 - 20]}>
+                        {/* {gameState?.powerups?.active.map(powerup_obj => {
 
                                 return (
                                     <Powerup
@@ -292,22 +307,20 @@ function FourFrogsDemo({
                                 )
 
                             })} */}
-
-                        </group>
-
                     </group>
+                </group>
 
-                    {/* <Physics gravity={[0, -30, 0]}>
+                {/* <Physics gravity={[0, -30, 0]}>
 
                     </Physics> */}
 
-                    {/* <OrbitControls
+                {/* <OrbitControls
                         // autoRotate 
                         // autoRotateSpeed={0.75} 
                         target={[0, 0, 0]}
                     /> */}
 
-                    {/* {cameraShakeEnabled &&
+                {/* {cameraShakeEnabled &&
                         <CameraShake
                             maxYaw={0.01}
                             maxPitch={0.01}
@@ -317,11 +330,9 @@ function FourFrogsDemo({
                             rollFrequency={0.4}
                         />
                     } */}
-
-                </group>
-            
+            </group>
         </>
-    )
+    );
 }
 
-export default memo(FourFrogsDemo)
+export default memo(FourFrogsDemo);

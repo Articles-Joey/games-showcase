@@ -8,38 +8,68 @@ Source: https://sketchfab.com/3d-models/halo-ring-7821843cacd144de833ddb39e7fc0f
 Title: Halo Ring
 */
 
-import React, { useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import React, { useRef } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 
 export function ModelHaloRing(props) {
-  const { nodes, materials } = useGLTF('models/Halo/halo_ring-transformed.glb')
-  const groupRef = useRef()
+    const { nodes, materials } = useGLTF(
+        "models/Halo/halo_ring-transformed.glb",
+    );
+    const groupRef = useRef();
 
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      const rotation = groupRef.current.rotation.y
+    useFrame((state, delta) => {
+        if (groupRef.current) {
+            const rotation = groupRef.current.rotation.y;
 
-      // const normalizedRotation = rotation % (2 * Math.PI)
+            // const normalizedRotation = rotation % (2 * Math.PI)
 
-      // const positiveRotation = normalizedRotation < 0 ? normalizedRotation + 2 * Math.PI : normalizedRotation
+            // const positiveRotation = normalizedRotation < 0 ? normalizedRotation + 2 * Math.PI : normalizedRotation
 
-      // Fast speed for first 180 deg, Slow for next 180 deg
-      // const speed = positiveRotation < Math.PI ? 4 : 0.5
-      const speed = 0.5
+            // Fast speed for first 180 deg, Slow for next 180 deg
+            // const speed = positiveRotation < Math.PI ? 4 : 0.5
+            const speed = 0.5;
 
-      groupRef.current.rotation.y += speed * delta
-    }
-  })
+            groupRef.current.rotation.y += speed * delta;
+        }
+    });
 
-  return (
-    <group ref={groupRef} {...props} dispose={null}>
-      <mesh geometry={nodes.MaterialFBXASC032FBXASC0352142150746.geometry} material={materials.MaterialFBXASC032FBXASC0352142150746} position={[0, 75.012, 75.012]} rotation={[Math.PI, 0, -Math.PI / 2]} scale={[1.025, 1.025, 1]} />
-      <mesh geometry={nodes.MaterialFBXASC032FBXASC0352142146801.geometry} material={materials.MaterialFBXASC032FBXASC0352142146801} position={[0, 75.012, 75.012]} rotation={[Math.PI, 0, -Math.PI / 2]} scale={[1.025, 1.025, 1]} />
-      <mesh geometry={nodes.LIGHTKRAFTFBXASC032GRAVITONFBXASC032.geometry} material={materials.LIGHTKRAFTFBXASC032GRAVITONFBXASC032} position={[0, 75.012, 75.012]} rotation={[Math.PI, 0, -Math.PI / 2]} scale={[1.025, 1.025, 1]} />
-      <mesh geometry={nodes.MaterialFBXASC032FBXASC0352142147988.geometry} material={materials.MaterialFBXASC032FBXASC0352142147988} position={[0, 75.012, 75.012]} rotation={[Math.PI, 0, -Math.PI / 2]} scale={[1.025, 1.025, 1]} />
-    </group>
-  )
+    return (
+        <group
+            ref={groupRef}
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.MaterialFBXASC032FBXASC0352142150746.geometry}
+                material={materials.MaterialFBXASC032FBXASC0352142150746}
+                position={[0, 75.012, 75.012]}
+                rotation={[Math.PI, 0, -Math.PI / 2]}
+                scale={[1.025, 1.025, 1]}
+            />
+            <mesh
+                geometry={nodes.MaterialFBXASC032FBXASC0352142146801.geometry}
+                material={materials.MaterialFBXASC032FBXASC0352142146801}
+                position={[0, 75.012, 75.012]}
+                rotation={[Math.PI, 0, -Math.PI / 2]}
+                scale={[1.025, 1.025, 1]}
+            />
+            <mesh
+                geometry={nodes.LIGHTKRAFTFBXASC032GRAVITONFBXASC032.geometry}
+                material={materials.LIGHTKRAFTFBXASC032GRAVITONFBXASC032}
+                position={[0, 75.012, 75.012]}
+                rotation={[Math.PI, 0, -Math.PI / 2]}
+                scale={[1.025, 1.025, 1]}
+            />
+            <mesh
+                geometry={nodes.MaterialFBXASC032FBXASC0352142147988.geometry}
+                material={materials.MaterialFBXASC032FBXASC0352142147988}
+                position={[0, 75.012, 75.012]}
+                rotation={[Math.PI, 0, -Math.PI / 2]}
+                scale={[1.025, 1.025, 1]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Halo/halo_ring-transformed.glb')
+useGLTF.preload("models/Halo/halo_ring-transformed.glb");

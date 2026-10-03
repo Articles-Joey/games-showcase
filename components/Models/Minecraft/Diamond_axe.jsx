@@ -8,17 +8,30 @@ Source: https://sketchfab.com/3d-models/minecraft-diamond-axe-0d62f4d3676545c88e
 Title: Minecraft Diamond Axe
 */
 
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from "react";
+import { useGLTF } from "@react-three/drei";
 
 export function ModelMinecraftDiamondAxe(props) {
-  const { nodes, materials } = useGLTF('models/Minecraft/diamond_axe-transformed.glb')
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_2.geometry} material={materials['Material.001']} rotation={[-Math.PI / 2, 0, 0]} />
-      <mesh geometry={nodes.Object_10.geometry} material={materials['Material.009']} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
+    const { nodes, materials } = useGLTF(
+        "models/Minecraft/diamond_axe-transformed.glb",
+    );
+    return (
+        <group
+            {...props}
+            dispose={null}
+        >
+            <mesh
+                geometry={nodes.Object_2.geometry}
+                material={materials["Material.001"]}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+            <mesh
+                geometry={nodes.Object_10.geometry}
+                material={materials["Material.009"]}
+                rotation={[-Math.PI / 2, 0, 0]}
+            />
+        </group>
+    );
 }
 
-useGLTF.preload('models/Minecraft/diamond_axe-transformed.glb')
+useGLTF.preload("models/Minecraft/diamond_axe-transformed.glb");

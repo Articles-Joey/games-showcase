@@ -13,22 +13,22 @@ export default function MazeScene() {
                 gravity={[0, -100, 0]}
                 // allowSleep={false}
                 // iterations={500}
-                defaultContactMaterial={{
-                    // restitution: 0.5,
-                    // friction: 0.1
-                }}
+                defaultContactMaterial={
+                    {
+                        // restitution: 0.5,
+                        // friction: 0.1
+                    }
+                }
             >
                 <Debug
                     color={"red"}
-                // scale={0}
+                    // scale={0}
                 >
                     <MazeBall
-                    // position={[0, 10, 0]}              
+                    // position={[0, 10, 0]}
                     />
                     <group>
-                        <ModelMazeBoard
-                            scale={1}
-                        />
+                        <ModelMazeBoard scale={1} />
                     </group>
                 </Debug>
             </Physics>

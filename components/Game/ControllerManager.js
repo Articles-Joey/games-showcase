@@ -11,12 +11,8 @@ import useGameControllerKeyboardStore from "@articles-media/articles-gamepad-hel
 import useAllGames from "@/components/hooks/useAllGames";
 
 const ControllerManager = () => {
-
     // const { games, publicGames } = useGames();
-    const { 
-        games: allGames,
-        filteredGames
-    } = useAllGames();
+    const { games: allGames, filteredGames } = useAllGames();
 
     let activeGames = filteredGames || allGames;
 
@@ -28,8 +24,8 @@ const ControllerManager = () => {
     const activeGameIndex = useStore((state) => state.activeGameIndex);
     const setActiveGameIndex = useStore((state) => state.setActiveGameIndex);
 
-    const showSettingsModal = useStore((state) => state.showSettingsModal)
-    const toggleSettingsModal = useStore((state) => state.toggleSettingsModal)
+    const showSettingsModal = useStore((state) => state.showSettingsModal);
+    const toggleSettingsModal = useStore((state) => state.toggleSettingsModal);
 
     const gameInfoModal = useStore((state) => state?.gameInfoModal);
     const setGameInfoModal = useStore((state) => state?.setGameInfoModal);
@@ -40,45 +36,72 @@ const ControllerManager = () => {
     const prevButton0 = useRef(false); // Track previous state of Button A
     const prevButton1 = useRef(false); // Track previous state of Button B
     const prevButton2 = useRef(false); // Track previous state of Button X
-    const audioRef = useRef(typeof Audio !== "undefined" ? new Audio("/audio/noisy-switch.mp3") : null);
+    const audioRef = useRef(
+        typeof Audio !== "undefined"
+            ? new Audio("/audio/noisy-switch.mp3")
+            : null,
+    );
     // const audioRef = useRef(typeof Audio !== "undefined" ? new Audio("/audio/noisy-switch.mp3") : null);
 
     const playSound = () => {
         if (audioRef.current) {
             const sound = audioRef.current.cloneNode(true);
-            sound.volume = audioSettings?.enabled ? (audioSettings?.game_volume / 100) : 0;
-            sound.play().catch(() => { });
+            sound.volume = audioSettings?.enabled
+                ? audioSettings?.game_volume / 100
+                : 0;
+            sound.play().catch(() => {});
         }
     };
 
     const delayBetweenMoves = 100; // milliseconds
 
-    useHotkeys(['a', 'ArrowLeft'], () => {
-        if (visible || showSettingsModal || gameInfoModal) return; // Block input if modal is open
+    useHotkeys(
+        ["a", "ArrowLeft"],
+        () => {
+            if (visible || showSettingsModal || gameInfoModal) return; // Block input if modal is open
 
-        const now = Date.now();
-        if (now - lastHotkeyTime.current < delayBetweenMoves) return;
+            const now = Date.now();
+            if (now - lastHotkeyTime.current < delayBetweenMoves) return;
 
-        if (activeGameIndex > 0) {
-            setActiveGameIndex(activeGameIndex - 1);
-            lastHotkeyTime.current = now;
-            playSound();
-        }
+            if (activeGameIndex > 0) {
+                setActiveGameIndex(activeGameIndex - 1);
+                lastHotkeyTime.current = now;
+                playSound();
+            }
+        },
+        {},
+        [
+            activeGameIndex,
+            audioSettings,
+            visible,
+            showSettingsModal,
+            gameInfoModal,
+        ],
+    );
+    useHotkeys(
+        ["d", "ArrowRight"],
+        () => {
+            if (visible || showSettingsModal || gameInfoModal) return; // Block input if modal is open
 
-    }, {}, [activeGameIndex, audioSettings, visible, showSettingsModal, gameInfoModal]);
-    useHotkeys(['d', 'ArrowRight'], () => {
-        if (visible || showSettingsModal || gameInfoModal) return; // Block input if modal is open
+            const now = Date.now();
+            if (now - lastHotkeyTime.current < delayBetweenMoves) return;
 
-        const now = Date.now();
-        if (now - lastHotkeyTime.current < delayBetweenMoves) return;
-
-        if (activeGameIndex < activeGames?.length - 1) {
-            setActiveGameIndex(activeGameIndex + 1);
-            lastHotkeyTime.current = now;
-            playSound();
-        }
-
-    }, {}, [activeGameIndex, activeGames, audioSettings, visible, showSettingsModal, gameInfoModal]);
+            if (activeGameIndex < activeGames?.length - 1) {
+                setActiveGameIndex(activeGameIndex + 1);
+                lastHotkeyTime.current = now;
+                playSound();
+            }
+        },
+        {},
+        [
+            activeGameIndex,
+            activeGames,
+            audioSettings,
+            visible,
+            showSettingsModal,
+            gameInfoModal,
+        ],
+    );
 
     useFrame((state) => {
         const gamepads = navigator.getGamepads();
@@ -91,7 +114,7 @@ const ControllerManager = () => {
 
         // Toggle Settings with Start (Button 9)
         if (gp.buttons[9].pressed) {
-            // Use performance.now() for consistent timing with other inputs if needed, 
+            // Use performance.now() for consistent timing with other inputs if needed,
             // but state.clock.elapsedTime is in seconds, so we compare with seconds.
             // Let's stick to one time source if possible, but here we mix.
             // Using Date.now() for consistency with hotkeys is safer for "real time" debouncing.
@@ -119,36 +142,40 @@ const ControllerManager = () => {
 
                 // Navigation logic - needs work
                 if (selectedGame?.link) {
-
                     // TODO: Make a setting for this behavior
 
-                    window.open(`https://${selectedGame.link.replace("https://", "")}?controller=1&utm_source=games.articles.media&utm_medium=carousel`, '_blank', 'noopener,noreferrer');
+                    window.open(
+                        `https://${selectedGame.link.replace("https://", "")}?controller=1&utm_source=games.articles.media&utm_medium=carousel`,
+                        "_blank",
+                        "noopener,noreferrer",
+                    );
 
                     // window.location.href = `${selectedGame.link}?controller=1&utm_source=games.articles.media&utm_medium=carousel`;
-
                 }
 
                 if (selectedGame?.launch_command) {
-                    fetch('/api/launch-game', {
-                        method: 'POST',
+                    fetch("/api/launch-game", {
+                        method: "POST",
                         headers: {
-                            'Content-Type': 'application/json',
+                            "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({ location: selectedGame.launch_command }),
-                    }).then(response => {
-                        
+                        body: JSON.stringify({
+                            location: selectedGame.launch_command,
+                        }),
+                    }).then((response) => {
                         if (!response.ok) {
-                            console.error("Failed to launch game:", response.statusText);
+                            console.error(
+                                "Failed to launch game:",
+                                response.statusText,
+                            );
                         }
 
                         const data = response.json();
                         console.log("Launch response data:", data);
 
                         // exitFullscreen();
-
                     });
                 }
-
             }
         }
         prevButton0.current = button0;
@@ -175,7 +202,6 @@ const ControllerManager = () => {
                 console.log("Selected Game:", selectedGame);
 
                 setGameInfoModal(selectedGame);
-
             }
         }
         prevButton2.current = button2;
@@ -202,7 +228,6 @@ const ControllerManager = () => {
                 lastMoveTime.current = now;
                 playSound();
             }
-
         } else if (isRight) {
             const currentIndex = useStore.getState().activeGameIndex;
             if (currentIndex < activeGames?.length - 1) {
@@ -210,11 +235,10 @@ const ControllerManager = () => {
                 lastMoveTime.current = now;
                 playSound();
             }
-
         }
     });
 
     return null;
-}
+};
 
 export default memo(ControllerManager);

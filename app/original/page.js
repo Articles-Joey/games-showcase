@@ -1,16 +1,13 @@
-import PageContent from "."
-
+import PageContent from ".";
 
 export const metadata = {
-  title: `Original | Games Showcase`,
-}
+    title: `Original | Games Showcase`,
+};
 
 export default function Home() {
-
-  return (
-    <>
-      <PageContent />
-    </>
-  )
-
+    return (
+        <>
+            <PageContent />
+        </>
+    );
 }

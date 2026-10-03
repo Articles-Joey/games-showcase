@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from '@react-three/fiber'
+import { useFrame } from "@react-three/fiber";
 
-import Duck from '../../../PlayerModels/Duck';
-import Dog from '../../../PlayerModels/Dog';
-import Witch from '../../../PlayerModels/Witch';
-import Bear from '../../../PlayerModels/Bear';
+import Duck from "../../../PlayerModels/Duck";
+import Dog from "../../../PlayerModels/Dog";
+import Witch from "../../../PlayerModels/Witch";
+import Bear from "../../../PlayerModels/Bear";
 
 const { Bleacher } = require("../../../Bleacher");
 
@@ -14,10 +14,13 @@ const BobbingContainer = ({ children }) => {
     const [bobHeight, setBobHeight] = useState(0);
 
     useEffect(() => {
-        const bobInterval = setInterval(() => {
-            const newBobHeight = Math.random() * (0.1 - 0.01) + 0.01;
-            setBobHeight(newBobHeight);
-        }, Math.random() * (1000 - 300) + 300);
+        const bobInterval = setInterval(
+            () => {
+                const newBobHeight = Math.random() * (0.1 - 0.01) + 0.01;
+                setBobHeight(newBobHeight);
+            },
+            Math.random() * (1000 - 300) + 300,
+        );
 
         return () => clearInterval(bobInterval);
     }, []);
@@ -32,7 +35,6 @@ const BobbingContainer = ({ children }) => {
 };
 
 export default function BleacherBox(props) {
-
     const ref = useRef();
     const groupRef = useRef();
 
@@ -57,15 +59,14 @@ export default function BleacherBox(props) {
 
     return (
         <group>
-
             {/* Main box */}
             <mesh
                 {...props}
                 ref={ref}
                 // position={[0, 0, -0.7]}
-            // onClick={(event) => click(!clicked) + hover(true)}
-            // onPointerOver={() => hover(true)}
-            // onPointerOut={() => hover(false)}
+                // onClick={(event) => click(!clicked) + hover(true)}
+                // onPointerOver={() => hover(true)}
+                // onPointerOut={() => hover(false)}
             >
                 {/* <boxGeometry args={[2, 0.5, 2]} />
                 <meshStandardMaterial
@@ -73,13 +74,15 @@ export default function BleacherBox(props) {
                 /> */}
 
                 {/* Nest the Bleacher component inside the Box component */}
-                <Bleacher position={[0, 0, 0]} rotation={[0, 0, 0]} />
+                <Bleacher
+                    position={[0, 0, 0]}
+                    rotation={[0, 0, 0]}
+                />
 
                 <group ref={groupRef}>
-
                     <BobbingContainer>
                         <Duck
-                            position={[0, .4, -0.1]}
+                            position={[0, 0.4, -0.1]}
                             rotation={[0, Math.PI / 2, 0]}
                             scale={0.2}
                         />
@@ -87,7 +90,7 @@ export default function BleacherBox(props) {
 
                     <BobbingContainer>
                         <Dog
-                            position={[0, .4, 0.3]}
+                            position={[0, 0.4, 0.3]}
                             rotation={[0, Math.PI / 2, 0]}
                             scale={0.2}
                         />
@@ -95,7 +98,7 @@ export default function BleacherBox(props) {
 
                     <BobbingContainer>
                         <Witch
-                            position={[-0.2, .53, -0.1]}
+                            position={[-0.2, 0.53, -0.1]}
                             rotation={[0, Math.PI / 2, 0]}
                             scale={0.2}
                         />
@@ -103,16 +106,13 @@ export default function BleacherBox(props) {
 
                     <BobbingContainer>
                         <Bear
-                            position={[-0.2, .53, 0.3]}
+                            position={[-0.2, 0.53, 0.3]}
                             rotation={[0, Math.PI / 2, 0]}
                             scale={0.2}
                         />
                     </BobbingContainer>
-
                 </group>
-
             </mesh>
-
         </group>
     );
 }

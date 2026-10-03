@@ -1,47 +1,39 @@
-"use client"
-import { Suspense, useEffect } from 'react';
-import packageInfo from '@/package.json';
+"use client";
 
-import { useHotkeys } from 'react-hotkeys-hook';
-
-import { useStore } from '@/components/hooks/useStore';
-
-import GlobalBody from '@articles-media/articles-dev-box/GlobalBody';
+import { Suspense } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { usePathname } from "next/navigation";
+import Box from "@mui/material/Box";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import packageInfo from "@/package.json";
+import GlobalBody from "@articles-media/articles-dev-box/GlobalBody";
 import DarkModeHandler from "@articles-media/articles-dev-box/DarkModeHandler";
-import GlobalClientModals from '@articles-media/articles-dev-box/GlobalClientModals';
-import { useAudioStore } from '@/components/hooks/useAudioStore';
-import { useSocketStore } from '@/components/hooks/useSocketStore';
-import ArticlesButton from '@/components/UI/Button';
-import ControlsSetting from '@/components/UI/ControlsSetting';
-import GameInfoModal from '@/components/UI/GameInfoModal';
-import useTouchControlsStore from '@/components/hooks/useTouchControlsStore';
-import { usePathname } from 'next/navigation';
-import FloatingDarkModeButton from '@/components/UI/FloatingDarkModeButton';
+import GlobalClientModals from "@articles-media/articles-dev-box/GlobalClientModals";
+import { useStore } from "@/components/hooks/useStore";
+import { useAudioStore } from "@/components/hooks/useAudioStore";
+import { useSocketStore } from "@/components/hooks/useSocketStore";
+import useTouchControlsStore from "@/components/hooks/useTouchControlsStore";
+import ArticlesButton from "@/components/UI/Button";
+import ControlsSetting from "@/components/UI/ControlsSetting";
+import GameInfoModal from "@/components/UI/GameInfoModal";
+import FloatingDarkModeButton from "@/components/UI/FloatingDarkModeButton";
 
-export default function LayoutClient({ children }) {
-
+export default function LayoutClient() {
     const pathname = usePathname();
-
-    const darkMode = useStore((state) => state?.darkMode);
+    const darkMode = useStore((state) => state.darkMode);
     const renderUniqueGameSceneRange = useStore((state) => state.renderUniqueGameSceneRange);
     const setRenderUniqueGameSceneRange = useStore((state) => state.setRenderUniqueGameSceneRange);
-
     const gameInfoModal = useStore((state) => state.gameInfoModal);
     const setGameInfoModal = useStore((state) => state.setGameInfoModal);
 
-    useHotkeys('r', () => {
-        console.log("Reloading Scene")
-        useStore.getState().reloadScene();
-    }, [])
+    useHotkeys("r", () => useStore.getState().reloadScene(), []);
 
     return (
         <>
             <GlobalBody />
-            <DarkModeHandler
-                useStore={useStore}
-            />
+            <DarkModeHandler useStore={useStore} />
             <Suspense>
-
                 <GlobalClientModals
                     useStore={useStore}
                     useAudioStore={useAudioStore}
@@ -50,114 +42,44 @@ export default function LayoutClient({ children }) {
                     packageInfo={packageInfo}
                     settingsModalConfig={{
                         tabs: {
-                            'Graphics': {
+                            Graphics: {
                                 darkMode: true,
                                 landingAnimation: true,
-                                children: <>
-                                    <div className="mb-3">
-
-                                        <div className="">Render Unique Game Scene Range</div>
-
-                                        <div className='d-flex mb-3'>
-
-                                            <ArticlesButton
-                                                small
-                                                className="w-50"
-                                                // active={!audioSettings?.enabled}
-                                                onClick={() => {
-                                                    setRenderUniqueGameSceneRange(renderUniqueGameSceneRange - 1)
-                                                }}
-                                            >
-                                                <i className="fad fa-arrow-down"></i>
-                                            </ArticlesButton>
-
-                                            <ArticlesButton
-                                                small
-                                                className="w-50"
-                                                // active={audioSettings?.enabled}
-                                                onClick={() => {
-                                                    // setAudioSettings({
-                                                    //     ...audioSettings,
-                                                    //     enabled: true
-                                                    // })
-                                                }}
-                                            >
-                                                {renderUniqueGameSceneRange}
-                                            </ArticlesButton>
-
-                                            <ArticlesButton
-                                                small
-                                                className="w-50"
-                                                // active={audioSettings?.enabled}
-                                                onClick={() => {
-                                                    setRenderUniqueGameSceneRange(renderUniqueGameSceneRange + 1)
-                                                }}
-                                            >
-                                                <i className="fad fa-arrow-up"></i>
-                                            </ArticlesButton>
-
-                                        </div>
-                                    </div>
-                                </>
+                                children: <Box sx={{ mb: 2 }}>
+                                    <Box>Render Unique Game Scene Range</Box>
+                                    <Box sx={{ display: "flex", mb: 2 }}>
+                                        <ArticlesButton small sx={{ flex: 1 }} aria-label="Decrease scene range" onClick={() => setRenderUniqueGameSceneRange(renderUniqueGameSceneRange - 1)}>
+                                            <ArrowDownwardIcon fontSize="small" />
+                                        </ArticlesButton>
+                                        <ArticlesButton small sx={{ flex: 1 }}>{renderUniqueGameSceneRange}</ArticlesButton>
+                                        <ArticlesButton small sx={{ flex: 1 }} aria-label="Increase scene range" onClick={() => setRenderUniqueGameSceneRange(renderUniqueGameSceneRange + 1)}>
+                                            <ArrowUpwardIcon fontSize="small" />
+                                        </ArticlesButton>
+                                    </Box>
+                                </Box>,
                             },
-                            'Audio': {
-                                sliders: [
-                                    ...useAudioStore.getState().audioSettings ?
-                                        Object.keys(useAudioStore.getState().audioSettings).filter(key => key !== "enabled").map(key => ({
-                                            key,
-                                            label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-                                        }))
-                                        :
-                                        [],
-                                ]
+                            Audio: {
+                                sliders: Object.keys(useAudioStore.getState().audioSettings || {})
+                                    .filter((key) => key !== "enabled")
+                                    .map((key) => ({
+                                        key,
+                                        label: key.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
+                                    })),
                             },
-                            'Controls': {
-                                touchControls: true,
-                                // defaultKeyBindings: {
-                                //     // moveUp: "W",
-                                //     // moveDown: "S",
-                                //     // moveLeft: "A",
-                                //     // moveRight: "D",
-                                // }
-                                children: <>
-                                    <ControlsSetting />
-                                </>
-                            },
-                            'Multiplayer': {
-                                serverUrl: true,
-                            },
-                            'Other': {
-                                // toontownMode: true,
-                            },
-                            'Debug': {
-                                showStats: true,
-                                children: <>
-
-                                </>,
-                            }
+                            Controls: { touchControls: true, children: <ControlsSetting /> },
+                            Multiplayer: { serverUrl: true },
+                            Other: {},
+                            Debug: { showStats: true },
                         },
                         reset: () => {
                             useAudioStore.getState().resetAudioSettings();
                             useStore.getState().setControlSettings(useStore.getState().initialControlSettings);
-                        }
+                        },
                     }}
-                    infoModalConfig={{
-                        previewImage: darkMode ? "img/preview.webp" : "img/preview.webp",
-                    }}
+                    infoModalConfig={{ previewImage: darkMode ? "img/preview.webp" : "img/preview.webp" }}
                 />
-
-                {gameInfoModal &&
-                    <GameInfoModal
-                        show={gameInfoModal}
-                        setShow={setGameInfoModal}
-                    />
-                }
-
-                {/* pathname: {pathname} */}
-
-                {(pathname == "/wall" || pathname == "/original") && <FloatingDarkModeButton />
-                }
-
+                {gameInfoModal && <GameInfoModal show={gameInfoModal} setShow={setGameInfoModal} />}
+                {(pathname === "/wall" || pathname === "/original") && <FloatingDarkModeButton />}
             </Suspense>
         </>
     );

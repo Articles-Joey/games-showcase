@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { useSocketStore } from "@/components/hooks/useSocketStore"
 import { useStore } from "@/components/hooks/useStore"
 import { usePathname } from "next/navigation"
+import Box from "@mui/material/Box"
 
 export default function SocketLogicHandler({
     // pathname,
@@ -216,8 +217,8 @@ export default function SocketLogicHandler({
         process.env.NODE_ENV !== 'production'
     ) {
         return (
-            <div
-                style={{
+            <Box
+                sx={{
                     position: "fixed",
                     bottom: 0,
                     left: 0,
@@ -230,20 +231,20 @@ export default function SocketLogicHandler({
                     gap: "8px",
                 }}
             >
-                <div>Connected: {connected ? "Yes" : "No"}</div>
-                <div>Authenticated: {authenticated ? "Yes" : "No"}</div>
+                <Box>Connected: {connected ? "Yes" : "No"}</Box>
+                <Box>Authenticated: {authenticated ? "Yes" : "No"}</Box>
                 {connected ?
                     <>
-                        <div>ID: {socket.id}</div>
-                        <div>Host: {socket.io.uri}</div>
+                        <Box>ID: {socket.id}</Box>
+                        <Box>Host: {socket.io.uri}</Box>
                     </>
                     :
                     <>
-                        <div>ID: No</div>
-                        <div>Host: No</div>
+                        <Box>ID: No</Box>
+                        <Box>Host: No</Box>
                     </>
                 }
-            </div>
+            </Box>
         )
     }
 }

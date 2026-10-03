@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
+import Box from '@mui/material/Box';
 import useGameControllerKeyboardStore from '@/components/hooks/useGameControllerKeyboardStore';
 
 // DO NOT USE - In articles-gamepad-helper package now.
@@ -124,26 +125,30 @@ const GameControllerKeyboard = ({ onFinish, onCancel }) => {
     if (!visible) return null;
 
     return (
-        <div className="keyboard-overlay">
-            <div className="keyboard-display">{text}</div>
-            <div className="keyboard-grid">
+        <Box sx={{ position: 'fixed', inset: 0, width: '100vw', height: '100vh', bgcolor: 'rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 9999, color: '#fff', fontFamily: 'sans-serif' }}>
+            <Box sx={{ fontSize: '2rem', mb: '2rem', p: 2, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '8px', minWidth: 300, textAlign: 'center', minHeight: '3rem' }}>{text}</Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {KEYS.map((row, rIndex) => (
-                    <div key={rIndex} className="keyboard-row">
+                    <Box key={rIndex} sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                         {row.map((key, cIndex) => (
-                            <div 
+                            <Box
                                 key={key} 
-                                className={`key ${rIndex === currentRow && cIndex === currentCol ? 'active' : ''} ${['SPACE', 'BACKSPACE', 'FINISH'].includes(key) ? 'wide' : ''}`}
+                                sx={{
+                                    width: 50, height: 50, bgcolor: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.1s',
+                                    ...(['SPACE', 'BACKSPACE', 'FINISH'].includes(key) && { width: 'auto', px: '20px' }),
+                                    ...(rIndex === currentRow && cIndex === currentCol && { bgcolor: '#0070f3', transform: 'scale(1.1)', boxShadow: '0 0 10px #0070f3' }),
+                                }}
                             >
                                 {key}
-                            </div>
+                            </Box>
                         ))}
-                    </div>
+                    </Box>
                 ))}
-            </div>
-            <div className="instructions">
+            </Box>
+            <Box sx={{ mt: '2rem', fontSize: '0.9rem', opacity: 0.7 }}>
                 <p>D-Pad to Navigate | A to Select | Y to Close</p>
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 };
 

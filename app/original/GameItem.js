@@ -1,589 +1,124 @@
-"use client"
-import { useState, useEffect } from 'react';
+"use client";
 
-import Link from 'next/link'
-import Image from 'next/image'
-import dynamic from 'next/dynamic'
-
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 import { sendGAEvent } from "@next/third-parties/google";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import PowerIcon from "@mui/icons-material/Power";
+import PersonIcon from "@mui/icons-material/Person";
+import GroupsIcon from "@mui/icons-material/Groups";
+import HistoryIcon from "@mui/icons-material/History";
+import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import InfoIcon from "@mui/icons-material/Info";
+import ArticlesButton from "@/components/UI/Button";
+import { Textfit } from "@/components/UI/Textfit";
+import { useStore } from "@/components/hooks/useStore";
 
-import Modal from 'react-bootstrap/Modal';
-
-import ArticlesButton from '@/components/UI/Button';
-import { Textfit } from '@/components/UI/Textfit';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { useStore } from '@/components/hooks/useStore';
-
-const ArticlesModal = dynamic(
-    () => import('@/components/UI/ArticlesModal'),
-    { ssr: false }
-)
+const ArticlesModal = dynamic(() => import("@/components/UI/ArticlesModal"), { ssr: false });
+const actionSx = {
+    bgcolor: "background.paper", borderRadius: "100px", border: "1px solid rgba(0,0,0,0.5)",
+    display: "flex", alignItems: "center", justifyContent: "center", width: 20, height: 20, p: 0,
+    boxShadow: "0 0 0 1px rgba(0,0,0,0.25), 0 2px 3px rgba(0,0,0,0.2)", transitionDuration: "200ms",
+    "@media (min-width: 992px)": { width: 25, height: 25 },
+    "& .MuiSvgIcon-root": { fontSize: "0.8rem" },
+};
 
 export default function GameItem({ item, toontownImages }) {
-
     const setGameInfoModal = useStore((state) => state.setGameInfoModal);
-
-    const [showOfflineModal, setShowOfflineModal] = useState(false)
-    const [gamepadSupportModal, setGamepadSupportModal] = useState(false)
+    const [showOfflineModal, setShowOfflineModal] = useState(false);
+    const [gamepadSupportModal, setGamepadSupportModal] = useState(false);
     const [activeDeveloper, setActiveDeveloper] = useState(null);
-
-    const developer_descriptions = [
-        {
-            developer: 'Articles Media',
-            developer_description: 'Developed by our own team at Articles Media! Our aim with the games we develop is to drive traffic and engagement with the site overall.'
-        }
-    ]
+    const openInfo = () => {
+        sendGAEvent("event", "Opened gameInfoModal", { value: item.name });
+        setGameInfoModal(item);
+    };
 
     return (
-        <div className='game-item'>
-
-            {/* TODO - Move into info modal */}
-            {showOfflineModal &&
-                <ArticlesModal
-                    show={showOfflineModal}
-                    setShow={setShowOfflineModal}
-                    title="Offline Support"
-                >
-
-                    <h5 className="mb-1">{showOfflineModal.name}</h5>
-                    <div className="small text-muted mb-3">Offline Info and Settings</div>
-
-                    <div className="small">{showOfflineModal.offlineNote || 'offlineNote'}</div>
-
-                </ArticlesModal>
-            }
-
-            {/* TODO - Move into info modal */}
-            {gamepadSupportModal &&
-                <ArticlesModal
-                    show={gamepadSupportModal}
-                    setShow={setGamepadSupportModal}
-                    title="Gamepad Support"
-                >
-
-                    <h5 className="mb-1">{showOfflineModal.name}</h5>
-                    <div className="small text-muted mb-3">Gamepad Info and Settings</div>
-                    <div>This game has full support for the following controllers.</div>
-
-                </ArticlesModal>
-            }
-
-            {/* TODO - Move into info modal */}
-            {activeDeveloper &&
-                <Modal
-                    show={activeDeveloper}
-                    className="articles-modal"
-                    centered
-                    onHide={() => {
-                        // setModalShow(false)
-                        setActiveDeveloper(null)
-                    }}
-                >
-
-                    <Modal.Header className="py-1" closeButton>
-                        <Modal.Title>Developer Info</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-
-                        <div className='mb-2'>
-                            <b className=''>{activeDeveloper.developer}</b>
-                        </div>
-
-
-                        <div className="small">
-                            {developer_descriptions.find(dev_obj => {
-                                return dev_obj.developer == activeDeveloper.developer
-                            })?.developer_description}
-                        </div>
-
-                    </Modal.Body>
-
-                    <Modal.Footer className='d-flex justify-content-between align-items-center'>
-
-                        <div>
-
-                        </div>
-
-                        <ArticlesButton
-                            variant="secondary"
-                            onClick={() => {
-                                // setModalShow(false)
-                                // setActiveModalGame(null)
-                                setActiveDeveloper(null)
-                            }}
-                        >
-                            Close
-                        </ArticlesButton>
-
-                    </Modal.Footer>
-
-                </Modal>
-            }
-
-            <div
-                className='card card-game'
-                style={{
-                    // ...(item.preview && { opacity: '0.75' })
-                }}
-            >
-
-                <div className="card-header p-2">
-                    <b>{item.name}</b>
-                </div>
-
-                <div className="thumbnail-wrapper position-relative">
-
-                    <Link
-                        // href={item.link}
-                        href={`${item.link}`}
-                        prefetch={false}
-                        target='_blank'
-                        rel="noopener noreferrer"
-                    >
-                        <div className="ratio ratio-1x1 bg-dark mb-0 me-2 me-lg-0">
-
-                            {item?.image?.src &&
-                                <Image
-                                    alt=""
-                                    fill
-                                    placeholder={
-                                        ['jpg', 'png', 'wep'].includes(item.image.src.split('.').pop()) ? 'blur' : 'empty'
-                                    }
-                                    style={{
-                                        objectFit: 'cover',
-                                    }}
-                                    src={item.image}
-                                >
-                                </Image>
-                            }
-
-                            {item.image && !item?.image?.src &&
-                                <img
-                                    src={
-                                        (toontownImages && item.inspo_image) ?
-                                            item.inspo_image
-                                            :
-                                            item.image
-
-                                    }
-                                    alt=""
-                                    className='w-100 h-100'
-                                    style={{ objectFit: 'cover' }}
-                                    loading='lazy'
-                                />
-                            }
-
-                        </div>
-                    </Link>
-
-                    <div
-                        className='icons-wrapper'
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }}
-                    >
-                        {item.gamepadSupport &&
-                            <OverlayTrigger
-                                placement={'bottom'}
-                                overlay={
-                                    <Tooltip id={`tooltip-${'bottom'}`}>
-                                        Gamepad Support
-                                    </Tooltip>
-                                }
-                            >
-                                <i className="action fad fa-gamepad-alt me-0"></i>
-                            </OverlayTrigger>
-                        }
-                        {item.leaderboards &&
-                            <OverlayTrigger
-                                placement={'bottom'}
-                                overlay={
-                                    <Tooltip id={`tooltip-${'bottom'}`}>
-                                        <div>Leaderboards</div>
-                                        <hr className="my-1" />
-                                        {item.leaderboards.local && <div>Local</div>}
-                                        {item.leaderboards.online && <div>Online</div>}
-                                    </Tooltip>
-                                }
-                            >
-                                <i className="action fad fa-trophy me-0"></i>
-                            </OverlayTrigger>
-                        }
-                        {
-                            item.github_repo
-                            &&
-                            item.github_public
-                            &&
-                            <a
-                                href={item.github_repo}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => {
-                                    window.open(item.github_repo, '_blank');
-                                    sendGAEvent('event', 'Clicked GitHub Action', { value: item.name });
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                }}
-                            >
-                                <OverlayTrigger
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Tooltip id={`tooltip-${'bottom'}`}>
-                                            Open Source GitHub Repo
-                                        </Tooltip>
-                                    }
-                                >
-                                    <i className="action fab fa-github me-0"></i>
-                                </OverlayTrigger>
-                            </a>
-                        }
-                        {item.offline &&
-                            <OverlayTrigger
-                                placement={'bottom'}
-                                overlay={
-                                    <Tooltip id={`tooltip-${'bottom'}`}>
-                                        Playable Offline
-                                    </Tooltip>
-                                }
-                            >
-                                <i className="action fad fa-plug me-0"></i>
-                            </OverlayTrigger>
-                        }
-                        {item.amcot_character &&
-                            <OverlayTrigger
-                                placement={'bottom'}
-                                overlay={
-                                    <Tooltip id={`tooltip-${'bottom'}`}>
-                                        AMCOT Character Usage
-                                    </Tooltip>
-                                }
-                            >
-                                <i className="action fad fa-user-astronaut me-0"></i>
-                            </OverlayTrigger>
-                        }
-                    </div>
-
-                </div>
-
-                <div className="card-header p-1 border-bottom h-100">
-
-                    <div
-                        className='d-flex flex-row flex-wrap w-100 justify-content-center align-items-center'
-                        style={{
-                            fontSize: '0.9rem',
-                        }}
-                    >
-
-                        {item.single_player &&
-                            <>
-                                <OverlayTrigger
-                                    // key={'customer_id'}
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Tooltip id={`tooltip-${'bottom'}`}>
-
-                                            <div>Single Player</div>
-
-                                            {item.single_player_tag &&
-                                                <div>
-                                                    {item.single_player_tag}
-                                                </div>
-                                            }
-
-                                        </Tooltip>
-                                    }
-                                >
-                                    <div style={{ cursor: 'pointer' }}>
-                                        <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>
-                                            <i className="fad fa-user me-1"></i>
-                                            Single Player
-                                        </span>
-                                    </div>
-                                </OverlayTrigger>
-                                {/* <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>Single Player</span> */}
-                            </>
-                        }
-                        {item.multiplayer &&
-                            <>
-                                <OverlayTrigger
-                                    // key={'customer_id'}
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Tooltip id={`tooltip-${'bottom'}`}>
-
-                                            <div>Multiplayer</div>
-
-                                            {item.multiplayer_tag &&
-                                                <div>
-                                                    {item.multiplayer_tag}
-                                                </div>
-                                            }
-
-                                        </Tooltip>
-                                    }
-                                >
-                                    <div style={{ cursor: 'pointer' }}>
-                                        <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>
-                                            <i className="fad fa-users me-1"></i>
-                                            Multiplayer
-                                        </span>
-                                    </div>
-                                </OverlayTrigger>
-                                {/* <span className='badge bg-light shadow-articles text-dark me-1 mb-1'>Multiplayer</span>
-                                <span className='badge bg-light shadow-articles text-dark mb-1'>{item.multiplayer_tag}</span> */}
-                            </>
-                        }
-                        {item.multiplayer === false &&
-                            <>
-
-                                <OverlayTrigger
-                                    // key={'customer_id'}
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Tooltip id={`tooltip-${'bottom'}`}>
-                                            Multiplayer coming soon!
-                                        </Tooltip>
-                                    }
-                                >
-                                    <div style={{ cursor: 'pointer' }}>
-                                        <span style={{ opacity: 0.5 }} className='badge bg-light shadow-articles text-dark me-1 mb-1'>
-                                            <i className="fad fa-history me-1"></i>
-                                            Multiplayer
-                                        </span>
-                                    </div>
-                                </OverlayTrigger>
-                                {/* <span className='badge bg-light shadow-articles text-dark mb-1'>{item.multiplayer_tag}</span> */}
-                            </>
-                        }
-
-                    </div>
-
-                </div>
-
-                <div className="card-body p-1 d-flex flex-column align-items-start">
-
-                    <div className='mt-auto w-100'>
-
-                        <div className='d-flex'>
-
-                            {/* <IsDev inline>
-                                {item.offline &&
-                                    <ArticlesButton
-                                        variant='warning'
-                                        onClick={() => {
-                                            setShowOfflineModal(item)
-                                        }}
-                                        small
-                                    >
-                                        <i className="fad fa-plug me-0"></i>
-                                    </ArticlesButton>
-                                }
-                            </IsDev> */}
-
-                            {/* <IsDev inline>
-                                {item.gamepadSupport &&
-                                    <ArticlesButton
-                                        variant='warning'
-                                        onClick={() => {
-                                            setGamepadSupportModal(item)
-                                        }}
-                                        small
-                                    >
-                                        <i className="fad fa-gamepad-alt me-0"></i>
-                                    </ArticlesButton>
-                                }
-                            </IsDev> */}
-
-                            {/* <ArticlesButton
-                                small
-                                onClick={() => {
-                                    setActiveDeveloper(item)
-                                }}
-                            >
-                                <i className="fad fa-question-circle me-0"></i>
-                            </ArticlesButton> */}
-
-                        </div>
-
-                        <div className="d-flex mb-1">
-
-                            {item.preview ?
-                                <ArticlesButton
-                                    disabled={item.public}
-                                    small
-                                    className='w-100'
-                                    style={{
-                                        height: "30px",
-                                    }}
-                                >
-                                    <Textfit mode='single' maxFontSize={12}>
-                                        <span>
-                                            {item.preview ? item.preview_true_button_text : 'Play'}
-                                            <i className="fal fa-play me-0 ms-2"></i>
-                                        </span>
-                                    </Textfit>
-                                </ArticlesButton>
-                                :
-                                <Link
-                                    // href={item.link}
-                                    href={`${item.link}`}
-                                    target='_blank'
-                                    rel="noopener noreferrer"
-                                    prefetch={false}
-                                    className='d-block w-100'
-                                >
-
-                                    <ArticlesButton
-                                        small
-                                        className='w-100'
-                                    >
-                                        {item.preview ? item.preview_true_button_text : 'Play'}
-                                        <i className="fal fa-play me-0 ms-2"></i>
-                                    </ArticlesButton>
-
-                                </Link>
-                            }
-
-                            {/* {(item.preview && userReduxState?.roles?.isDev) &&
-                                <Link
-                                    href={item.link}
-                                    className=''
-                                >
-
-                                    <ArticlesButton
-                                        className='flex-shrink-0 d-flex align-items-center'
-                                        small
-                                    >
-                                        <span className='badge bg-warning shadow-articles text-dark'>
-                                            <i className="fad fa-flask me-1"></i>
-                                            isDev
-                                        </span>
-                                    </ArticlesButton>
-
-                                </Link>
-                            } */}
-
-                        </div>
-
-                        <div className='d-flex justify-content-center align-items-center'>
-
-                            {/* {item.github_repo && (
-                                <ArticlesButton
-                                    onClick={() => {
-                                        window.open(item.github_repo, '_blank');
-                                    }}
-                                    className='flex-grow-1 text-center w-50 py-0'
-                                    small
-                                    variant='link'
-                                >
-                                    <i className="fab fa-github me-0 me-2"></i>
-                                    <span>Github</span>
-                                </ArticlesButton>
-                            )} */}
-
-                            <ArticlesButton
-                                onClick={() => {
-                                    console.log('Clicked gameInfoModal', item);
-                                    sendGAEvent('event', 'Opened gameInfoModal', { value: item.name });
-                                    setGameInfoModal(item);
-                                }}
-                                className='flex-grow-1 text-center w-50 py-0'
-                                small
-                                variant='link'
-                            >
-                                <i className="fal fa-info-circle me-0 me-2"></i>
-                                <span>Game Info</span>
-                            </ArticlesButton>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div className="card-footer small p-1 py-1">
-
-                    <div className='border'>
-
-                        <div
-                            className='d-flex border-bottom px-1 align-items-center'
-                            style={{ fontSize: '0.65rem', cursor: 'pointer' }}
-                            onClick={() => {
-                                console.log('Clicked gameInfoModal', item);
-                                // setActiveDeveloper(item)
-                                setGameInfoModal(item);
-                            }}
-                        >
-
-                            <span
-                                className='me-1 border-end'
-                                style={{ width: '60px' }}
-                            >
-                                Developer:
-                            </span>
-                            <span>
-                                {item.developer}
-                            </span>
-
-                        </div>
-
-                        <div
-                            className='d-flex border-bottom px-1 align-items-center'
-                            style={{ fontSize: '0.65rem' }}
-                        >
-                            <span
-                                className='me-1 border-end'
-                                style={{ width: '60px' }}
-                            >
-                                Publisher:
-                            </span>
-                            <span>{item.publisher || "Articles Media"}</span>
-                        </div>
-
-                        <div
-                            className='d-flex border-bottom px-1 align-items-center'
-                            style={{ fontSize: '0.65rem' }}
-                        >
-                            <span
-                                className='me-1 border-end'
-                                style={{
-                                    width: '60px',
-                                    // fontSize: '0.45rem'
-                                }}
-                            >
-                                Rating:
-                            </span>
-                            <span>{item.content_rating || "No Rating Yet"}</span>
-                        </div>
-
-                        <div
-                            className='d-flex px-1 align-items-center'
-                            style={{ fontSize: '0.65rem' }}
-                        >
-                            <span
-                                className='me-1 border-end'
-                                style={{ width: '60px' }}
-                            >
-                                Engine:
-                            </span>
-                            <span>{item.engine || "None"}</span>
-                        </div>
-
-                    </div>
-
-                    <div>
-
-
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-    )
-
+        <Box sx={{ height: "100%" }}>
+            {showOfflineModal && <ArticlesModal show={showOfflineModal} setShow={setShowOfflineModal} title="Offline Support">
+                <Typography variant="h6">{showOfflineModal.name}</Typography>
+                <Box sx={{ fontSize: "0.875rem", color: "text.secondary", mb: 2 }}>Offline Info and Settings</Box>
+                <Box sx={{ fontSize: "0.875rem" }}>{showOfflineModal.offlineNote || "offlineNote"}</Box>
+            </ArticlesModal>}
+            {gamepadSupportModal && <ArticlesModal show={gamepadSupportModal} setShow={setGamepadSupportModal} title="Gamepad Support">
+                <Typography variant="h6">{gamepadSupportModal.name}</Typography>
+                <Box sx={{ fontSize: "0.875rem", color: "text.secondary", mb: 2 }}>Gamepad Info and Settings</Box>
+                <Box>This game has full support for the following controllers.</Box>
+            </ArticlesModal>}
+            {activeDeveloper && <ArticlesModal show={activeDeveloper} setShow={setActiveDeveloper} title="Developer Info">
+                <Box sx={{ mb: 1 }}><b>{activeDeveloper.developer}</b></Box>
+                <Box sx={{ fontSize: "0.875rem" }}>{activeDeveloper.developer === "Articles Media" && "Developed by our own team at Articles Media! Our aim with the games we develop is to drive traffic and engagement with the site overall."}</Box>
+            </ArticlesModal>}
+            <Card sx={{
+                height: "100%", display: "flex", flexDirection: "column", border: "1px solid aqua", borderRadius: 0,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.25), 0 2px 3px rgba(0,0,0,0.2)",
+                "@media (min-width: 992px)": { minHeight: 250 },
+            }}>
+                <Box sx={{ p: 1, bgcolor: "#260346", color: "#fff" }}><b>{item.name}</b></Box>
+                <Box sx={{ position: "relative" }}>
+                    <Box component={Link} href={`${item.link}`} prefetch={false} target="_blank" rel="noopener noreferrer" sx={{ display: "block" }}>
+                        <Box sx={{ position: "relative", aspectRatio: "1 / 1", bgcolor: "#212529", width: "100%" }}>
+                            {item?.image?.src && <Image alt="" fill placeholder={["jpg", "png", "wep"].includes(item.image.src.split(".").pop()) ? "blur" : "empty"} style={{ objectFit: "cover" }} src={item.image} />}
+                            {item.image && !item?.image?.src && <Box component="img" src={toontownImages && item.inspo_image ? item.inspo_image : item.image} alt="" loading="lazy" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />}
+                        </Box>
+                    </Box>
+                    <Box sx={{ position: "absolute", bottom: 0, right: 0, zIndex: 1, m: "0.2rem", display: "flex" }} onClick={(event) => { event.preventDefault(); event.stopPropagation(); }}>
+                        {item.gamepadSupport && <Tooltip placement="bottom" title="Gamepad Support"><IconButton aria-label="Gamepad support" sx={actionSx}><SportsEsportsIcon /></IconButton></Tooltip>}
+                        {item.leaderboards && <Tooltip placement="bottom" title={<Box>Leaderboards{item.leaderboards.local && <Box>Local</Box>}{item.leaderboards.online && <Box>Online</Box>}</Box>}><IconButton aria-label="Leaderboards" sx={actionSx}><EmojiEventsIcon /></IconButton></Tooltip>}
+                        {item.github_repo && item.github_public && <Tooltip placement="bottom" title="Open Source GitHub Repo">
+                            <IconButton component="a" href={item.github_repo} target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository" sx={actionSx} onClick={(event) => { event.stopPropagation(); sendGAEvent("event", "Clicked GitHub Action", { value: item.name }); }}><GitHubIcon /></IconButton>
+                        </Tooltip>}
+                        {item.offline && <Tooltip placement="bottom" title="Playable Offline"><IconButton aria-label="Playable offline" sx={actionSx}><PowerIcon /></IconButton></Tooltip>}
+                        {item.amcot_character && <Tooltip placement="bottom" title="AMCOT Character Usage"><IconButton aria-label="AMCOT character usage" sx={actionSx}><AccessibilityNewIcon /></IconButton></Tooltip>}
+                    </Box>
+                </Box>
+                <Box sx={{ p: 0.5, borderBottom: 1, borderColor: "divider", bgcolor: "#260346", color: "#fff" }}>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%", justifyContent: "center", alignItems: "center", gap: 0.5 }}>
+                        {item.single_player && <Tooltip placement="bottom" title={<Box>Single Player{item.single_player_tag && <Box>{item.single_player_tag}</Box>}</Box>}><Chip size="small" icon={<PersonIcon />} label="Single Player" sx={{ cursor: "pointer", bgcolor: "background.paper", color: "text.primary" }} /></Tooltip>}
+                        {item.multiplayer && <Tooltip placement="bottom" title={<Box>Multiplayer{item.multiplayer_tag && <Box>{item.multiplayer_tag}</Box>}</Box>}><Chip size="small" icon={<GroupsIcon />} label="Multiplayer" sx={{ cursor: "pointer", bgcolor: "background.paper", color: "text.primary" }} /></Tooltip>}
+                        {item.multiplayer === false && <Tooltip placement="bottom" title="Multiplayer coming soon!"><Chip size="small" icon={<HistoryIcon />} label="Multiplayer" sx={{ opacity: 0.5, cursor: "pointer", bgcolor: "background.paper", color: "text.primary" }} /></Tooltip>}
+                    </Box>
+                </Box>
+                <Box sx={{ p: 0.5, display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1 }}>
+                    <Box sx={{ mt: "auto", width: "100%" }}>
+                        <Box sx={{ display: "flex", mb: 0.5 }}>
+                            {item.preview ? <ArticlesButton disabled={item.public} small fullWidth sx={{ height: 30 }}>
+                                <Textfit mode="single" maxFontSize={12}><Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}>{item.preview_true_button_text}<PlayArrowIcon fontSize="small" /></Box></Textfit>
+                            </ArticlesButton> : <ArticlesButton component={Link} href={`${item.link}`} target="_blank" rel="noopener noreferrer" prefetch={false} small fullWidth endIcon={<PlayArrowIcon fontSize="small" />}>Play</ArticlesButton>}
+                        </Box>
+                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <ArticlesButton onClick={openInfo} small variant="link" startIcon={<InfoIcon fontSize="small" />} sx={{ flexGrow: 1, width: "50%", py: 0 }}>Game Info</ArticlesButton>
+                        </Box>
+                    </Box>
+                </Box>
+                <Box sx={{ fontSize: "0.875rem", p: 0.5, borderTop: 1, borderColor: "divider" }}>
+                    <Box sx={{ border: 1, borderColor: "divider" }}>
+                        {[
+                            { label: "Developer", value: item.developer },
+                            { label: "Publisher", value: item.publisher || "Articles Media" },
+                            { label: "Rating", value: item.content_rating || "No Rating Yet" },
+                            { label: "Engine", value: item.engine || "None" },
+                        ].map(({ label, value }, index) => (
+                            <Box key={label} onClick={index === 0 ? () => setGameInfoModal(item) : undefined} sx={{ display: "flex", px: 0.5, alignItems: "center", fontSize: "0.65rem", ...(index < 3 && { borderBottom: 1, borderColor: "divider" }), ...(index === 0 && { cursor: "pointer" }) }}>
+                                <Box component="span" sx={{ mr: 0.5, borderRight: 1, borderColor: "divider", width: 60, flexShrink: 0 }}>{label}:</Box>
+                                <span>{value}</span>
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+            </Card>
+        </Box>
+    );
 }
+

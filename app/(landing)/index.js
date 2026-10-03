@@ -1,340 +1,109 @@
-"use client"
-import { useEffect, useContext, useState, Suspense, useRef } from 'react';
+"use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
+import { Suspense, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import SettingsIcon from "@mui/icons-material/Settings";
+import InfoIcon from "@mui/icons-material/Info";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import WebIcon from "@mui/icons-material/Web";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import PieMenu from "@articles-media/articles-gamepad-helper/PieMenu";
+import GameMenuPrimaryButtonGroup from "@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup";
+import ArticlesButton from "@/components/UI/Button";
+import { useStore } from "@/components/hooks/useStore";
+import { useLandingNavigation } from "@/components/hooks/useLandingNavigation";
+import OnlinePlayerCount from "@/components/UI/OnlinePlayerCount";
+import SearchParamsHandler from "@/components/Handlers/SearchParamsHandler";
 
-import ArticlesButton from '@/components/UI/Button';
-
-import GameMenuPrimaryButtonGroup from '@articles-media/articles-dev-box/GameMenuPrimaryButtonGroup';
-// import { useSocketStore } from '@/components/hooks/useSocketStore';
-const CreditsModal = dynamic(
-    () => import('@articles-media/articles-dev-box/CreditsModal'),
-    { ssr: false }
-)
-
-import { useStore } from '@/components/hooks/useStore';
-
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
-
-import PieMenu from '@articles-media/articles-gamepad-helper/PieMenu';
-
-import { useLandingNavigation } from '@/components/hooks/useLandingNavigation';
-// import InfoModal from '@/components/UI/InfoModal';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useSocketStore } from '@/components/hooks/useSocketStore';
-import OnlinePlayerCount from '@/components/UI/OnlinePlayerCount';
-import SearchParamsHandler from '@/components/Handlers/SearchParamsHandler';
-
-const SynthwaveAnimation = dynamic(
-    () => import('@/components/Game/Synthwave/SynthwaveAnimation'),
-    { ssr: false }
-)
+const SynthwaveAnimation = dynamic(() => import("@/components/Game/Synthwave/SynthwaveAnimation"), { ssr: false });
 
 export default function LandingPage() {
-
-    // const router = useRouter()
-    // const pathname = usePathname()
-    // const searchParams = useSearchParams()
-    // const params = Object.fromEntries(searchParams.entries());
-    // const { utm_source, utm_medium } = params
-
-    const connected = useSocketStore((state) => state.connected)
-
     const elementsRef = useRef([]);
     useLandingNavigation(elementsRef);
-
-    const darkMode = useStore((state) => state.darkMode)
-    const toggleDarkMode = useStore((state) => state.toggleDarkMode)
-
-    const landingAnimation = useStore((state) => state.landingAnimation)
-    const setLandingAnimation = useStore((state) => state.setLandingAnimation)
-
-    const setShowSettingsModal = useStore((state) => state.setShowSettingsModal)
-    const showInfoModal = useStore((state) => state.showInfoModal)
-    const setShowInfoModal = useStore((state) => state.setShowInfoModal)
-
-    const showCreditsModal = useStore((state) => state.showCreditsModal)
-    const setShowCreditsModal = useStore((state) => state.setShowCreditsModal)
-
-    const lobbyDetails = useStore(state => state.lobbyDetails)
-
-    // useEffect(() => {
-
-    //     if (utm_source || utm_medium) {
-    //         console.log("UTM Params:", { utm_source, utm_medium })
-
-    //         const current = new URLSearchParams(Array.from(searchParams.entries()));
-    //         current.delete('utm_source');
-    //         current.delete('utm_medium');
-    //         const search = current.toString();
-    //         const query = search ? `?${search}` : "";
-    //         router.replace(`${pathname}${query}`);
-    //     }
-
-    // }, [searchParams, router, pathname])
+    const darkMode = useStore((state) => state.darkMode);
+    const landingAnimation = useStore((state) => state.landingAnimation);
+    const setLandingAnimation = useStore((state) => state.setLandingAnimation);
+    const setShowSettingsModal = useStore((state) => state.setShowSettingsModal);
+    const setShowCreditsModal = useStore((state) => state.setShowCreditsModal);
 
     return (
-
-        <div className="landing-page">
-
-            <Suspense>
-                <SearchParamsHandler />
-            </Suspense>           
-
+        <Box sx={{
+            position: "relative", isolation: "isolate", width: "100%", display: "flex",
+            justifyContent: "center", alignItems: "center", p: 2, minHeight: "100vh",
+            "& button:focus, & input:focus, & a:focus": {
+                outline: "3px solid #fff", outlineOffset: 2,
+                boxShadow: "0 0 15px rgba(255,255,255,0.8)", zIndex: 10, position: "relative",
+            },
+        }}>
+            <Suspense><SearchParamsHandler /></Suspense>
             <Suspense>
                 <PieMenu
                     options={[
-                        {
-                            label: 'Settings',
-                            icon: 'fad fa-cog',
-                            callback: () => {
-                                setShowSettingsModal(prev => !prev)
-                            }
-                        },
-                        {
-                            label: 'Credits',
-                            icon: 'fad fa-cog',
-                            callback: () => {
-                                setShowCreditsModal(true)
-                            }
-                        },
-                        {
-                            label: 'Toggle Animation',
-                            icon: 'fad fa-cog',
-                            callback: () => {
-                                setLandingAnimation(!landingAnimation)
-                            }
-                        },
-                    ]}
-                    onFinish={(event) => {
-                        console.log("Event", event)
-                        if (event.callback) {
-                            event.callback()
-                        }
-                    }}
+                        { label: "Settings", Icon: SettingsIcon, callback: () => setShowSettingsModal((prev) => !prev) },
+                        { label: "Credits", Icon: InfoIcon, callback: () => setShowCreditsModal(true) },
+                        { label: "Toggle Animation", Icon: CameraAltIcon, callback: () => setLandingAnimation(!landingAnimation) },
+                    ].map(({ label, Icon, callback }) => ({
+                        label: <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}><Icon fontSize="small" />{label}</Box>,
+                        callback,
+                    }))}
+                    onFinish={(event) => event.callback?.()}
                 />
             </Suspense>
-
-            {/* {showCreditsModal &&
-                <CreditsModal
-                    show={showCreditsModal}
-                    setShow={setShowCreditsModal}
-                    owner='Articles-Joey'
-                    repo='games-showcase'
-                />
-            }
-            {showInfoModal &&
-                <InfoModal
-                    show={showInfoModal}
-                    setShow={setShowInfoModal}
-                />
-            } */}
-
-            <div className='background-wrap'>
-                <Image
-                    // src={`${process.env.NEXT_PUBLIC_CDN}games/Race Game/background.jpg`}
-                    // src={`/img/preview.webp`}
-                    src={`https://cdn.articles.media/games/synth.jpg`}
-                    fill
-                    alt=""
-                    // style={{
-                    //     objectFit: 'cover',
-                    //     filter: 'blur(10px)',
-                    //     transform: 'scale(1.05)',
-                    // }}
-                />
-            </div>
-
-            {landingAnimation &&
-                <div
-                    className='synthwave-animation'
-                >
-                    <SynthwaveAnimation />
-                </div>
-            }
-
-            <div
-                className="container d-flex flex-column justify-content-center align-items-center"
-                style={{ "width": "20rem" }}
-            >
-
-                <img
-                    src={"img/icon.svg"}
-                    width={200}
-                    className='landing-logo-image'
-                    alt=""
-                />
-
-                <div
-                    className='landing-title tiny5-regular'
-                >
-                    games.articles.media
-                </div>
-
+            <Box sx={{
+                position: "fixed", inset: 0, width: "100%", height: "100%", zIndex: -1,
+                "& img": { objectFit: "cover", filter: darkMode ? "blur(10px) brightness(0.75)" : "blur(10px)", transform: "scale(1.05)" },
+            }}>
+                <Image src="https://cdn.articles.media/games/synth.jpg" fill alt="" />
+            </Box>
+            {landingAnimation && <Box sx={{
+                position: "fixed", inset: 0, width: "100%", height: "100%", zIndex: -1,
+                "& canvas": { position: "absolute", width: "100%", height: "100%", objectFit: "cover", zIndex: -1 },
+            }}><SynthwaveAnimation /></Box>}
+            <Box sx={{ width: "20rem", maxWidth: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <Box component="img" src="img/icon.svg" width={200} alt="" sx={{ mb: "-2.5rem" }} />
+                <Typography component="h1" sx={{
+                    color: "#fff", fontFamily: "var(--font-tiny5), sans-serif", fontWeight: 400,
+                    fontSize: "2rem", textAlign: "center", textShadow: "0 0 5px black",
+                    "@media (min-width: 992px)": { fontSize: "3rem" },
+                }}>games.articles.media</Typography>
                 <OnlinePlayerCount />
-
-                {/* <div className="px-1">{lobbyDetails?.landing_player_count}</div> */}
-
-                <div className="card card-articles card-sm mb-5">
-
-                    <div className="card-header d-flex align-items-center justify-content-center">
-
-                        Select Launcher Mode
-
-                    </div>
-
-                    <div className="card-body p-2">
-
-                        <OverlayTrigger placement="right"
-                            overlay={
-                                <Popover id="popover-basic">
-                                    <Popover.Header as="h3">Original</Popover.Header>
-                                    <Popover.Body
-                                        className="py-2"
-                                    >
-                                        {/* <div className="mb-1">
-                                            <span className='badge bg-success'>
-                                                ...
-                                            </span>
-                                        </div> */}
-                                        <span>
-                                            Browse and launch games just how they are showed via articles.media.
-                                        </span>
-                                    </Popover.Body>
-                                </Popover>
-                            }
-                        >
-                            <Link href="/original" prefetch={false} >
-                                <ArticlesButton
-                                    ref={el => elementsRef.current[0] = el}
-                                    className={`w-100 mb-2`}
-                                    small
-                                    onClick={() => {
-
-                                    }}
-                                >
-                                    <i className='fad fa-browser me-2'></i>
-                                    Original
+                <Card sx={{ width: "100%", mb: 6, borderRadius: 0 }}>
+                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", p: 1, borderBottom: 1, borderColor: "divider" }}>Select Launcher Mode</Box>
+                    <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
+                        {[
+                            { label: "Original", href: "/original", Icon: WebIcon, description: "Browse and launch games just how they are showed via articles.media." },
+                            { label: "Carousel", href: "/carousel", Icon: SportsEsportsIcon, description: "Browse and launch games in a 3D carousel environment." },
+                            { label: "Wall", href: "/wall", Icon: ViewModuleIcon, description: "Browse and launch games in a 2D scrolling wall environment." },
+                        ].map(({ label, href, Icon, description }, index) => (
+                            <Tooltip key={href} placement="right" title={<><Typography component="strong">{label}</Typography><Box>{description}</Box></>}>
+                                <ArticlesButton component={Link} href={href} prefetch={false} ref={(el) => { elementsRef.current[index] = el; }} fullWidth small startIcon={<Icon fontSize="small" />} sx={{ mb: 1 }}>
+                                    {label}
                                 </ArticlesButton>
-                            </Link>
-                        </OverlayTrigger>
-
-                        <OverlayTrigger placement="right"
-                            overlay={
-                                <Popover id="popover-basic">
-                                    <Popover.Header as="h3">Carousel</Popover.Header>
-                                    <Popover.Body
-                                        className="py-2"
-                                    >
-                                        {/* <div className="mb-1">
-                                            <span className='badge bg-success'>
-                                                ...
-                                            </span>
-                                        </div> */}
-                                        <span>
-                                            Browse and launch games in a 3D carousel environment.
-                                        </span>
-                                    </Popover.Body>
-                                </Popover>
-                            }
-                        >
-                            <Link href="/carousel" prefetch={false} >
-                                <ArticlesButton
-                                    ref={el => elementsRef.current[1] = el}
-                                    className={`w-100 mb-2`}
-                                    small
-                                    onClick={() => {
-
-                                    }}
-                                >
-                                    <i className='fad fa-gamepad me-2'></i>
-                                    Carousel
-                                </ArticlesButton>
-                            </Link>
-                        </OverlayTrigger>
-
-                        <OverlayTrigger placement="right"
-                            overlay={
-                                <Popover id="popover-basic">
-                                    <Popover.Header as="h3">Wall</Popover.Header>
-                                    <Popover.Body
-                                        className="py-2"
-                                    >
-                                        {/* <div className="mb-1">
-                                            <span className='badge bg-success'>
-                                                ...
-                                            </span>
-                                        </div> */}
-                                        <span>
-                                            Browse and launch games in a 2D scrolling wall environment.
-                                        </span>
-                                    </Popover.Body>
-                                </Popover>
-                            }
-                        >
-                            <Link href="/wall" prefetch={false} >
-                                <ArticlesButton
-                                    ref={el => elementsRef.current[2] = el}
-                                    className={`w-100 mb-2`}
-                                    small
-                                    onClick={() => {
-
-                                    }}
-                                >
-                                    <i className='fad fa-joystick me-2'></i>
-                                    Wall
-                                </ArticlesButton>
-                            </Link>
-                        </OverlayTrigger>
-
-                    </div>
-
-                    <div className="card-footer d-flex flex-wrap justify-content-center">
-
-                        <GameMenuPrimaryButtonGroup
-                            useStore={useStore}
-                            type="Landing"
-                        />
-
-                        <ArticlesButton
-                            ref={el => elementsRef.current[6] = el}
-                            className={`w-50 landing-animation-toggle-button mt-2`}
-                            small
-                            onClick={() => {
-                                setLandingAnimation(!landingAnimation)
-                            }}
-                        >
-                            <i className="fad fa-camera"></i>
-                            {landingAnimation ? 'Disable' : 'Enable'} Animation
+                            </Tooltip>
+                        ))}
+                    </CardContent>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", p: 1, borderTop: 1, borderColor: "divider" }}>
+                        <GameMenuPrimaryButtonGroup useStore={useStore} type="Landing" useRouter={useRouter} />
+                        <ArticlesButton ref={(el) => { elementsRef.current[6] = el; }} small startIcon={<CameraAltIcon fontSize="small" />} sx={{ width: "50%", mt: 1, fontSize: "0.6rem" }} onClick={() => setLandingAnimation(!landingAnimation)}>
+                            {landingAnimation ? "Disable" : "Enable"} Animation
                         </ArticlesButton>
-
-                    </div>
-
-                </div>
-
-                <Link
-                    href="https://articles.media&utm_source=games.articles.media&utm_medium=landing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <ArticlesButton
-                        className="visit-articles-button"
-                        ref={el => elementsRef.current[7] = el}
-                    >
-                        <img
-                            src={"https://cdn.articles.media/profile_photos/starter/articles.jpg"}
-                            width={10}
-                            className='me-3'
-                            alt=""
-                        />
-                        Visit articles.media
-                    </ArticlesButton>
-                </Link>
-
-            </div>
-        </div >
+                    </Box>
+                </Card>
+                <ArticlesButton component={Link} href="https://articles.media?utm_source=games.articles.media&utm_medium=landing" target="_blank" rel="noopener noreferrer" ref={(el) => { elementsRef.current[7] = el; }}>
+                    <Box component="img" src="https://cdn.articles.media/profile_photos/starter/articles.jpg" width={10} alt="" sx={{ mr: 2, transform: "scale(3) translateX(-1px)" }} />
+                    Visit articles.media
+                </ArticlesButton>
+            </Box>
+        </Box>
     );
 }
+

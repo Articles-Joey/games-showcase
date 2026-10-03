@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
+import Box from "@mui/material/Box";
 
 const Textfit = ({ children, maxFontSize = 18, minFontSize = 10 }) => {
     const containerRef = useRef(null);
@@ -34,11 +35,11 @@ const Textfit = ({ children, maxFontSize = 18, minFontSize = 10 }) => {
     }, [children, maxFontSize, minFontSize]);
 
     return (
-        <div ref={containerRef} style={{ width: "100%", display: "flex", justifyContent: "center", overflow: "hidden" }}>
-            <span ref={textRef} style={{ fontSize, whiteSpace: "nowrap", lineHeight: 1 }}>
+        <Box ref={containerRef} sx={{ width: "100%", display: "flex", justifyContent: "center", overflow: "hidden" }}>
+            <Box component="span" ref={textRef} sx={{ fontSize, whiteSpace: "nowrap", lineHeight: 1 }}>
                 {children}
-            </span>
-        </div>
+            </Box>
+        </Box>
     );
 };
 

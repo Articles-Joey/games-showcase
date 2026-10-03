@@ -1,104 +1,40 @@
-"use client"
-import { useEffect, useContext, useState, useRef, useMemo } from 'react';
+"use client";
 
-// import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import Link from 'next/link';
-import dynamic from 'next/dynamic'
-
-import ArticlesButton from '@/components/UI/Button';
-
-import useFullscreen from '@/components/hooks/useFullScreen';
-
-// import useGames from '@/components/hooks/useGames';
-import useAllGames from '@/components/hooks/useAllGames';
-import { useStore } from '@/components/hooks/useStore';
-
-import GameItem from '../original/GameItem';
-
-import '@/styles/pages/original.scss';
-import FilterDropdowns from '@/components/UI/FilterDropdowns';
-import { useFilterStore } from '@/components/hooks/useFilterStore';
+import Link from "next/link";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import CloseIcon from "@mui/icons-material/Close";
+import ArticlesButton from "@/components/UI/Button";
+import useAllGames from "@/components/hooks/useAllGames";
+import GameItem from "../original/GameItem";
+import FilterDropdowns from "@/components/UI/FilterDropdowns";
+import { useFilterStore } from "@/components/hooks/useFilterStore";
 
 export default function PageContent() {
-
-    // const { games, publicGames } = useGames();
-
-    const {
-        games: allGames,
-        filteredGames,
-    } = useAllGames();
-
+    const { filteredGames } = useAllGames();
     const search = useFilterStore((state) => state.search);
     const setSearch = useFilterStore((state) => state.setSearch);
 
-    const { isFullscreen, requestFullscreen, exitFullscreen } = useFullscreen();
-
     return (
-
-        <div
-            className={`games-showcase-wall-page ${isFullscreen && 'fullscreen'}`}
-        // id="cannon-game-page"
-        >
-
-            <nav>
-                <Link href="/" style={{
-                    color: 'white',
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    textShadow: '0px 0px 5px black'
-                }}>
-                    {/* Icon placeholder */}
-                    <span>🎮</span>
-                    <span>Games Showcase</span>
-                    <span> - </span>
-                    <span>{filteredGames?.length} games</span>
-                </Link>
-
-                <div className='d-flex'>
-
-                    <FilterDropdowns />
-
-                    <input
-                        placeholder='Search games...'
-                        value={search}
-                        className='px-2'
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <ArticlesButton
-                        onClick={() => {
-                            setSearch("");
-                        }}
-                    >
-                        <i className='fad fa-times'></i>
-                    </ArticlesButton>
-
-                </div>
-
-            </nav>
-
-            <div
-                className='grid'
-                style={{
-
-                }}
-            >
-                {filteredGames?.map((game, index) => (
-                    // <GridItem
-                    //     key={game.name}
-                    //     game={game}
-                    // />
-                    <GameItem
-                        key={game.name}
-                        item={game}
-                    // toontownImages={toontownImages}
-                    />
-                ))}
-            </div>
-
-        </div>
+        <Box sx={{ bgcolor: "#272727", color: "#fff", minHeight: "100vh" }}>
+            <Box component="nav" sx={{
+                position: "sticky", top: 0, left: 0, width: "100%", px: 2, py: 0, zIndex: 100,
+                height: 50, minHeight: 50, maxHeight: 50, bgcolor: "#000", display: "flex", alignItems: "center", justifyContent: "space-between",
+                flexDirection: "row", gap: 2, overflowX: "auto", scrollbarWidth: "none", "&::-webkit-scrollbar": { display: "none" },
+            }}>
+                <Box component={Link} href="/" sx={{ color: "#fff", textDecoration: "none", display: "flex", alignItems: "center", gap: 1, fontSize: "1.5rem", fontWeight: "bold", textShadow: "0 0 5px black", whiteSpace: "nowrap", flexShrink: 0 }}>
+                    <span>🎮</span><span>Games Showcase</span><span> - </span><span>{filteredGames?.length} games</span>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", flexShrink: 0, flexWrap: "nowrap", gap: 0.5 }}>
+                    <Box sx={{ minWidth: 240 }}><FilterDropdowns /></Box>
+                    <TextField placeholder="Search games..." value={search} size="small" onChange={(event) => setSearch(event.target.value)} slotProps={{ htmlInput: { "aria-label": "Search games" } }} sx={{ minWidth: 120 }} />
+                    <ArticlesButton aria-label="Clear search" onClick={() => setSearch("")}><CloseIcon fontSize="small" /></ArticlesButton>
+                </Box>
+            </Box>
+            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
+                {filteredGames?.map((game) => <GameItem key={game.name} item={game} />)}
+            </Box>
+        </Box>
     );
 }
+

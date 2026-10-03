@@ -1,130 +1,53 @@
-import { memo, useEffect, useState } from "react";
+"use client";
 
-import ArticlesButton from "@/components/UI/Button"
-// import { useStore } from "@/hooks/useStore";
+import { memo } from "react";
+import Box from "@mui/material/Box";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import ArticlesButton from "./Button";
 import useTouchControlsStore from "@/components/hooks/useTouchControlsStore";
 import { useStore } from "@/components/hooks/useStore";
 import useAllGames from "@/components/hooks/useAllGames";
 
-const arePropsEqual = (prevProps, nextProps) => {
-    // Compare all props for equality
-    return JSON.stringify(prevProps) === JSON.stringify(nextProps);
-};
-
-function CarouselControlButtonsBase() {
-
-    // const {
-    //     touchControls, setTouchControls
-    // } = useControlsStore()
-    const touchControlsEnabled = useTouchControlsStore(state => state.enabled)
-    const setTouchControlsEnabled = useTouchControlsStore(state => state.setEnabled)
-
-    const touchControls = useTouchControlsStore(state => state.touchControls)
-    const setTouchControls = useTouchControlsStore(state => state.setTouchControls)
-
-    const incrementActiveGameIndex = useStore(state => state.incrementActiveGameIndex)
-    const decrementActiveGameIndex = useStore(state => state.decrementActiveGameIndex)
-
-    const activeGameIndex = useStore(state => state.activeGameIndex)
-    const setGameInfoModal = useStore(state => state.setGameInfoModal)
-
-    const {
-        games: allGames,
-        filteredGames
-    } = useAllGames();
-
-    const zoomLevel = useStore((state) => state?.zoomLevel);
-    const setZoomLevel = useStore((state) => state?.setZoomLevel);
-
-    // let activeGames = allGames;
+function CarouselControlButtons() {
+    const incrementActiveGameIndex = useStore((state) => state.incrementActiveGameIndex);
+    const decrementActiveGameIndex = useStore((state) => state.decrementActiveGameIndex);
+    const activeGameIndex = useStore((state) => state.activeGameIndex);
+    const setGameInfoModal = useStore((state) => state.setGameInfoModal);
+    const zoomLevel = useStore((state) => state.zoomLevel);
+    const setZoomLevel = useStore((state) => state.setZoomLevel);
+    const { filteredGames } = useAllGames();
 
     return (
         <>
-            <ArticlesButton
-                large
-                onClick={() => {
-                    console.log("Left!")
-                    decrementActiveGameIndex()
-                }}
-            >
-                <i className="fas fa-chevron-left"></i>
-                {/* Previous */}
-            </ArticlesButton>
-            <ArticlesButton
-                large
-                onClick={() => {
-
-                    console.log("Select!")
-
-                    const selectedGame = filteredGames[activeGameIndex];
-
-                    setGameInfoModal(selectedGame);
-
-                }}
-            >
-                Select
-            </ArticlesButton>
-            <ArticlesButton
-                large
-                onClick={() => {
-                    console.log("Right!")
-                    incrementActiveGameIndex()
-                }}
-            >
-                <i className="fas fa-chevron-right"></i>
-                {/* Next */}
-            </ArticlesButton>
-
-            <div className="zoom-controls">
-                <ArticlesButton
-                    // large
-                    onClick={() => {
-                        setZoomLevel(zoomLevel - 1)
-                    }}
-                >
-                    <i className="fas fa-search-minus me-0"></i>
-                    {/* Previous */}
-                </ArticlesButton>
-                <ArticlesButton
-                    // large
-                    disabled
-                    onClick={() => {
-                        // setZoomLevel(zoomLevel - 1)
-                    }}
-                >
-                    {zoomLevel}
-                    {/* <i className="fas fa-search-minus me-0"></i> */}
-                    {/* Previous */}
-                </ArticlesButton>
-                <ArticlesButton
-                    // large
-                    onClick={() => {
-                        setZoomLevel(zoomLevel + 1)
-                    }}
-                >
-                    <i className="fas fa-search-plus me-0"></i>
-                    {/* Previous */}
-                </ArticlesButton>
-            </div>
+            <ArticlesButton large aria-label="Previous game" onClick={decrementActiveGameIndex}><ChevronLeftIcon /></ArticlesButton>
+            <ArticlesButton large onClick={() => setGameInfoModal(filteredGames[activeGameIndex])}>Select</ArticlesButton>
+            <ArticlesButton large aria-label="Next game" onClick={incrementActiveGameIndex}><ChevronRightIcon /></ArticlesButton>
+            <Box sx={{ position: "absolute", top: 0, left: "50%", transform: "translate(-50%, -50%)", display: "flex" }}>
+                <ArticlesButton aria-label="Zoom out" onClick={() => setZoomLevel(zoomLevel - 1)}><ZoomOutIcon fontSize="small" /></ArticlesButton>
+                <ArticlesButton disabled>{zoomLevel}</ArticlesButton>
+                <ArticlesButton aria-label="Zoom in" onClick={() => setZoomLevel(zoomLevel + 1)}><ZoomInIcon fontSize="small" /></ArticlesButton>
+            </Box>
         </>
-    )
+    );
 }
 
-const CarouselControlButtons = memo(CarouselControlButtonsBase, arePropsEqual);
-
-function TouchControlsBase(props) {
-
-    const touchControlsEnabled = useTouchControlsStore(state => state.enabled)
+function TouchControls() {
+    const enabled = useTouchControlsStore((state) => state.enabled);
+    const sidebar = useStore((state) => state.sidebar);
 
     return (
-        <div className={`touch-controls-area hide-in-screenshot-mode ${!touchControlsEnabled && 'd-none'}`}>
-
+        <Box data-hide-in-screenshot-mode="true" sx={{
+            position: "fixed", bottom: 50, left: 0, width: "100%", height: 150, zIndex: 1,
+            bgcolor: "rgba(0,0,0,0.5)", p: 2, display: enabled ? "flex" : "none", justifyContent: "space-between", alignItems: "center",
+            ...(sidebar && { "@media (min-width: 992px)": { left: 300, bottom: 0, width: "calc(100% - 300px)" } }),
+        }}>
             <CarouselControlButtons />
-
-        </div>
-    )
+        </Box>
+    );
 }
 
-const TouchControls = memo(TouchControlsBase, arePropsEqual);
+export default memo(TouchControls);
 
-export default TouchControls

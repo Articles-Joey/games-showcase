@@ -1,127 +1,57 @@
-import { Dropdown } from "react-bootstrap";
+"use client";
+
+import { useId } from "react";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
+import ListSubheader from "@mui/material/ListSubheader";
+import MenuItem from "@mui/material/MenuItem";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import SortIcon from "@mui/icons-material/Sort";
+import ButtonDropdown from "./ButtonDropdown";
 import { useFilterStore } from "@/components/hooks/useFilterStore";
 import { useStore } from "@/components/hooks/useStore";
 
 export default function FilterDropdowns() {
-
-    const activeGameIndex = useStore((state) => state?.activeGameIndex);
-    const setActiveGameIndex = useStore((state) => state?.setActiveGameIndex);
-
+    const id = useId();
+    const setActiveGameIndex = useStore((state) => state.setActiveGameIndex);
     const playerFilter = useFilterStore((state) => state.playerFilter);
     const setPlayerFilter = useFilterStore((state) => state.setPlayerFilter);
     const availabilityFilter = useFilterStore((state) => state.availabilityFilter);
     const setAvailabilityFilter = useFilterStore((state) => state.setAvailabilityFilter);
     const search = useFilterStore((state) => state.search);
-    const setSearch = useFilterStore((state) => state.setSearch);
 
     return (
-
-        <div className="d-flex justify-content-between position-relative" style={{ zIndex: 2 }}>
-
-            {/* Player Type */}
-            <Dropdown className="dropdown-articles w-50" drop={'down'}>
-
-                <Dropdown.Toggle
-                    variant="articles"
-                    className="w-100 align-items-center d-flex "
-                    disabled={search !== ''}
-                >
-
-                    <div style={{ fontSize: "0.65rem" }}>
-
-                        <i className="fad fa-filter fa-lg me-2"></i>
-                        {/* <i className="fad fa-sort-shapes-up fa-lg me-2"></i> */}
-
-                        <span className='small me-2'>Play Type</span>
-
-                        <span className='badge bg-dark shadow-articles me-1 d-none d-lg-inline-block'>
-                            {playerFilter}
-                        </span>
-
-                    </div>
-
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className="dropdown-articles">
-
-                    <div className='small px-2 py-0 mb-0'>Player Type</div>
-
-                    <Dropdown.Divider className="py-0 my-1" />
-
-                    {['All', 'Single Player', 'Multiplayer'].map(item =>
-                        <Dropdown.Item
-                            key={item}
-                            className={` ${playerFilter == item && 'active'}`}
-                            onClick={() => {
-
-                                setPlayerFilter(item)
-                                setActiveGameIndex(0)
-
-                            }}
-                        >
-
-                            <span>{item}</span>
-
-                        </Dropdown.Item>
-                    )}
-
-                </Dropdown.Menu>
-
-            </Dropdown>
-
-            {/* Availability Type */}
-            <Dropdown className="dropdown-articles w-50" drop={'down'}>
-
-                <Dropdown.Toggle
-                    variant="articles"
-                    className="w-100 align-items-center d-flex "
-                    disabled={search !== ''}
-                >
-
-                    <div style={{ fontSize: "0.65rem" }}>
-
-                        {/* <i className="fad fa-filter"></i> */}
-                        <i className="fad fa-sort-shapes-up fa-lg me-2"></i>
-
-                        <span className='small me-2'>Status</span>
-
-                        <span className='badge bg-dark shadow-articles me-1 d-none d-lg-inline-block'>
-                            {availabilityFilter}
-                        </span>
-
-                    </div>
-
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className="dropdown-articles">
-
-                    <div className='small px-2 py-0 mb-0'>Availability Status</div>
-
-                    <Dropdown.Divider className="py-0 my-1" />
-
-                    {['All', 'Available', 'Upcoming'].map(item =>
-                        <Dropdown.Item
-                            key={item}
-                            className={` ${availabilityFilter == item && 'active'}`}
-                            onClick={() => {
-
-                                setAvailabilityFilter(item)
-                                setActiveGameIndex(0)
-
-                            }}
-                        >
-
-                            <span>{item}</span>
-
-                        </Dropdown.Item>
-                    )}
-
-                </Dropdown.Menu>
-
-            </Dropdown>
-
-        </div>
-
-    )
-
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", zIndex: 2, width: "100%" }}>
+            {[
+                { key: "player", label: "Play Type", title: "Player Type", Icon: FilterAltIcon, value: playerFilter, setValue: setPlayerFilter, options: ["All", "Single Player", "Multiplayer"] },
+                { key: "status", label: "Status", title: "Availability Status", Icon: SortIcon, value: availabilityFilter, setValue: setAvailabilityFilter, options: ["All", "Available", "Upcoming"] },
+            ].map(({ key, label, title, Icon, value, setValue, options }) => (
+                <Box key={key} sx={{ display: "flex", alignItems: "center", width: "50%", minWidth: 0 }}>
+                    <ButtonDropdown
+                        id={`${id}-${key}`}
+                        Icon={Icon}
+                        disabled={search !== ""}
+                        label={<Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.5, fontSize: "0.65rem" }}>
+                            {label}
+                            <Chip label={value} size="small" sx={{ display: { xs: "none", lg: "inline-flex" }, height: 20, fontSize: "0.65rem", bgcolor: "#212529", color: "#fff" }} />
+                        </Box>}
+                    >
+                        {(closeMenu) => [
+                            <ListSubheader key="title" sx={{ lineHeight: "2rem", fontSize: "0.75rem" }}>{title}</ListSubheader>,
+                            <Divider key="divider" />,
+                            ...options.map((item) => (
+                                <MenuItem key={item} selected={value === item} onClick={() => {
+                                    setValue(item);
+                                    setActiveGameIndex(0);
+                                    closeMenu();
+                                }}>{item}</MenuItem>
+                            )),
+                        ]}
+                    </ButtonDropdown>
+                </Box>
+            ))}
+        </Box>
+    );
 }
+

@@ -1,134 +1,67 @@
-"use client"
-import { Suspense, useEffect } from 'react';
+"use client";
 
-import { useStore } from '@/components/hooks/useStore';
-
-import ArticlesButton from '@/components/UI/Button';
+import { useEffect } from "react";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Typography from "@mui/material/Typography";
+import UndoIcon from "@mui/icons-material/Undo";
+import { useStore } from "@/components/hooks/useStore";
+import ArticlesButton from "./Button";
 
 export default function ControlsSetting() {
-
     const controlSettings = useStore((state) => state.controlSettings);
     const setControlSettings = useStore((state) => state.setControlSettings);
     const listenForKey = useStore((state) => state.listenForKey);
     const setListenForKey = useStore((state) => state.setListenForKey);
 
     useEffect(() => {
-        if (listenForKey) {
-            const handleKeyDown = (e) => {
-                console.log('Key pressed:', e.key);
-                e.preventDefault()
-                setListenForKey({ ...listenForKey, lastKey: e.key })
-            }
-            window.addEventListener('keydown', handleKeyDown)
-            return () => window.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [listenForKey, setListenForKey])
+        if (!listenForKey) return;
+        const handleKeyDown = (event) => {
+            event.preventDefault();
+            setListenForKey({ ...listenForKey, lastKey: event.key });
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [listenForKey, setListenForKey]);
 
     return (
         <>
-            {listenForKey &&
-                <div className="listen-for-key-overlay d-flex flex-column justify-content-center align-items-center">
-
-                    <div className="mb-3">Listening for key...</div>
-
-                    <div className="h2 border rounded p-3 px-5 mb-3 bg-dark text-white">
-                        {listenForKey.lastKey || 'Press a key'}
-                    </div>
-
-                    <div className="d-flex">
-                        <ArticlesButton
-                            variant="warning"
-                            onClick={() => {
-
-                                setControlSettings({
-                                    ...controlSettings,
-                                    [listenForKey.action]: false,
-                                })
-
-                                setListenForKey(false)
-
-                            }}
-                        >
-                            <i className="fas fa-undo me-2"></i>
-                            Cancel
-                        </ArticlesButton>
-                        <ArticlesButton onClick={() => {
-
-                            setControlSettings({
-                                ...controlSettings,
-                                [listenForKey.action]: listenForKey.lastKey,
-                            })
-
-                            setListenForKey(false)
-
-                        }}>
-                            Confirm
-                        </ArticlesButton>
-                    </div>
-
-                </div>
-            }
-            <div>
-
-                <div className="small pb-3 pt-2  border-bottom">
-                    Assign a key to a movement action. 1-4 are the defaults and are already assigned.
-                </div>
-
-                <div>
-                    {[
-                        {
-                            action: 'Move 1 Space',
-                            defaultKeyboardKey: '1'
-                        },
-                        {
-                            action: 'Move 2 Space',
-                            defaultKeyboardKey: '2'
-                        },
-                        {
-                            action: 'Move 3 Space',
-                            defaultKeyboardKey: '3'
-                        },
-                        {
-                            action: 'Move 4 Space',
-                            defaultKeyboardKey: '4'
-                        },
-                    ].map(obj =>
-                        <div key={obj.action}>
-                            <div className="flex-header border-bottom py-1 mb-1">
-
-                                <div>
-                                    <div>{obj.action}</div>
-                                    {obj.emote && <div className="span badge bg-dark">Emote</div>}
-                                </div>
-
-                                <div>
-
-                                    {/* <div className="badge badge-hover bg-articles me-1">{obj.defaultKeyboardKey}</div> */}
-
-                                    {controlSettings[obj.action] &&
-                                        <div className="badge bg-secondary me-1">
-                                            {controlSettings[obj.action]}
-                                        </div>
-                                    }
-
-                                    <ArticlesButton
-                                        className=""
-                                        small
-                                        onClick={() => setListenForKey({
-                                            action: obj.action,
-                                            lastKey: false
-                                        })}
-                                    >
-                                        Select Key
-                                    </ArticlesButton>
-
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-            </div>
+            <Dialog open={Boolean(listenForKey)} disableEscapeKeyDown aria-labelledby="listen-for-key-title" slotProps={{ backdrop: { sx: { bgcolor: "rgba(0,0,0,0.8)" } } }}>
+                <DialogTitle id="listen-for-key-title">Listening for key...</DialogTitle>
+                <DialogContent>
+                    <Typography variant="h4" sx={{ border: 1, borderColor: "divider", borderRadius: 1, py: 2, px: 6, bgcolor: "#212529", color: "#fff", textAlign: "center" }}>{listenForKey?.lastKey || "Press a key"}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <ArticlesButton variant="warning" startIcon={<UndoIcon />} onClick={() => {
+                        setControlSettings({ ...controlSettings, [listenForKey.action]: false });
+                        setListenForKey(false);
+                    }}>Cancel</ArticlesButton>
+                    <ArticlesButton onClick={() => {
+                        setControlSettings({ ...controlSettings, [listenForKey.action]: listenForKey.lastKey });
+                        setListenForKey(false);
+                    }}>Confirm</ArticlesButton>
+                </DialogActions>
+            </Dialog>
+            <Box>
+                <Box sx={{ fontSize: "0.875rem", pb: 2, pt: 1, borderBottom: 1, borderColor: "divider" }}>Assign a key to a movement action. 1-4 are the defaults and are already assigned.</Box>
+                {[1, 2, 3, 4].map((spaces) => {
+                    const action = `Move ${spaces} Space`;
+                    return (
+                        <Box key={action} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: 1, borderColor: "divider", py: 0.5, mb: 0.5 }}>
+                            <Box>{action}</Box>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                {controlSettings[action] && <Chip label={controlSettings[action]} size="small" />}
+                                <ArticlesButton small onClick={() => setListenForKey({ action, lastKey: false })}>Select Key</ArticlesButton>
+                            </Box>
+                        </Box>
+                    );
+                })}
+            </Box>
         </>
-    )
+    );
 }
+

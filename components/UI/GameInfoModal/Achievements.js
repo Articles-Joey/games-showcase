@@ -1,59 +1,27 @@
-import { useState } from "react";
+"use client";
+
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useStore } from "@/components/hooks/useStore";
 import ArticlesButton from "../Button";
-import { Accordion } from "react-bootstrap";
 
 export default function GameAchievements() {
-
-    const [expandAchievements, setExpandAchievements] = useState(true)
-
-    const gameInfoModal = useStore((state) => state?.gameInfoModal);
-
-    const fakeAchievements = [
-        {
-            name: "First Blood",
-            description: "Complete the first level."
-        },
-        {
-            name: "Sharp Shooter",
-            description: "Achieve 100% accuracy in a level."
-        },
-    ];
+    const gameInfoModal = useStore((state) => state.gameInfoModal);
 
     return (
-        <div className="game-achievements card card-articles card-sm mt-4">
-
-            <div className="card-header flex-header">
-
-                <div>Game Achievements</div>
-
-                {/* Hidden spacer to match other tabs */}
-                <ArticlesButton
-                    size="sm"
-                    // active={expandComments}
-                    onClick={() => {
-                        // mutate();
-                    }}
-                    style={{ visibility: 'hidden' }}
-                >
-                    <i className={`fas fa-redo`}></i>
-                </ArticlesButton>
-
-            </div>
-
-            <div className="card-body">
-                {gameInfoModal?.achievements?.length > 0 ?
-                    gameInfoModal.achievements.map((achievement, index) => (
-                        <div key={index} className="mb-3">
-                            <div><b>{achievement.name}</b></div>
-                            <div>{achievement.description}</div>
-                        </div>
-                    ))
-                    :
-                    <div>No achievements available for this game yet. Check back later.</div>
-                }
-            </div>
-
-        </div>
-    )
+        <Card sx={{ mt: 3, borderRadius: 0 }}>
+            <Box sx={{ p: 1, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: 1, borderColor: "divider" }}>
+                <Box>Game Achievements</Box>
+                <ArticlesButton size="small" sx={{ visibility: "hidden" }} aria-hidden tabIndex={-1}><RefreshIcon fontSize="small" /></ArticlesButton>
+            </Box>
+            <CardContent>
+                {gameInfoModal?.achievements?.length > 0 ? gameInfoModal.achievements.map((achievement, index) => <Box key={index} sx={{ mb: 2 }}>
+                    <Box><b>{achievement.name}</b></Box><Box>{achievement.description}</Box>
+                </Box>) : <Box>No achievements available for this game yet. Check back later.</Box>}
+            </CardContent>
+        </Card>
+    );
 }
+

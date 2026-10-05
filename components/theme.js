@@ -23,6 +23,14 @@ export function createAppTheme(mode = "dark") {
         typography: { fontFamily: roboto.style.fontFamily },
         components: {
             MuiButton: { styleOverrides: { root: { fontSize: "0.75rem" } } },
+            MuiChip: {
+                styleOverrides: {
+                    sizeSmall: { height: 20, fontSize: "0.7rem" },
+                    labelSmall: { paddingLeft: 6, paddingRight: 6 },
+                    iconSmall: { fontSize: 16 },
+                    deleteIconSmall: { fontSize: 16 },
+                },
+            },
             MuiAlert: {
                 styleOverrides: {
                     root: {

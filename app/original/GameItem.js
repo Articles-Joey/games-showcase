@@ -310,7 +310,9 @@ export default function GameItem({ item, toontownImages }) {
                             <Tooltip
                                 placement="bottom"
                                 title={
-                                    <Box>
+                                    <Box
+                                        sx={{}}
+                                    >
                                         Single Player
                                         {item.single_player_tag && (
                                             <Box>{item.single_player_tag}</Box>
@@ -334,7 +336,9 @@ export default function GameItem({ item, toontownImages }) {
                             <Tooltip
                                 placement="bottom"
                                 title={
-                                    <Box>
+                                    <Box
+                                        sx={{}}
+                                    >
                                         Multiplayer
                                         {item.multiplayer_tag && (
                                             <Box>{item.multiplayer_tag}</Box>

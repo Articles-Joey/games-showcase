@@ -2,7 +2,7 @@
 
 "use client";
 import { create } from "zustand";
-import Peer from "peerjs";
+// import Peer from "peerjs";
 import { useStore } from "./useStore";
 // import useChatStore from './useChatStore';
 
@@ -140,7 +140,7 @@ const useGameStore = create((set, get) => ({
         const oldPeer = get().peer;
         if (oldPeer) oldPeer.destroy();
 
-        const peer = new Peer();
+        const peer = {};
 
         peer.on("open", (id) => {
             console.log("Peer opened with ID:", id);

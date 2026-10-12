@@ -310,9 +310,7 @@ export default function GameItem({ item, toontownImages }) {
                             <Tooltip
                                 placement="bottom"
                                 title={
-                                    <Box
-                                        sx={{}}
-                                    >
+                                    <Box sx={{}}>
                                         Single Player
                                         {item.single_player_tag && (
                                             <Box>{item.single_player_tag}</Box>
@@ -336,9 +334,7 @@ export default function GameItem({ item, toontownImages }) {
                             <Tooltip
                                 placement="bottom"
                                 title={
-                                    <Box
-                                        sx={{}}
-                                    >
+                                    <Box sx={{}}>
                                         Multiplayer
                                         {item.multiplayer_tag && (
                                             <Box>{item.multiplayer_tag}</Box>
@@ -467,6 +463,11 @@ export default function GameItem({ item, toontownImages }) {
                                 value: item.content_rating || "No Rating Yet",
                             },
                             { label: "Engine", value: item.engine || "None" },
+                            {
+                                label: "Version",
+                                value:
+                                    item.populated_package_json?.version || "?",
+                            },
                         ].map(({ label, value }, index) => (
                             <Box
                                 key={label}

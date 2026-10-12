@@ -7,6 +7,10 @@ const epicManifestPath =
     "C:\\ProgramData\\Epic\\EpicGamesLauncher\\Data\\Manifests";
 
 function getEpicGames() {
+
+    // Temp
+    return
+
     if (!fs.existsSync(epicManifestPath)) return [];
 
     const files = fs.readdirSync(epicManifestPath);

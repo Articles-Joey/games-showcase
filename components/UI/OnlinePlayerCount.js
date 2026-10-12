@@ -20,7 +20,7 @@ export default function OnlinePlayerCount() {
                 color: "#fff",
                 p: "0.5rem 1rem",
                 borderRadius: "5px",
-                width: "100%",
+                // width: "100%",
             }}
         >
             {connected ? (

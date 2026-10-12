@@ -126,7 +126,7 @@ function GameCanvas(props) {
             <WoodFloor
                 rotation={[-Math.PI / 2, 0, 0]}
                 position={[0, -30, 0]}
-                args={[300, 300]}
+                args={[150, 150]}
             />
 
             {/* <RoomWalls /> */}

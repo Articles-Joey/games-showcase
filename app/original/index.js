@@ -98,7 +98,7 @@ export default function GamesPage() {
                         Games -{" "}
                         {games?.filter((obj) => !obj.preview)?.length || 0}
                     </Typography>
-                    <Typography>
+                    <Typography gutterBottom>
                         Play some games with your friends or other users.
                     </Typography>
                     <OnlinePlayerCount />

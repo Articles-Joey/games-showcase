@@ -41,6 +41,20 @@ One of the features on top of just a showcase of the Articles Media games is tha
 | Ubisoft Connect |   🗺️   |                                                                                                                 Planned/Unexplored |
 | itch.io         |   🗺️   |                                                                                                                 Planned/Unexplored |
 
+## Previews
+
+There are three different pages to view the games from.
+
+![Original Preview](/public/img/Page%20Previews/original-page-preview.webp)  
+Original launcher that is used on the Articles Media Community Games page.
+
+![Carousel Preview](/public/img/Page%20Previews/carousel-page-preview.webp)  
+3D carousel launcher where each game gets a customized and animated scene. Inspired by the old Xbox 360 NXE Dashboard.
+
+![Wall Preview](/public/img/Page%20Previews/wall-page-preview.webp)
+
+Reuses same game card components as the Original page but in a full width grid.
+
 ## Attributions
 
 [Gamepad Icon](https://www.iconarchive.com/show/small-n-flat-icons-by-paomedia/gamepad-icon.html)

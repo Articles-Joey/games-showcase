@@ -4,10 +4,12 @@ Command: npx gltfjsx@6.5.0 models\Swat.gltf --output output\Swat.js --transform
 Files: models\Swat.gltf [3.37MB] > E:\Downloads\men\output\Swat-transformed.glb [772.98KB] (77%)
 */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useGraph } from "@react-three/fiber";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { SkeletonUtils } from "three-stdlib";
+import usePreviewAnimations from "@/components/Game/Carousel/Games/shared/usePreviewAnimations";
+import { usePreviewFrame } from "@/components/Game/Carousel/Games/shared/PreviewActivity";
 
 const startDesyncedAction = (action) => {
     action.time = Math.random() * action.getClip().duration;
@@ -21,27 +23,40 @@ export function ModelBattlefield4Swat(props) {
     );
     const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes, materials } = useGraph(clone);
-    const { actions, mixer } = useAnimations(animations, group);
-    const [flash, setFlash] = useState(false);
+    const clips = React.useMemo(
+        () => animations.filter((clip) => clip.name === "Run_Shoot"),
+        [animations],
+    );
+    const { actions, mixer } = usePreviewAnimations(clips, group);
+    const flashLight = useRef();
+    const flashRemaining = useRef(0);
 
-    console.log("Available animations:", Object.keys(actions));
+    usePreviewFrame((_, delta) => {
+        if (flashLight.current) {
+            flashLight.current.intensity = flashRemaining.current > 0 ? 20 : 0;
+        }
+        flashRemaining.current = Math.max(0, flashRemaining.current - delta);
+    });
 
     useEffect(() => {
         const action = actions?.["Run_Shoot"];
 
         if (action) {
             startDesyncedAction(action);
+            mixer.update(0);
         }
 
         const handleLoop = (e) => {
             if (e.action === action) {
-                setFlash(true);
-                setTimeout(() => setFlash(false), 50);
+                flashRemaining.current = 0.05;
             }
         };
 
         mixer.addEventListener("loop", handleLoop);
-        return () => mixer.removeEventListener("loop", handleLoop);
+        return () => {
+            mixer.removeEventListener("loop", handleLoop);
+            action?.stop();
+        };
     }, [actions, mixer]);
 
     return (
@@ -56,8 +71,9 @@ export function ModelBattlefield4Swat(props) {
                 </group>
                 <group name="Pistol">
                     <pointLight
+                        ref={flashLight}
                         position={[0, 0.2, 0.5]}
-                        intensity={flash ? 20 : 0}
+                        intensity={0}
                         color="orange"
                         distance={3}
                         decay={2}

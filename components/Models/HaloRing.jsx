@@ -10,7 +10,7 @@ Title: Halo Ring
 
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { usePreviewFrame } from "@/components/Game/Carousel/Games/shared/PreviewActivity";
 
 export function ModelHaloRing(props) {
     const { nodes, materials } = useGLTF(
@@ -18,7 +18,7 @@ export function ModelHaloRing(props) {
     );
     const groupRef = useRef();
 
-    useFrame((state, delta) => {
+    usePreviewFrame((state, delta) => {
         if (groupRef.current) {
             const rotation = groupRef.current.rotation.y;
 

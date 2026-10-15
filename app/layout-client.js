@@ -117,7 +117,9 @@ export default function LayoutClient() {
                             },
                             Multiplayer: { serverUrl: true },
                             Other: {},
-                            Debug: { showStats: true },
+                            Debug: {
+                                showStats: true,
+                            },
                         },
                         reset: () => {
                             useAudioStore.getState().resetAudioSettings();

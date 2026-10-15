@@ -1,7 +1,6 @@
 import { useSphere, useCylinder, useBox, Physics } from "@react-three/cannon";
-import { useFrame } from "@react-three/fiber";
-import { useMemo, useState, useEffect, useRef } from "react";
-import { Color } from "three";
+import { useMemo, useEffect, useRef } from "react";
+import { usePreviewActive, usePreviewFrame } from "../shared/PreviewActivity";
 import { degToRad } from "three/src/math/MathUtils";
 
 const ROWS = 12;
@@ -23,7 +22,7 @@ function PlinkoBall({ startPos }) {
         [api.position],
     );
 
-    useFrame(() => {
+    usePreviewFrame(() => {
         if (pos.current[1] < -(ROWS * GAP) / 2 - 5) {
             api.position.set(0, (ROWS * GAP) / 2 + 3, 0);
             api.velocity.set((Math.random() - 0.5) * 2, 0, 0);
@@ -129,8 +128,9 @@ function Bounds() {
 }
 
 export default function PlinkoScene() {
+    const active = usePreviewActive();
     return (
-        <Physics>
+        <Physics isPaused={!active}>
             <group
                 position={[2, 3, 0]}
                 scale={0.25}

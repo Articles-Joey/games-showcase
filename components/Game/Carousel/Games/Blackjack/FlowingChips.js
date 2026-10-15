@@ -31,7 +31,6 @@ const Chip = ({ position, color }) => {
 };
 
 const Floor = () => {
-    r;
     const [ref] = usePlane(() => ({
         rotation: [-Math.PI / 2, 0, 0],
         position: [0, -4, 0],

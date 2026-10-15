@@ -10,17 +10,14 @@ Title: Minecraft Chest
 
 import React from "react";
 import { useGraph } from "@react-three/fiber";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { SkeletonUtils } from "three-stdlib";
 
 export function ModelMinecraftChest(props) {
     const group = React.useRef();
-    const { scene, animations } = useGLTF(
-        "models/Minecraft/chest-transformed.glb",
-    );
+    const { scene } = useGLTF("models/Minecraft/chest-transformed.glb");
     const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes, materials } = useGraph(clone);
-    const { actions } = useAnimations(animations, group);
     return (
         <group
             ref={group}

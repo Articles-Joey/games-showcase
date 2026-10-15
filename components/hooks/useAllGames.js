@@ -2,6 +2,7 @@ import useSteamGames from "@/components/hooks/useSteamGames";
 import useEpicGames from "@/components/hooks/useEpicGames";
 import useUserGames from "@/components/hooks/useUserGames";
 import useGames from "@/components/hooks/useGames";
+import { useMemo } from "react";
 
 // import { useStore } from "@/hooks/useStore";
 import { useFilterStore } from "./useFilterStore";
@@ -31,7 +32,17 @@ export default function useAllGames() {
     //     games: userGameInjections
     // } = useUserGameInjections();
 
-    const filtered = (games) => {
+    const games = useMemo(
+        () => [
+            ...(filters.launchers?.User ? userGames || [] : []),
+            ...(filters.launchers?.Steam ? steamGames || [] : []),
+            ...(filters.launchers?.Epic ? epicGames || [] : []),
+            ...(filters.launchers?.Articles ? publicGames || [] : []),
+        ],
+        [filters, userGames, steamGames, epicGames, publicGames],
+    );
+
+    const filteredGames = useMemo(() => {
         // if (!search || search.trim() === "") return games;
 
         return games
@@ -90,23 +101,11 @@ export default function useAllGames() {
         // ?.filter(game =>
         //     game?.name?.toLowerCase().includes(search.toLowerCase())
         // );
-    };
+    }, [games, search, playerFilter, availabilityFilter]);
 
     return {
-        games: [
-            ...(filters.launchers?.User ? userGames || [] : []),
-            ...(filters.launchers?.Steam ? steamGames || [] : []),
-            ...(filters.launchers?.Epic ? epicGames || [] : []),
-            ...(filters.launchers?.Articles ? publicGames || [] : []),
-            // ...publicGames || [],
-        ],
-        filteredGames: filtered([
-            ...(filters.launchers?.User ? userGames || [] : []),
-            ...(filters.launchers?.Steam ? steamGames || [] : []),
-            ...(filters.launchers?.Epic ? epicGames || [] : []),
-            ...(filters.launchers?.Articles ? publicGames || [] : []),
-            // ...publicGames || [],
-        ]),
+        games,
+        filteredGames,
         // userGameInjections,
     };
 }

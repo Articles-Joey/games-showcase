@@ -1,8 +1,7 @@
+import { Text } from "@react-three/drei";
 import dynamic from "next/dynamic";
 import { memo } from "react";
 import { degToRad, radToDeg } from "three/src/math/MathUtils";
-import EagerEagleScene from "./Games/Eager Eagle";
-import PinballScene from "./Games/Pinball";
 
 // import BleacherBox from "./Games/Race Game/BleacherBox";
 // import GameGrid from "./Games/Race Game/GameGrid";
@@ -19,10 +18,13 @@ const ModelTrafficCone = dynamic(
     { ssr: false },
 );
 
-const BleacherBox = dynamic(() => import("./Games/Race Game/BleacherBox"), {
+const RaceGameScene = dynamic(() => import("./Games/Race Game/index"), {
     ssr: false,
 });
-const GameGrid = dynamic(() => import("./Games/Race Game/GameGrid"), {
+const EagerEagleScene = dynamic(() => import("./Games/Eager Eagle"), {
+    ssr: false,
+});
+const PinballScene = dynamic(() => import("./Games/Pinball"), {
     ssr: false,
 });
 
@@ -30,6 +32,9 @@ const FourFrogsDemo = dynamic(() => import("./Games/Four Frogs/index"), {
     ssr: false,
 });
 const FlowingChips = dynamic(() => import("./Games/Blackjack/FlowingChips"), {
+    ssr: false,
+});
+const BlackjackScene = dynamic(() => import("./Games/Blackjack/index"), {
     ssr: false,
 });
 const AssetsGalleryScene = dynamic(() => import("./Games/Assets Gallery"), {
@@ -70,6 +75,9 @@ const TugOfWarScene = dynamic(() => import("./Games/Tug of War"), {
     ssr: false,
 });
 const JungleVinesScene = dynamic(() => import("./Games/Jungle Vines"), {
+    ssr: false,
+});
+const SchoolRunScene = dynamic(() => import("./Games/School Run"), {
     ssr: false,
 });
 const TreasureDiveScene = dynamic(() => import("./Games/Treasure Dive"), {
@@ -139,34 +147,19 @@ function RenderUniqueGameScene({ game }) {
         case "Race Game":
             return (
                 <>
-                    <BleacherBox
-                        scale={6}
-                        position={[1, -0.5, -0.75]}
-                    />
-                    <group
-                        position={[5, 0.5, 16]}
-                        rotation={[0, degToRad(90), 0]}
-                    >
-                        <GameGrid />
-                    </group>
+                    <RaceGameScene />
                 </>
             );
         case "Blackjack":
-            return (
-                <>
-                    <group position={[3, 5.5, 0]}>
-                        <FlowingChips />
-                    </group>
-                </>
-            );
+            return <BlackjackScene />;
         case "Assets Gallery":
             return <AssetsGalleryScene />;
         case "Tower Blocks":
             return <TowerBlocksScene />;
         case "Eager Eagle":
             return <EagerEagleScene />;
-        case "Carousel of Progress":
-            return <CarouselOfProgressScene />;
+        // case "Carousel of Progress":
+        //     return <CarouselOfProgressScene />;
         case "Pinball":
             return <PinballScene />;
         case "8 Ball Pool":
@@ -177,40 +170,36 @@ function RenderUniqueGameScene({ game }) {
             return <SpleefScene />;
         case "Tag":
             return <TagScene />;
-        // case "Cannon":
-        //     return (
-        //         <CannonScene />
-        //     );
+        case "Cannon":
+            return <CannonScene />;
         case "Move Match":
             return <MoveMatchScene />;
-        case "Ocean Rings":
-            return <OceanRingsScene />;
-        // case "Battle Trap":
-        //     return (
-        //         <BattleTrapScene />
-        //     );
+        // case "Ocean Rings":
+        //     return <OceanRingsScene />;
+        case "Battle Trap":
+            return <BattleTrapScene />;
         case "Plinko":
             return <PlinkoScene />;
         case "Death Race":
             return <DeathRaceScene />;
         case "Ice Slide":
             return <IceSlideScene />;
-        case "Parkour":
-            return <ParkourScene />;
+        // case "Parkour":
+        //     return <ParkourScene />;
         case "Tug of War":
             return <TugOfWarScene />;
         case "Jungle Vines":
             return <JungleVinesScene />;
-        case "Treasure Dive":
-            return <TreasureDiveScene />;
+        case "School Run":
+            return <SchoolRunScene />;
+        // case "Treasure Dive":
+        //     return <TreasureDiveScene />;
         case "Memory Game":
             return <MemoryGameScene />;
         case "Catching Game":
             return <CatchingGameScene />;
-        // case "Assassin":
-        //     return (
-        //         <AssassinScene />
-        //     );
+        case "Assassin":
+            return <AssassinScene />;
         case "Trash Chute":
             return <TrashChuteScene />;
         case "Stop the Thieves":
@@ -223,8 +212,8 @@ function RenderUniqueGameScene({ game }) {
         //     return (
         //         <SlingshotScene />
         //     );
-        case "USA Tycoon":
-            return <USATycoonScene />;
+        // case "USA Tycoon":
+        //     return <USATycoonScene />;
         // case "AMCOT MMO":
         //     return (
         //         <AMCOTMMOScene />
@@ -274,13 +263,33 @@ function RenderUniqueGameScene({ game }) {
         default:
             return (
                 <>
+                    <Text
+                        color={"red"}
+                        scale={0.5}
+                        position={[1, 4, 0]}
+                        rotation={[0, degToRad(90), 0]}
+                        textAlign="center"
+                    >
+                        {"Game Preview\nUnder Construction"}
+                    </Text>
                     <ModelTrafficCone
                         scale={10}
                         position={[2, 1.25, 0]}
+                    />
+                    <ModelTrafficCone
+                        scale={7}
+                        position={[5, 1.25, -1.5]}
+                    />
+                    <ModelTrafficCone
+                        scale={7}
+                        position={[5, 1.25, 1.5]}
                     />
                 </>
             );
     }
 }
 
-export default memo(RenderUniqueGameScene);
+export default memo(
+    RenderUniqueGameScene,
+    (previous, next) => previous.game?.name === next.game?.name,
+);

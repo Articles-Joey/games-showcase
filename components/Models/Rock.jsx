@@ -19,7 +19,6 @@ export default function ModelRock(props) {
                 material={materials.Rock}
                 position={[0, 0, 0]}
                 rotation={[-Math.PI / 2, 0, 0]}
-                scale={props.scale}
             />
         </group>
     );

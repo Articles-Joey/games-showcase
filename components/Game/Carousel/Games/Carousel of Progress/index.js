@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { usePreviewFrame } from "../shared/PreviewActivity";
 import { degToRad } from "three/src/math/MathUtils";
 
 export default function CarouselOfProgressScene() {
     const groupRef = useRef();
 
-    useFrame((state, delta) => {
+    usePreviewFrame((state, delta) => {
         if (groupRef.current) {
             groupRef.current.rotation.y += delta * 0.2;
         }

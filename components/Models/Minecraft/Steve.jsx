@@ -10,8 +10,9 @@ Title: The Perfect Steve Rigged
 
 import React, { useEffect } from "react";
 import { useGraph } from "@react-three/fiber";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { SkeletonUtils } from "three-stdlib";
+import usePreviewAnimations from "@/components/Game/Carousel/Games/shared/usePreviewAnimations";
 
 export function ModelMinecraftSteve(props) {
     const group = React.useRef();
@@ -20,15 +21,22 @@ export function ModelMinecraftSteve(props) {
     );
     const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes, materials } = useGraph(clone);
-    const { actions } = useAnimations(animations, group);
+    const clips = React.useMemo(
+        () => animations.filter((clip) => clip.name === "Armature.001|Walk"),
+        [animations],
+    );
+    const { actions, mixer } = usePreviewAnimations(clips, group);
 
     // console.log("Available animations for Steve:", Object.keys(actions));
 
     useEffect(() => {
-        if (actions["Armature.001|Walk"]) {
-            actions["Armature.001|Walk"].play();
+        const action = actions["Armature.001|Walk"];
+        if (action) {
+            action.play();
+            mixer.update(0);
         }
-    }, [actions]);
+        return () => action?.stop();
+    }, [actions, mixer]);
 
     return (
         <group

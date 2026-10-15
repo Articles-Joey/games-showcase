@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import React, { useRef } from "react";
+import { usePreviewFrame } from "../shared/PreviewActivity";
 
 import Duck from "../../../PlayerModels/Duck";
 import Dog from "../../../PlayerModels/Dog";
@@ -11,24 +10,13 @@ const { Bleacher } = require("../../../Bleacher");
 
 const BobbingContainer = ({ children }) => {
     const ref = useRef();
-    const [bobHeight, setBobHeight] = useState(0);
+    const remaining = useRef(0);
 
-    useEffect(() => {
-        const bobInterval = setInterval(
-            () => {
-                const newBobHeight = Math.random() * (0.1 - 0.01) + 0.01;
-                setBobHeight(newBobHeight);
-            },
-            Math.random() * (1000 - 300) + 300,
-        );
-
-        return () => clearInterval(bobInterval);
-    }, []);
-
-    useFrame(() => {
-        if (ref.current) {
-            ref.current.position.y = bobHeight;
-        }
+    usePreviewFrame((_, delta) => {
+        remaining.current -= delta;
+        if (remaining.current > 0 || !ref.current) return;
+        ref.current.position.y = 0.01 + Math.random() * 0.09;
+        remaining.current = 0.3 + Math.random() * 0.7;
     });
 
     return <group ref={ref}>{children}</group>;

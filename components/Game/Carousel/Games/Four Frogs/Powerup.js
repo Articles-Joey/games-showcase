@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Billboard, Text } from "@react-three/drei";
+import { Text } from "@react-three/drei";
+import PreviewBillboard from "../shared/PreviewBillboard";
 import { TextureLoader, Vector3 } from "three";
 
 const frogSize = 40;
@@ -34,13 +34,7 @@ export default function Powerup(props) {
                 />
             </mesh>
 
-            <Billboard
-                follow={true}
-                lockX={false}
-                lockY={false}
-                lockZ={false} // Lock the rotation on the z axis (default=false)
-                position={[40, 50, 40]}
-            >
+            <PreviewBillboard position={[40, 50, 40]}>
                 <mesh position={[0, 0, -1]}>
                     <boxGeometry args={[120, 25, 1]} />
                     <meshStandardMaterial
@@ -65,7 +59,7 @@ export default function Powerup(props) {
                 >
                     {powerup.name}
                 </Text>
-            </Billboard>
+            </PreviewBillboard>
         </group>
     );
 }

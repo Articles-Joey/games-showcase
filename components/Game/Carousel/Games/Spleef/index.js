@@ -1,55 +1,14 @@
-import { useRef, useState, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { MathUtils } from "three";
-
-function SpleefTile({ position, color }) {
-    const mesh = useRef();
-    const [visible, setVisible] = useState(true);
-    const cooldown = useRef(0);
-
-    useFrame((state, delta) => {
-        if (!mesh.current) return;
-
-        if (visible) {
-            // Randomly disappear
-            if (Math.random() < 0.002) {
-                setVisible(false);
-                cooldown.current = 2 + Math.random() * 3;
-            }
-        } else {
-            cooldown.current -= delta;
-            if (cooldown.current <= 0) {
-                setVisible(true);
-            }
-        }
-
-        const targetScale = visible ? 1 : 0;
-        // Animate scale
-        mesh.current.scale.x = MathUtils.lerp(
-            mesh.current.scale.x,
-            targetScale,
-            delta * 5,
-        );
-        mesh.current.scale.z = MathUtils.lerp(
-            mesh.current.scale.z,
-            targetScale,
-            delta * 5,
-        );
-    });
-
-    return (
-        <mesh
-            ref={mesh}
-            position={position}
-            rotation={[0, Math.PI / 6, 0]}
-        >
-            <cylinderGeometry args={[0.45, 0.45, 0.2, 6]} />
-            <meshStandardMaterial color={color} />
-        </mesh>
-    );
-}
+import { useLayoutEffect, useRef, useMemo } from "react";
+import { DynamicDrawUsage, MathUtils, Object3D } from "three";
+import { usePreviewFrame } from "../shared/PreviewActivity";
 
 function SpleefLayer({ y, color }) {
+    const mesh = useRef();
+    const transform = useMemo(() => {
+        const object = new Object3D();
+        object.rotation.y = Math.PI / 6;
+        return object;
+    }, []);
     const tiles = useMemo(() => {
         const items = [];
         const rows = 8;
@@ -67,22 +26,72 @@ function SpleefLayer({ y, color }) {
             for (let i = -cols / 2; i < cols / 2; i++) {
                 const x = i * xStep + (j % 2 !== 0 ? xStep / 2 : 0);
                 const z = j * zStep;
-                items.push({ position: [x, y, z] });
+                items.push({
+                    position: [x, 0, z],
+                    visible: true,
+                    cooldown: 0,
+                    scale: 1,
+                });
             }
         }
         return items;
-    }, [y]);
+    }, []);
+
+    useLayoutEffect(() => {
+        const instances = mesh.current;
+        if (!instances) return;
+        instances.instanceMatrix.setUsage(DynamicDrawUsage);
+        tiles.forEach((tile, index) => {
+            transform.position.fromArray(tile.position);
+            transform.scale.set(tile.scale, 1, tile.scale);
+            transform.updateMatrix();
+            instances.setMatrixAt(index, transform.matrix);
+        });
+        instances.instanceMatrix.needsUpdate = true;
+        instances.computeBoundingSphere();
+    }, [tiles, transform]);
+
+    usePreviewFrame((_, delta) => {
+        const instances = mesh.current;
+        if (!instances) return;
+        const alpha = 1 - Math.exp(-5 * delta);
+        const disappearChance = 1 - Math.exp(-0.12 * delta);
+        let changed = false;
+        tiles.forEach((tile, index) => {
+            if (tile.visible) {
+                if (Math.random() < disappearChance) {
+                    tile.visible = false;
+                    tile.cooldown = 2 + Math.random() * 3;
+                }
+            } else {
+                tile.cooldown -= delta;
+                if (tile.cooldown <= 0) tile.visible = true;
+            }
+            const target = tile.visible ? 1 : 0;
+            const next =
+                Math.abs(tile.scale - target) < 0.001
+                    ? target
+                    : MathUtils.lerp(tile.scale, target, alpha);
+            if (next === tile.scale) return;
+            tile.scale = next;
+            transform.position.fromArray(tile.position);
+            transform.scale.set(next, 1, next);
+            transform.updateMatrix();
+            instances.setMatrixAt(index, transform.matrix);
+            changed = true;
+        });
+        if (changed) instances.instanceMatrix.needsUpdate = true;
+    });
 
     return (
-        <group>
-            {tiles.map((tile, i) => (
-                <SpleefTile
-                    key={i}
-                    position={tile.position}
-                    color={color}
-                />
-            ))}
-        </group>
+        <instancedMesh
+            ref={mesh}
+            args={[null, null, tiles.length]}
+            position={[0, y, 0]}
+        >
+            <cylinderGeometry args={[0.45, 0.45, 0.2, 6]} />
+            <meshStandardMaterial color={color} />
+        </instancedMesh>
     );
 }
 

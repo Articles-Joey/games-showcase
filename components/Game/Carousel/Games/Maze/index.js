@@ -1,8 +1,10 @@
 import { MazeBall, ModelMazeBoard } from "@/components/Models/Maze_board";
 import { Debug, Physics } from "@react-three/cannon";
 import { degToRad } from "three/src/math/MathUtils";
+import { usePreviewActive } from "../shared/PreviewActivity";
 
 export default function MazeScene() {
+    const active = usePreviewActive();
     return (
         <group
             scale={0.25}
@@ -10,6 +12,7 @@ export default function MazeScene() {
             position={[3, 3.5, 0]}
         >
             <Physics
+                isPaused={!active}
                 gravity={[0, -100, 0]}
                 // allowSleep={false}
                 // iterations={500}

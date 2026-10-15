@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 
 import { OrbitControls } from "@react-three/drei";
@@ -7,67 +7,32 @@ import useCameraStore from "@/components/hooks/useCameraStore";
 import { useStore } from "@/components/hooks/useStore";
 import { Vector3 } from "three";
 
-const CameraControls = (props) => {
-    // const cameraState = useCameraStore((state) => state?.cameraState);
-    const setCameraState = useCameraStore((state) => state?.setCameraState);
+const CameraControls = () => {
     const cameraUpdate = useCameraStore((state) => state?.cameraUpdate);
 
     const activeGameIndex = useStore((state) => state?.activeGameIndex);
 
     const zoomLevel = useStore((state) => state?.zoomLevel);
 
-    const {
-        // onCameraChange,
-        // cameraUpdate,
-        // setCameraUpdate
-    } = props;
-
-    const {
-        camera,
-        controls: threeControls,
-        gl: { domElement },
-    } = useThree();
+    const camera = useThree((state) => state.camera);
 
     const controls = useRef();
     const targetPosition = useRef(
-        new Vector3(14 + activeGameIndex * 10, 10, 20),
+        new Vector3(14 + activeGameIndex * 10, 8, 19),
     );
-    const targetLookAt = useRef(new Vector3(14 + activeGameIndex * 10, 0, 0));
+    const targetLookAt = useRef(new Vector3(14 + activeGameIndex * 10, 2, 0));
 
-    // Base camera offset when zoomLevel is 0
-
+    // Run before Drei's OrbitControls update, which already runs at priority -1.
     useFrame((state, delta) => {
-        state.camera.position.lerp(targetPosition.current, 3 * delta);
+        const alpha = 1 - Math.exp(-3 * delta);
+        state.camera.position.lerp(targetPosition.current, alpha);
         if (controls.current) {
-            controls.current.target.lerp(targetLookAt.current, 3 * delta);
-            controls.current.update();
+            controls.current.target.lerp(targetLookAt.current, alpha);
         }
-        setCameraState(camera);
-    });
+    }, -2);
 
     useEffect(() => {
-        console.log("New cameraUpdate", cameraUpdate);
-        if (cameraUpdate.position) {
-            camera.position.set(
-                cameraUpdate.position[0],
-                cameraUpdate.position[1],
-                cameraUpdate.position[2],
-            );
-            targetPosition.current.set(
-                cameraUpdate.position[0],
-                cameraUpdate.position[1],
-                cameraUpdate.position[2],
-            );
-        }
-    }, [cameraUpdate, camera.position]);
-
-    useEffect(() => {
-        const baseOffset = new Vector3(0, 10, 20);
-        console.log("New cameraUpdate", cameraUpdate);
-
-        if (controls.current) {
-            targetLookAt.current.set(14 + activeGameIndex * 10, 0, 0);
-        }
+        targetLookAt.current.set(14 + activeGameIndex * 10, 2, 0);
 
         // Calculate zoom factor.
         // Positive zoomLevel zooms in (smaller distance), Negative zooms out (larger distance).
@@ -75,17 +40,23 @@ const CameraControls = (props) => {
         const zoomFactor = Math.max(0.1, 1 - zoomLevel * 0.2);
 
         targetPosition.current.set(
-            14 + activeGameIndex * 10 + baseOffset.x * zoomFactor,
-            baseOffset.y * zoomFactor,
-            baseOffset.z * zoomFactor,
+            14 + activeGameIndex * 10,
+            2 + 6 * zoomFactor,
+            19 * zoomFactor,
         );
-    }, [activeGameIndex, zoomLevel, cameraUpdate]);
+    }, [activeGameIndex, zoomLevel]);
+
+    useEffect(() => {
+        if (cameraUpdate?.position) {
+            camera.position.fromArray(cameraUpdate.position);
+            targetPosition.current.fromArray(cameraUpdate.position);
+        }
+    }, [cameraUpdate, camera]);
 
     return (
         <OrbitControls
             ref={controls}
-            args={[camera, domElement]}
-            target={[14.5, 0, 0]}
+            target={[14.5, 2, 0]}
         />
     );
 };

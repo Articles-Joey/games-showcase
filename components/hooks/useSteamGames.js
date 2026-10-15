@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { useState } from "react";
+import { useMemo } from "react";
 import useUserGameInjections from "./useUserGameInjections";
 
 const useSteamGames = () => {
@@ -27,8 +27,8 @@ const useSteamGames = () => {
 
     const { games: userGameInjections } = useUserGameInjections();
 
-    return {
-        games:
+    const games = useMemo(
+        () =>
             data?.games?.map((game) => ({
                 ...game,
                 game_launcher: "Steam",
@@ -36,6 +36,11 @@ const useSteamGames = () => {
                     (injection) => injection.id === game.id,
                 ) || {}),
             })) || [],
+        [data?.games, userGameInjections],
+    );
+
+    return {
+        games,
         // publicGames,
         isLoading,
         isError: error,

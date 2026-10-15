@@ -1,9 +1,8 @@
 import { useFrame } from "@react-three/fiber";
 import { useStore } from "@/components/hooks/useStore";
-import { memo, useRef } from "react";
+import { memo, useRef, useEffect } from "react";
 
 import { useHotkeys } from "react-hotkeys-hook";
-import useGames from "@/components/hooks/useGames";
 
 // import useGameControllerKeyboardStore from "@/components/hooks/useGameControllerKeyboardStore";
 import useGameControllerKeyboardStore from "@articles-media/articles-gamepad-helper/useGameControllerKeyboardStore";
@@ -11,10 +10,9 @@ import useGameControllerKeyboardStore from "@articles-media/articles-gamepad-hel
 import useAllGames from "@/components/hooks/useAllGames";
 
 const ControllerManager = () => {
-    // const { games, publicGames } = useGames();
     const { games: allGames, filteredGames } = useAllGames();
 
-    let activeGames = filteredGames || allGames;
+    const activeGames = filteredGames || allGames;
 
     const visible = useGameControllerKeyboardStore((state) => state.visible);
     // const visible = false
@@ -36,14 +34,19 @@ const ControllerManager = () => {
     const prevButton0 = useRef(false); // Track previous state of Button A
     const prevButton1 = useRef(false); // Track previous state of Button B
     const prevButton2 = useRef(false); // Track previous state of Button X
-    const audioRef = useRef(
-        typeof Audio !== "undefined"
-            ? new Audio("/audio/noisy-switch.mp3")
-            : null,
-    );
-    // const audioRef = useRef(typeof Audio !== "undefined" ? new Audio("/audio/noisy-switch.mp3") : null);
+    const audioRef = useRef(null);
+
+    useEffect(() => {
+        const audio = new Audio("/audio/noisy-switch.mp3");
+        audioRef.current = audio;
+        return () => {
+            audio.pause();
+            audioRef.current = null;
+        };
+    }, []);
 
     const playSound = () => {
+        if (!audioSettings?.enabled || !audioSettings.game_volume) return;
         if (audioRef.current) {
             const sound = audioRef.current.cloneNode(true);
             sound.volume = audioSettings?.enabled
@@ -54,6 +57,25 @@ const ControllerManager = () => {
     };
 
     const delayBetweenMoves = 100; // milliseconds
+
+    // One handler for the carousel instead of one listener for every game.
+    useHotkeys(
+        "enter",
+        () => {
+            if (visible || showSettingsModal || gameInfoModal) return;
+            const selectedGame = activeGames?.[activeGameIndex];
+            if (selectedGame) setGameInfoModal(selectedGame);
+        },
+        {},
+        [
+            activeGames,
+            activeGameIndex,
+            visible,
+            showSettingsModal,
+            gameInfoModal,
+            setGameInfoModal,
+        ],
+    );
 
     useHotkeys(
         ["a", "ArrowLeft"],
@@ -104,7 +126,7 @@ const ControllerManager = () => {
     );
 
     useFrame((state) => {
-        const gamepads = navigator.getGamepads();
+        const gamepads = navigator.getGamepads?.();
         if (!gamepads) return;
 
         const gp = gamepads[0];

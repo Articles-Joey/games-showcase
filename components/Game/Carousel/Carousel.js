@@ -1,11 +1,28 @@
 import useAllGames from "@/components/hooks/useAllGames";
 import CarouselGameItem from "./CarouselGameItem";
+import CarouselGround from "./Ground";
 import { ModelTrafficCone } from "../Traffic Cone";
 import { Text } from "@react-three/drei";
 import { useFilterStore } from "@/components/hooks/useFilterStore";
+import { useStore } from "@/components/hooks/useStore";
+import { Suspense } from "react";
+import RetainedGameScenes from "./RetainedGameScenes";
+import { getCarouselGameKey } from "./previewRegistry";
+
+const VISIBLE_GAME_RADIUS = 14;
 
 export default function Carousel() {
-    const { games: allGames, filteredGames } = useAllGames();
+    const { filteredGames } = useAllGames();
+    const activeGameIndex = useStore((state) => state.activeGameIndex);
+    const firstVisibleIndex = Math.max(
+        0,
+        activeGameIndex - VISIBLE_GAME_RADIUS,
+    );
+    // Returning null inside an item still leaves its hooks and frame callback mounted.
+    const visibleGames = filteredGames?.slice(
+        firstVisibleIndex,
+        Math.max(0, activeGameIndex + VISIBLE_GAME_RADIUS + 1),
+    );
 
     const setAvailabilityFilter = useFilterStore(
         (state) => state.setAvailabilityFilter,
@@ -14,6 +31,8 @@ export default function Carousel() {
 
     return (
         <>
+            <CarouselGround gameCount={filteredGames?.length || 0} />
+
             {filteredGames?.length === 0 && (
                 <group
                     position={[13.5, 0, 0]}
@@ -44,18 +63,21 @@ export default function Carousel() {
                 </group>
             )}
 
-            {[
-                // ...allGames || [],
-                ...(filteredGames || []),
-            ]?.map((game, i) => {
+            {visibleGames?.map((game, offset) => {
+                const gameKey = getCarouselGameKey(game);
                 return (
-                    <CarouselGameItem
-                        key={game.name}
-                        game={game}
-                        game_index={i}
-                    />
+                    <Suspense
+                        key={gameKey}
+                        fallback={null}
+                    >
+                        <CarouselGameItem
+                            game={game}
+                            game_index={firstVisibleIndex + offset}
+                        />
+                    </Suspense>
                 );
             })}
+            <RetainedGameScenes games={filteredGames} />
         </>
     );
 }

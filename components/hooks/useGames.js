@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { useMemo } from "react";
 
 const useGames = () => {
     const fetcher = async () => {
@@ -13,7 +14,10 @@ const useGames = () => {
         revalidateOnReconnect: false,
     });
 
-    const publicGames = data?.filter((game) => game.public !== false);
+    const publicGames = useMemo(
+        () => data?.filter((game) => game.public !== false),
+        [data],
+    );
 
     return {
         games: data,

@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 
 const bugImages = [
@@ -16,8 +15,6 @@ const bugImages = [
 export default function Bug(props) {
     const { bug } = props;
 
-    const { camera } = useThree();
-
     const spriteRef = useRef();
 
     // Causing issues of undefined when still loading image
@@ -27,11 +24,7 @@ export default function Bug(props) {
     //     bugImages[bug.bugType - 1]
     // );
 
-    // useFrame allows you to animate the sprite
-    useFrame(() => {
-        // Update the sprite's position or any other properties here if needed
-        spriteRef.current.lookAt(camera.position);
-    });
+    // Three sprites already face the camera without a per-frame callback.
 
     return (
         <sprite

@@ -18,6 +18,10 @@ import { useStore } from "@/components/hooks/useStore";
 // import CarouselGameItem from "./CarouselGameItem";
 import ControllerManager from "./ControllerManager";
 import Carousel from "./Carousel/Carousel";
+import { Stats } from "@react-three/drei";
+import GameWallpaper from "./GameWallpaper";
+
+const showActiveGameItemAsWallpaper = true;
 
 // const ContextListeners = () => {
 //     const { gl } = useThree();
@@ -48,44 +52,64 @@ import Carousel from "./Carousel/Carousel";
 
 function GameCanvas(props) {
     const darkMode = useStore((state) => state.darkMode);
+    const showStats = useStore((state) => state?.debugConfig?.showStats);
 
     return (
-        <Canvas
-            camera={{
-                position: [14, 10, 20],
-                // fov: 50
+        <div
+            style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+                isolation: "isolate",
+                backgroundColor: darkMode ? "#000000" : "#ffffff",
             }}
-            // onCreated={({ gl }) => {
-            //     gl.domElement.addEventListener('webglcontextlost', (event) => {
-            //         event.preventDefault();
-            //         console.error('THREE.WebGLRenderer: Context Lost');
-            //     });
-            //     gl.domElement.addEventListener('webglcontextrestored', () => {
-            //         console.log('THREE.WebGLRenderer: Context Restored');
-            //     });
-            // }}
         >
-            {/* <ContextListeners /> */}
+            {showActiveGameItemAsWallpaper && <GameWallpaper />}
 
-            <ControllerManager />
+            <Canvas
+                gl={{ alpha: true }}
+                style={{ position: "absolute", inset: 0, zIndex: 1 }}
+                camera={{
+                    position: [14, 8, 19],
+                    // fov: 50
+                }}
+                // onCreated={({ gl }) => {
+                //     gl.domElement.addEventListener('webglcontextlost', (event) => {
+                //         event.preventDefault();
+                //         console.error('THREE.WebGLRenderer: Context Lost');
+                //     });
+                //     gl.domElement.addEventListener('webglcontextrestored', () => {
+                //         console.log('THREE.WebGLRenderer: Context Restored');
+                //     });
+                // }}
+            >
+                {showStats && <Stats className="stats-overlay" />}
 
-            <CameraControls />
+                {/* <ContextListeners /> */}
 
-            <Sky
-                // distance={450000}
-                sunPosition={[0, darkMode ? -1 : 1, 0]}
-                // inclination={0}
-                // azimuth={0.25}
-                // {...props}
-            />
+                <ControllerManager />
 
-            <ambientLight intensity={darkMode ? 1 : 2} />
+                <CameraControls />
 
-            <Suspense>
-                <Carousel />
-                <Ocean position={[0, -0.3, 0]} />
-            </Suspense>
-        </Canvas>
+                {!showActiveGameItemAsWallpaper && (
+                    <Sky
+                        renderOrder={-2}
+                        // distance={450000}
+                        sunPosition={[0, darkMode ? -1 : 1, 0]}
+                        // inclination={0}
+                        // azimuth={0.25}
+                        // {...props}
+                    />
+                )}
+
+                <ambientLight intensity={darkMode ? 1 : 2} />
+
+                <Suspense>
+                    <Carousel />
+                    {/* <Ocean position={[0, -0.3, 0]} /> */}
+                </Suspense>
+            </Canvas>
+        </div>
     );
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useContext, useRef, useState } from "react";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import { toggleDevDebug } from '@/redux/actions/siteActions';
 // import Link from 'next/link';
@@ -91,8 +91,6 @@ function Box(props) {
 
     // Subscribe this component to the render-loop, rotate the mesh every frame
     // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
-
-    useFrame((state, delta) => ref.current);
 
     useEffect(() => {
         if (hovered && clickable) {

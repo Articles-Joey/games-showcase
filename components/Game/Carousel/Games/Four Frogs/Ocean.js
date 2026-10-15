@@ -1,59 +1,10 @@
-import * as THREE from "three";
-import React, { Suspense, useRef, useMemo } from "react";
-import {
-    Canvas,
-    extend,
-    useThree,
-    useLoader,
-    useFrame,
-} from "@react-three/fiber";
-import { OrbitControls, Sky } from "@react-three/drei";
-import { Water } from "three-stdlib";
-import { useStore } from "@/components/hooks/useStore";
-
-extend({ Water });
-
-const link = `${process.env.NEXT_PUBLIC_CDN}games/Race Game/waternormals.jpeg`;
+import PreviewWater from "../shared/PreviewWater";
 
 export default function Ocean(props) {
-    const ref = useRef();
-    const gl = useThree((state) => state.gl);
-
-    const darkMode = useStore((state) => state.darkMode);
-
-    const loadedWaterNormals = useLoader(THREE.TextureLoader, link);
-    const waterNormals = useMemo(() => {
-        const texture = loadedWaterNormals.clone();
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        texture.needsUpdate = true;
-        return texture;
-    }, [loadedWaterNormals]);
-
-    const geom = useMemo(() => new THREE.PlaneGeometry(10000, 10000), []);
-    const config = useMemo(
-        () => ({
-            textureWidth: 512,
-            textureHeight: 512,
-            waterNormals,
-            sunDirection: [1000, 10, 0],
-            sunColor: darkMode ? 0x222222 : 0xffffff,
-            waterColor: darkMode ? 0x011111 : 0x001e0f,
-            distortionScale: 3.7,
-            fog: false,
-            format: gl.encoding,
-        }),
-        [waterNormals, darkMode, gl.encoding],
-    );
-    useFrame(
-        (state, delta) => (ref.current.material.uniforms.time.value += delta),
-    );
     return (
-        <water
-            ref={ref}
-            args={[geom, config]}
+        <PreviewWater
+            size={1000}
             {...props}
-            rotation-x={-Math.PI / 2}
         />
     );
 }

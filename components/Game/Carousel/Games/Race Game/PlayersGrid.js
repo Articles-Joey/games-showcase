@@ -1,6 +1,6 @@
 import { useEffect, useContext, useRef, useState } from "react";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import { toggleDevDebug } from '@/redux/actions/siteActions';
 // import Link from 'next/link';
@@ -17,7 +17,8 @@ import Duck from "./PlayerModels/Duck";
 import Dog from "./PlayerModels/Dog";
 import Witch from "./PlayerModels/Witch";
 import Bear from "./PlayerModels/Bear";
-import { Billboard, Text } from "@react-three/drei";
+import { Text } from "@react-three/drei";
+import PreviewBillboard from "../shared/PreviewBillboard";
 import useGameStore from "@/components/hooks/useGameStore";
 
 function RenderCharacter({ character }) {
@@ -59,7 +60,6 @@ function Box(props) {
     const [clicked, click] = useState(false);
     // Subscribe this component to the render-loop, rotate the mesh every frame
     // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
-    useFrame((state, delta) => ref.current);
     // Return the view, these are regular Threejs elements expressed in JSX
     return (
         <group>
@@ -96,7 +96,7 @@ function Box(props) {
                     />
                 )}
 
-                <Billboard>
+                <PreviewBillboard>
                     <mesh position={[0, 1.5, -0.02]}>
                         <planeGeometry args={[2.2, 0.7]} />
                         <meshBasicMaterial
@@ -116,7 +116,7 @@ function Box(props) {
                     >
                         {colPlayer?.race_game?.nickname || "No Name"}
                     </Text>
-                </Billboard>
+                </PreviewBillboard>
 
                 {/* For Testing */}
                 {/* <FloatingOrb

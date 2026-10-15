@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { useState } from "react";
+import { useMemo } from "react";
 import useUserGameInjections from "./useUserGameInjections";
 
 const useEpicGames = () => {
@@ -27,8 +27,8 @@ const useEpicGames = () => {
 
     // const publicGames = data?.filter(game => game.public !== false);
 
-    return {
-        games:
+    const games = useMemo(
+        () =>
             data?.games?.map((game) => ({
                 ...game,
                 game_launcher: "Epic Games",
@@ -36,6 +36,11 @@ const useEpicGames = () => {
                     (injection) => injection.id === game.id,
                 ) || {}),
             })) || [],
+        [data?.games, userGameInjections],
+    );
+
+    return {
+        games,
         // publicGames,
         isLoading,
         isError: error,

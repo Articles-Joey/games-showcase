@@ -10,7 +10,7 @@ Title: Maze Board
 
 import React, { useMemo, useState, useEffect } from "react";
 import { useCompoundBody, useSphere } from "@react-three/cannon";
-import { useFrame } from "@react-three/fiber";
+import { usePreviewFrame } from "@/components/Game/Carousel/Games/shared/PreviewActivity";
 import { Vector3, Quaternion, Euler } from "three";
 import { degToRad } from "three/src/math/MathUtils";
 
@@ -211,9 +211,7 @@ export function ModelMazeBoard({ scale = 1, ...props }) {
         ...props,
     }));
 
-    useFrame((state) => {
-        const time = state.clock.getElapsedTime();
-
+    usePreviewFrame((state, delta, time) => {
         // Rotate clockwise infinitely around Z axis (like a wheel)
         const angle = -time * 0.3;
         const euler = new Euler(degToRad(90), angle, 0);

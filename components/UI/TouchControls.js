@@ -49,7 +49,7 @@ function CarouselControlButtons() {
             <Box
                 sx={{
                     position: "absolute",
-                    top: 0,
+                    top: 20,
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     display: "flex",
@@ -87,10 +87,10 @@ function TouchControls() {
                 width: "100%",
                 height: 150,
                 zIndex: 1,
-                bgcolor: "rgba(0,0,0,0.5)",
+                // bgcolor: "rgba(0,0,0,0.5)",
                 p: 2,
                 display: enabled ? "flex" : "none",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 alignItems: "center",
                 ...(sidebar && {
                     "@media (min-width: 992px)": {

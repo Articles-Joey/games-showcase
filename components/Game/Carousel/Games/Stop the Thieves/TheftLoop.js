@@ -19,7 +19,7 @@ import {
     FENCE_RADIUS,
 } from "./layout";
 
-const ENEMY_URL = "/models/assassin/Spacesuit-transformed.glb";
+const ENEMY_URL = "/models/shared/Spacesuit-transformed.glb";
 const PICKUP_DURATION = 0.65;
 const SPAWN_DELAY = 0.7;
 const BARREL_SCALE = 1.5;

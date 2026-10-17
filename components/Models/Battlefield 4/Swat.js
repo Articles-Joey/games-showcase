@@ -19,7 +19,7 @@ const startDesyncedAction = (action) => {
 export function ModelBattlefield4Swat(props) {
     const group = React.useRef();
     const { scene, animations } = useGLTF(
-        "models/Battlefield 4/Swat-transformed.glb",
+        "models/shared/Swat-transformed.glb",
     );
     const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes, materials } = useGraph(clone);

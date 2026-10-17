@@ -18,7 +18,7 @@ export default function GameComments() {
     } = useGameComments({ game_id: gameInfoModal?._id });
 
     return (
-        <Card sx={{ mt: 3, borderRadius: 0 }}>
+        <Card sx={{ borderRadius: 0 }}>
             <Box
                 sx={{
                     p: 1,

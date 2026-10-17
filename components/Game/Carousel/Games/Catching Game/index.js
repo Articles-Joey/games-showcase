@@ -23,7 +23,7 @@ function CatchingGameScene() {
                 getTerrainHeight={DEFAULT_TERRAIN.getHeight}
             />
             <WanderingCharacter
-                url="/models/assassin/Spacesuit-transformed.glb"
+                url="/models/shared/Spacesuit-transformed.glb"
                 action="Run"
                 bounds={13}
                 speed={6}

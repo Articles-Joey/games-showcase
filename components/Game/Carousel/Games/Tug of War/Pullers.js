@@ -62,7 +62,7 @@ const TOON_MESHES = [
 
 export function ToonPuller(props) {
     const { group, nodes, materials } = usePuller(
-        "/models/tug-of-war/MostRecent-transformed.glb",
+        "/models/shared/Toon-transformed.glb",
         116,
         "medium_shorts_toon_rig|tug-o-war",
     );
@@ -114,7 +114,7 @@ const COG_MESHES = [
 
 export function CogPuller(props) {
     const { group, nodes, materials } = usePuller(
-        "/models/tug-of-war/CogFixed-transformed.glb",
+        "/models/shared/Cog-transformed.glb",
         40,
         "suitC|tug-o-war",
         true,

@@ -11,7 +11,7 @@ export default function GameAchievements() {
     const gameInfoModal = useStore((state) => state.gameInfoModal);
 
     return (
-        <Card sx={{ mt: 3, borderRadius: 0 }}>
+        <Card sx={{ borderRadius: 0 }}>
             <Box
                 sx={{
                     p: 1,

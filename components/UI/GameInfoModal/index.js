@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import InfoIcon from "@mui/icons-material/Info";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import ForumIcon from "@mui/icons-material/Forum";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
@@ -28,6 +29,7 @@ const GameComments = lazy(() => import("./Comments"));
 const GameNews = lazy(() => import("./News"));
 const GameAchievements = lazy(() => import("./Achievements"));
 const tabsData = [
+    { name: "Info", Icon: InfoIcon, component: GameInfoDetails },
     { name: "News", Icon: NewspaperIcon, component: GameNews },
     { name: "Comments", Icon: ForumIcon, component: GameComments },
     {
@@ -75,7 +77,7 @@ const imageNavigationSx = {
 export default function GameInfoModal({ show, setShow }) {
     const [closing, setClosing] = useState(false);
     const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState("");
+    const [activeTab, setActiveTab] = useState("Info");
     const gameInfoModal = useStore((state) => state.gameInfoModal);
     const launchGame = useStore((state) => state.launchGame);
     const containerRef = useRef(null);
@@ -121,11 +123,17 @@ export default function GameInfoModal({ show, setShow }) {
         <>
             <Dialog
                 open={Boolean(show) && !closing}
-                maxWidth="xl"
+                maxWidth="lg"
                 fullWidth
+                center
                 scroll="paper"
                 aria-labelledby="game-info-title"
                 onClose={close}
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',    // Forces vertical centering
+                    justifyContent: 'center' // Forces horizontal centering
+                }}
                 slotProps={{
                     transition: {
                         onExited: () => {
@@ -133,7 +141,7 @@ export default function GameInfoModal({ show, setShow }) {
                             setClosing(false);
                         },
                     },
-                    paper: { sx: { alignSelf: "flex-start", mt: 4 } },
+                    // paper: { sx: { alignSelf: "flex-start", mt: 4 } },
                 }}
             >
                 <DialogTitle
@@ -273,7 +281,7 @@ export default function GameInfoModal({ show, setShow }) {
                                             bgcolor: "#000",
                                             border:
                                                 image ===
-                                                gameInfoModal?.active_image
+                                                    gameInfoModal?.active_image
                                                     ? "3px solid #000"
                                                     : "1px solid rgba(133,133,133,0.5)",
                                             overflow: "hidden",
@@ -301,99 +309,10 @@ export default function GameInfoModal({ show, setShow }) {
                                 ))}
                             </Box>
                         </Box>
-                        <Box>
-                            <Box>
-                                {gameInfoModal?.short_description ||
-                                    "No description available for this game."}
-                            </Box>
-                            <Divider sx={{ my: 2 }} />
+                        <Box sx={{ minWidth: 0 }}>
                             <Box
-                                sx={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    mb: 2,
-                                }}
+                                sx={{ display: "flex", flexWrap: "wrap", mb: 2 }}
                             >
-                                <Box sx={{ width: "50%" }}>
-                                    <Detail
-                                        label="Engine"
-                                        value={
-                                            gameInfoModal?.engine || "Unknown"
-                                        }
-                                    />
-                                    <Detail
-                                        label="Rating"
-                                        value={
-                                            gameInfoModal?.content_rating ||
-                                            "Unrated"
-                                        }
-                                    />
-                                </Box>
-                                <Box sx={{ width: "50%" }}>
-                                    <Detail
-                                        label="Single Player"
-                                        value={
-                                            gameInfoModal?.single_player
-                                                ? gameInfoModal.single_player_tag ||
-                                                  "..."
-                                                : "No"
-                                        }
-                                    />
-                                    <Detail
-                                        label="Multiplayer"
-                                        value={
-                                            gameInfoModal?.multiplayer
-                                                ? gameInfoModal.multiplayer_tag ||
-                                                  "..."
-                                                : "No"
-                                        }
-                                    />
-                                </Box>
-                            </Box>
-                            <Divider sx={{ my: 2 }} />
-                            <Box sx={{ display: "flex" }}>
-                                <Box sx={{ width: "50%" }}>
-                                    <Box sx={{ mb: 1 }}>
-                                        Developer:{" "}
-                                        {gameInfoModal?.developer || "Unknown"}
-                                    </Box>
-                                    <Box>
-                                        Publisher:{" "}
-                                        {gameInfoModal?.publisher || "Unknown"}
-                                    </Box>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        width: "50%",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "flex-start",
-                                    }}
-                                >
-                                    {gameInfoModal?.github_repo &&
-                                        gameInfoModal.github_public && (
-                                            <>
-                                                <Box>Public on GitHub!</Box>
-                                                <ArticlesButton
-                                                    component="a"
-                                                    href={
-                                                        gameInfoModal.github_repo
-                                                    }
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    small
-                                                    startIcon={
-                                                        <GitHubIcon fontSize="small" />
-                                                    }
-                                                >
-                                                    View Repo
-                                                </ArticlesButton>
-                                            </>
-                                        )}
-                                </Box>
-                            </Box>
-                            <Divider sx={{ my: 2 }} />
-                            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                                 {tabsData.map(({ name, Icon }) => (
                                     <ArticlesButton
                                         key={name}
@@ -415,9 +334,9 @@ export default function GameInfoModal({ show, setShow }) {
                                     </ArticlesButton>
                                 ))}
                             </Box>
+                            <TabContent activeTab={activeTab} />
                         </Box>
                     </Box>
-                    <TabContent activeTab={activeTab} />
                 </DialogContent>
                 <DialogActions
                     sx={{
@@ -527,6 +446,86 @@ export default function GameInfoModal({ show, setShow }) {
                     sx={{ width: "100%", height: "100%", objectFit: "contain" }}
                 />
             </Dialog>
+        </>
+    );
+}
+
+function GameInfoDetails() {
+    const gameInfoModal = useStore((state) => state.gameInfoModal);
+
+    return (
+        <>
+            <Box>
+                {gameInfoModal?.short_description ||
+                    "No description available for this game."}
+            </Box>
+            <Divider sx={{ my: 2 }} />
+            <Box sx={{ display: "flex", flexWrap: "wrap", mb: 2 }}>
+                <Box sx={{ width: "50%" }}>
+                    <Detail
+                        label="Engine"
+                        value={gameInfoModal?.engine || "Unknown"}
+                    />
+                    <Detail
+                        label="Rating"
+                        value={gameInfoModal?.content_rating || "Unrated"}
+                    />
+                </Box>
+                <Box sx={{ width: "50%" }}>
+                    <Detail
+                        label="Single Player"
+                        value={
+                            gameInfoModal?.single_player
+                                ? gameInfoModal.single_player_tag || "..."
+                                : "No"
+                        }
+                    />
+                    <Detail
+                        label="Multiplayer"
+                        value={
+                            gameInfoModal?.multiplayer
+                                ? gameInfoModal.multiplayer_tag || "..."
+                                : "No"
+                        }
+                    />
+                </Box>
+            </Box>
+            <Divider sx={{ my: 2 }} />
+            <Box sx={{ display: "flex" }}>
+                <Box sx={{ width: "50%" }}>
+                    <Box sx={{ mb: 1 }}>
+                        Developer: {gameInfoModal?.developer || "Unknown"}
+                    </Box>
+                    <Box>
+                        Publisher: {gameInfoModal?.publisher || "Unknown"}
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        width: "50%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                    }}
+                >
+                    {gameInfoModal?.github_repo &&
+                        gameInfoModal.github_public && (
+                            <>
+                                <Box>Public on GitHub!</Box>
+                                <ArticlesButton
+                                    component="a"
+                                    href={gameInfoModal.github_repo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    small
+                                    startIcon={<GitHubIcon fontSize="small" />}
+                                >
+                                    View Repo
+                                </ArticlesButton>
+                            </>
+                        )}
+                </Box>
+            </Box>
         </>
     );
 }

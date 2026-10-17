@@ -20,7 +20,7 @@ function Racer({ character, lane, index }) {
     const group = useRef();
     const currentAction = useRef();
     const { scene, animations } = useGLTF(
-        `/models/assassin/${character}-transformed.glb`,
+        `/models/shared/${character}-transformed.glb`,
     );
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const clips = useMemo(

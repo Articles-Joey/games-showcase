@@ -22,7 +22,8 @@ export function sectionZ(z, elapsed) {
 }
 
 export const MODEL_URLS = {
-    hoodie: "/models/school-run/HoodieCharacter-transformed.glb",
+    // hoodie: "/models/school-run/HoodieCharacter-transformed.glb",
+    hoodie: "/models/shared/Casual_Hoodie-transformed.glb",
     hand: "/models/school-run/Human hand-transformed.glb",
     chair: "/models/school-run/chair-transformed.glb",
     desk: "/models/school-run/desk-transformed.glb",

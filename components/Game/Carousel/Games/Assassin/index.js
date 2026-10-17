@@ -41,7 +41,7 @@ function AssassinScene() {
             {npcs.map(({ id, character, speed }) => (
                 <WanderingCharacter
                     key={id}
-                    url={`/models/assassin/${character}-transformed.glb`}
+                    url={`/models/shared/${character}-transformed.glb`}
                     speed={speed}
                 />
             ))}

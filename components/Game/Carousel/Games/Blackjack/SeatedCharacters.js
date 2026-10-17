@@ -10,7 +10,7 @@ import {
     PLAYER_SCALE,
 } from "./roomLayout";
 
-const MODEL_URL = "/models/blackjack/UAL1_Standard.glb";
+const MODEL_URL = "/models/shared/UAL1_Standard.glb";
 
 function SeatedCharacter({ seat, nickname }) {
     const { scene, animations } = useGLTF(MODEL_URL);

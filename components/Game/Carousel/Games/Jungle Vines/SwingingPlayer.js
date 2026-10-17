@@ -22,7 +22,7 @@ function aimBone(bone, child, target, root) {
 export default function SwingingPlayer() {
     // This is the same Quaternius King used by Jungle Vines and Assassin.
     const { scene, animations } = useGLTF(
-        "/models/assassin/King-transformed.glb",
+        "/models/shared/King-transformed.glb",
     );
     const rig = useMemo(() => {
         const clone = SkeletonUtils.clone(scene);

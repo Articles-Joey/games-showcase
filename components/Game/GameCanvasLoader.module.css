@@ -1,0 +1,56 @@
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: #101114;
+    color: #f4f5f7;
+    cursor: wait;
+}
+
+.panel {
+    width: min(100%, 26rem);
+}
+.title {
+    margin: 0 0 0.6rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.detail {
+    margin: 0 0 1.4rem;
+    min-height: 1.5em;
+    color: #b8becb;
+}
+.track {
+    height: 0.55rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #30343e;
+}
+.fill {
+    height: 100%;
+    border-radius: inherit;
+    background: #8db6ff;
+    transition: width 200ms ease;
+}
+.progress {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #b8becb;
+}
+.skip {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fill {
+        transition: none;
+    }
+}

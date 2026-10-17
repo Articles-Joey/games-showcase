@@ -1,12 +1,6 @@
-import {
-    Suspense,
-    useCallback,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Color, DynamicDrawUsage, Object3D } from "three";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import { usePreviewFrame } from "../shared/PreviewActivity";
 import Chopper from "./Chopper";
 import {

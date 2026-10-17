@@ -1,4 +1,5 @@
-import { Suspense, useRef } from "react";
+import { useRef } from "react";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import { usePreviewFrame } from "../shared/PreviewActivity";
 import RopeMesh from "./RopeMesh";
 import SwingingPlayer from "./SwingingPlayer";

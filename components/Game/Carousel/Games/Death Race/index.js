@@ -1,5 +1,6 @@
 import ModelBarn from "@/components/Models/Shared/Barn";
-import { memo, Suspense } from "react";
+import { memo } from "react";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import Sand from "./Sand";
 import FinishLine from "./FinishLine";
 import Scenery from "./Scenery";

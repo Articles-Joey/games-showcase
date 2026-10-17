@@ -8,7 +8,7 @@ import DeferredPreview from "../shared/DeferredPreview";
 function BlackjackScene() {
     return (
         <group
-            position={[4, .65, 0]}
+            position={[4, 0.65, 0]}
             rotation={[0, Math.PI / 2, 0]}
             scale={PREVIEW_SCALE}
         >

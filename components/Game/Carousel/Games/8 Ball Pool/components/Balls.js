@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { PreviewSuspense as Suspense } from "../../shared/PreviewLoadTracker";
 import { Text } from "@react-three/drei";
 import { useStore } from "@/components/hooks/useStore";
 import { makeRack } from "./tableLayout";

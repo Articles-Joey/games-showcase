@@ -1,5 +1,6 @@
 import { Image } from "@react-three/drei";
-import { memo, Suspense } from "react";
+import { memo } from "react";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import { useStore } from "@/components/hooks/useStore";
 import PreviewWater from "../shared/PreviewWater";
 import Platform from "./Platform";

@@ -158,12 +158,10 @@ export function createCityLayout(nodes, seed) {
         for (const { node, material, matrix } of parts) {
             if (!groups.has(node))
                 groups.set(node, { node, material, instances: [] });
-            groups
-                .get(node)
-                .instances.push({
-                    matrix: matrix.premultiply(translation),
-                    color,
-                });
+            groups.get(node).instances.push({
+                matrix: matrix.premultiply(translation),
+                color,
+            });
         }
     }
 

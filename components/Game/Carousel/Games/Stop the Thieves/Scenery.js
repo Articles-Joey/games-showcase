@@ -2,7 +2,6 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import {
     memo,
-    Suspense,
     useCallback,
     useEffect,
     useLayoutEffect,
@@ -22,9 +21,10 @@ import {
     Vector3,
 } from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import { useStore } from "@/components/hooks/useStore";
 import DeferredPreview from "../shared/DeferredPreview";
-import { usePreviewFrame } from "../shared/PreviewActivity";
+import { usePreviewFrame, usePreviewVisible } from "../shared/PreviewActivity";
 import { FENCE_RADIUS } from "./layout";
 import rearClip from "./rearClip";
 
@@ -145,6 +145,7 @@ function Hills({ direction }) {
 }
 
 function TreeImages({ direction, cameraPosition, updateCamera }) {
+    const visible = usePreviewVisible();
     const source = useTexture(`${IMAGE_ROOT}tree_big.png`);
     const darkMode = useStore((state) => state.darkMode);
     const mesh = useRef();
@@ -217,7 +218,7 @@ function TreeImages({ direction, cameraPosition, updateCamera }) {
         faceCamera(true);
         mesh.current.computeBoundingSphere();
         mesh.current.boundingSphere.radius += (9.5 * aspect) / 2;
-    }, [faceCamera, updateCamera, material]);
+    }, [faceCamera, updateCamera, material, visible]);
     usePreviewFrame(() => faceCamera());
     useEffect(() => () => geometry.dispose(), [geometry]);
     useEffect(
@@ -235,7 +236,8 @@ function TreeImages({ direction, cameraPosition, updateCamera }) {
     );
 }
 
-function Clouds({ direction }) {
+function Clouds({ direction, updateCamera }) {
+    const visible = usePreviewVisible();
     const { nodes, materials } = useGLTF("/models/stop-the-thieves/clouds.glb");
     const darkMode = useStore((state) => state.darkMode);
     const mesh = useRef();
@@ -289,10 +291,11 @@ function Clouds({ direction }) {
     }, [materials, darkMode, localDirection]);
     useLayoutEffect(() => {
         // A Three.js Y rotation has the opposite sign to a 2D X/Z rotation.
+        updateCamera();
         localDirection.value
             .copy(direction.value)
             .rotateAround(origin, mesh.current.rotation.y);
-    }, [direction, localDirection, origin, material]);
+    }, [direction, localDirection, origin, material, updateCamera, visible]);
     usePreviewFrame((_, delta, elapsed) => {
         const angle = elapsed * 0.01;
         mesh.current.rotation.y = angle;
@@ -312,6 +315,7 @@ function Clouds({ direction }) {
 
 function Scenery() {
     const root = useRef();
+    const visible = usePreviewVisible();
     const camera = useThree((state) => state.camera);
     const cameraPosition = useMemo(() => new Vector3(0, 0, 1), []);
     const direction = useMemo(() => ({ value: new Vector2(0, 1) }), []);
@@ -323,7 +327,7 @@ function Scenery() {
         if (direction.value.lengthSq() < 0.000001) direction.value.set(0, 1);
         else direction.value.normalize();
     }, [camera, cameraPosition, direction]);
-    useLayoutEffect(updateCamera, [updateCamera]);
+    useLayoutEffect(updateCamera, [updateCamera, visible]);
     usePreviewFrame(updateCamera, -0.75);
 
     return (
@@ -342,7 +346,10 @@ function Scenery() {
                 />
             </Suspense>
             <DeferredPreview>
-                <Clouds direction={direction} />
+                <Clouds
+                    direction={direction}
+                    updateCamera={updateCamera}
+                />
             </DeferredPreview>
         </group>
     );

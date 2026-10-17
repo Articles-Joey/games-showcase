@@ -1,5 +1,6 @@
 import { Text } from "@react-three/drei";
-import { Suspense, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import {
     DataTexture,
     DoubleSide,

@@ -1,10 +1,11 @@
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useThree } from "@react-three/fiber";
 import { Quaternion } from "three";
-import { usePreviewFrame } from "./PreviewActivity";
+import { usePreviewFrame, usePreviewVisible } from "./PreviewActivity";
 
 export default function PreviewBillboard({ children, ...props }) {
     const group = useRef();
+    const visible = usePreviewVisible();
     const camera = useThree((state) => state.camera);
     const parentRotation = useMemo(() => new Quaternion(), []);
     const faceCamera = useCallback(
@@ -21,7 +22,7 @@ export default function PreviewBillboard({ children, ...props }) {
     // Give initially inactive arrows a visible orientation before freezing them.
     useLayoutEffect(() => {
         faceCamera(camera);
-    }, [camera, faceCamera]);
+    }, [camera, faceCamera, visible]);
     usePreviewFrame(({ camera }) => {
         faceCamera(camera);
     });

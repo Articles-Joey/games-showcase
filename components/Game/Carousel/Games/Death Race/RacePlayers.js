@@ -1,13 +1,7 @@
 import { useGLTF } from "@react-three/drei";
-import {
-    Suspense,
-    useCallback,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { SkeletonUtils } from "three-stdlib";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import { usePreviewFrame } from "../shared/PreviewActivity";
 import usePreviewAnimations from "../shared/usePreviewAnimations";
 import { START_Z, FINISH_Z } from "./FinishLine";

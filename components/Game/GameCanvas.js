@@ -1,15 +1,7 @@
-import { memo, useMemo, useRef, useEffect, Suspense } from "react";
+import { memo, Suspense } from "react";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import {
-    OrbitControls,
-    Sky,
-    Text,
-    useDetectGPU,
-    useTexture,
-} from "@react-three/drei";
-
-import Ocean from "./Ocean";
+import { Canvas } from "@react-three/fiber";
+import { Sky } from "@react-three/drei";
 
 import CameraControls from "./CameraControls";
 
@@ -20,6 +12,11 @@ import ControllerManager from "./ControllerManager";
 import Carousel from "./Carousel/Carousel";
 import { Stats } from "@react-three/drei";
 import GameWallpaper from "./GameWallpaper";
+import {
+    CanvasLoadingProvider,
+    useCanvasLoading,
+} from "./CanvasLoadingContext";
+import GameCanvasLoader from "./GameCanvasLoader";
 
 const showActiveGameItemAsWallpaper = true;
 
@@ -50,9 +47,12 @@ const showActiveGameItemAsWallpaper = true;
 //     return null;
 // };
 
-function GameCanvas(props) {
+function GameCanvasContent(props) {
     const darkMode = useStore((state) => state.darkMode);
     const showStats = useStore((state) => state?.debugConfig?.showStats);
+    const ready = useCanvasLoading(
+        (state) => state.status === "ready" || state.skipped,
+    );
 
     return (
         <div
@@ -61,6 +61,7 @@ function GameCanvas(props) {
                 width: "100%",
                 height: "100%",
                 isolation: "isolate",
+                zIndex: ready ? 0 : 3,
                 backgroundColor: darkMode ? "#000000" : "#ffffff",
             }}
         >
@@ -87,7 +88,7 @@ function GameCanvas(props) {
 
                 {/* <ContextListeners /> */}
 
-                <ControllerManager />
+                {ready && <ControllerManager />}
 
                 <CameraControls />
 
@@ -109,7 +110,16 @@ function GameCanvas(props) {
                     {/* <Ocean position={[0, -0.3, 0]} /> */}
                 </Suspense>
             </Canvas>
+            <GameCanvasLoader />
         </div>
+    );
+}
+
+function GameCanvas(props) {
+    return (
+        <CanvasLoadingProvider>
+            <GameCanvasContent {...props} />
+        </CanvasLoadingProvider>
     );
 }
 

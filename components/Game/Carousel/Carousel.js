@@ -12,7 +12,7 @@ import { getCarouselGameKey } from "./previewRegistry";
 const VISIBLE_GAME_RADIUS = 14;
 
 export default function Carousel() {
-    const { filteredGames } = useAllGames();
+    const { filteredGames, games } = useAllGames();
     const activeGameIndex = useStore((state) => state.activeGameIndex);
     const firstVisibleIndex = Math.max(
         0,
@@ -77,7 +77,10 @@ export default function Carousel() {
                     </Suspense>
                 );
             })}
-            <RetainedGameScenes games={filteredGames} />
+            <RetainedGameScenes
+                games={filteredGames}
+                allGames={games}
+            />
         </>
     );
 }

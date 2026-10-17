@@ -1,18 +1,11 @@
-import dynamic from "next/dynamic";
-import { memo } from "react";
+import { lazy, memo } from "react";
 import { degToRad } from "three/src/math/MathUtils.js";
 
-const BleacherBox = dynamic(
+const BleacherBox = lazy(
     () => import("@/components/Game/Carousel/Games/Race Game/BleacherBox"),
-    {
-        ssr: false,
-    },
 );
-const GameGrid = dynamic(
+const GameGrid = lazy(
     () => import("@/components/Game/Carousel/Games/Race Game/GameGrid"),
-    {
-        ssr: false,
-    },
 );
 
 function RaceGameScene() {

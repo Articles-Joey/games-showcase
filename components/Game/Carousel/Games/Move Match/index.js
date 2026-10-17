@@ -1,4 +1,5 @@
-import { memo, Suspense } from "react";
+import { memo } from "react";
+import { PreviewSuspense as Suspense } from "../shared/PreviewLoadTracker";
 import Ground from "../Memory Game/Ground";
 import GrassArea from "../Memory Game/GrassArea";
 import WoodenPicketFence from "../Memory Game/WoodenPicketFence";
